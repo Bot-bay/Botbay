@@ -1,76 +1,178 @@
-.screencontainer{
-    width: 100vw;
-    height: 100vh;
-    background-image: radial-gradient(circle, #000056 0%, #2B0056 50%, #002B56 100%);
+html {
+  font-size: 0.8333vw !important;
 }
 
-.navbar{
-    width: 100vw;
-    height: 10%;
+.screencontainer {
+  width: 100vw;
+  height: 100vh;
+  background-image: radial-gradient(circle, #000056 0%, #2B0056 50%, #002B56 100%);
+  overflow: hidden;
 }
 
-.herocontainer{
-    width: 100vw;
-    height: 90%;
-    display: flex;
-    flex-direction: row;
+.navbar {
+  width: 100vw;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
 }
 
-.halfcontainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 50%;
-    height: 100%;
+.herocontainer {
+  width: 100vw;
+  height: 90%;
+  display: flex;
+  flex-direction: row;
 }
 
-.vertical33container{
-    display: flex;
-    flex-direction: row;
-    box-sizing: border-box;
-    padding:18px;
-    width: 100%;
-    height: 33%;
+.halfcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
 }
 
-.vertical34container{
-    display: flex;
-    flex-direction: row;
-    box-sizing: border-box;
-    padding:18px;
-    width: 100%;
-    height: 34%;
+.vertical33container {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 3.125rem;
+  width: 100%;
+  height: 33.3%;
 }
 
-.herotitle{
-    padding:0px;
-    margin:0px;
-    color: white;
-    font-family: 'IniriaSansBold';
-    font-size: 4rem;
+.vertical34container {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 3.125rem;
+  width: 100%;
+  height: 33.4%;
+}
+
+.herotitle {
+  padding: 0;
+  margin: 0;
+  color: white;
+  font-family: 'IniriaSansBold';
+  font-size: 4rem;
 }
 
 ul {
-    list-style-type: disc; 
-    padding-left: 20px; 
+  list-style-type: disc;
+  padding-left: 1.25rem;
 }
 
 li {
-    margin-bottom: 8px; 
-    font-size: 1.5rem;
-    color: white;
-    font-family: "Inter";
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: white;
+  font-family: "Inter";
 }
 
-.leftcontainer{
-    width: 100%;
-    height: 100%;
-    justify-content: flex-start;
+.leftcontainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.rowcontainer{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
+.rightcontainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navtexthelper {
+  align-items: center;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  height: 100%;
+}
+
+.rowcontainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+}
+
+.evenspreadflex {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.herobutton {
+  width: 35%;
+  color: white;
+  font-family: "Interbold";
+  font-size: 1.5rem;
+  background-color: #6161618A;
+  border-radius: 0.625rem;
+  border: 0.0625rem solid transparent;
+  filter: drop-shadow(0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+}
+
+.herobutton:hover {
+  border-color: #ffffff;
+}
+
+.navunderlinebutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  font-family: "Interbold";
+  font-weight: bolder;
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: underline transparent;
+  transition: text-decoration-color 300ms ease;
+}
+
+.navunderlinebutton:hover {
+  cursor: pointer;
+  text-decoration: underline white;
+}
+
+.navbutton {
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Interbold";
+  color: white;
+  background-color: #330099;
+  border-radius: 0.625rem;
+  border: 0.0625rem solid transparent;
+  width: 28%;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.navbutton:hover {
+  border-color: #ffffff;
+}
+
+.navlogo {
+  box-sizing: border-box;
+  padding: 0.625rem;
+  width: auto;
+  height: 95%;
+}
+
+.heroicon {
+  width: auto;
+  height: 4rem;
 }
