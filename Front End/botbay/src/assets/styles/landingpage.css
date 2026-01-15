@@ -168,11 +168,229 @@ li {
 .navlogo {
   box-sizing: border-box;
   padding: 0.625rem;
-  width: auto;
-  height: 95%;
+  height: auto;
+  max-height: 95%;
+  max-width: 95%;
 }
 
 .heroicon {
   width: auto;
   height: 4rem;
+}
+
+.herolist li{
+  font-size: 1.5rem;
+  font-family: "Inter";
+}
+
+@media screen and (max-width: 1199px) {
+  .navbutton{
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Interbold";
+    color: white;
+    background-color: #330099;
+    border-radius: 0.625rem;
+    border: 0.0625rem solid transparent;
+    width: 45%;
+    font-size: 4rem;
+    cursor: pointer;
+  }
+
+  .navunderlinebutton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-family: "Interbold";
+    font-weight: bolder;
+    color: white;
+    font-size: 4rem;
+    text-decoration: underline transparent;
+    transition: text-decoration-color 300ms ease;
+  }
+
+  .navtexthelper {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 100%;
+  }
+
+  .herocontainer {
+    width: 100vw;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rowcontainer {
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    max-height: 35%;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .heroicon {
+    width: auto;
+    height: 7rem;
+  }
+
+  .evenspreadflex {
+    box-sizing: border-box;
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    max-height: 25%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .herolist{
+    padding: 20px;
+    width: 50%;
+  }
+
+  .herolist li{
+    font-size: 3rem;
+    font-family: "Inter";
+  }
+
+  .herotitle {
+    padding: 60px;
+    margin: 0;
+    color: white;
+    font-family: 'IniriaSansBold';
+    font-size: 8rem;
+  }
+
+  .herobutton {
+    width: 35%;
+    color: white;
+    font-family: "Interbold";
+    font-size: 4rem;
+    background-color: #6161618A;
+    border-radius: 0.625rem;
+    border: 0.0625rem solid transparent;
+    filter: drop-shadow(0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25));
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navbutton{
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Interbold";
+    color: white;
+    background-color: #330099;
+    border-radius: 0.625rem;
+    border: 0.0625rem solid transparent;
+    width: 45%;
+    font-size: 4rem;
+    cursor: pointer;
+  }
+
+  .navunderlinebutton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-family: "Interbold";
+    font-weight: bolder;
+    color: white;
+    font-size: 4rem;
+    text-decoration: underline transparent;
+    transition: text-decoration-color 300ms ease;
+  }
+
+  .navtexthelper {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    height: 100%;
+  }
+
+  .herocontainer {
+    width: 100vw;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rowcontainer {
+    box-sizing: border-box;
+    padding: 60px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    max-height: 35%;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .heroicon {
+    width: auto;
+    height: 12rem;
+  }
+
+  .evenspreadflex {
+    box-sizing: border-box;
+    padding: 60px;
+    width: 100%;
+    height: auto;
+    max-height: 25%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .herolist{
+    padding: 60px;
+    width: 50%;
+  }
+
+  .herolist li{
+    font-size: 3rem;
+    font-family: "Inter";
+  }
+
+  .herotitle {
+    padding: 60px;
+    margin: 0;
+    color: white;
+    font-family: 'IniriaSansBold';
+    font-size: 8rem;
+  }
+
+  .herobutton {
+    width: 35%;
+    color: white;
+    font-family: "Interbold";
+    font-size: 4rem;
+    background-color: #6161618A;
+    border-radius: 0.625rem;
+    border: 0.0625rem solid transparent;
+    filter: drop-shadow(0rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25));
+    cursor: pointer;
+  }
 }
