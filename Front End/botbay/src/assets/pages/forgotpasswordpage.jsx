@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react'; 
-import signUpLogo from '../images/BlankLogo.png';
+import signUpLogo from '../images/LogoTrans.png';
 
 import '../styles/signupstyles.css';
 import '../styles/sharedstyles.css';
@@ -17,7 +17,10 @@ function SignUpPage() {
     <div className="screencontainer">
       <div className="centercontainer">
         <div className="contentcontainer">
-          <img className="signuplogo" src={signUpLogo} alt="Logo" />
+          <div className='logocontainer'>
+            <img className="signuplogo" src={signUpLogo} alt="Logo" />
+            <p className="signupheader">Botbay</p>
+          </div>
           <div className="inputcontainer">
             <p className="inputheader">Email:</p>
             <input className="signupinput" type="email" placeholder="email@example.com" />

@@ -8,7 +8,7 @@ import { switchToPage } from '../scripts/navigation.js';
 import multiDeviceIcon from '../images/multideviceicon.png';
 import listIcon from '../images/listicon.png';
 import bookIcon from '../images/bookicon.png';
-import navlogo from '../images/BlankLogo.png';
+import navlogo from '../images/LogoTrans.png';
 import stormLogo from '../images/stormlogo.png';
 import knightsLogo from '../images/knightslogo.png';
 
@@ -32,6 +32,7 @@ function LandingPage() {
               <div className="halfcontainer">
                 <div className="leftcontainer">
                   <img className="navlogo" src={navlogo}></img>
+                  <p className="navtitle">Botbay</p>
                 </div>
               </div>
               <div className="halfcontainer">
@@ -83,8 +84,9 @@ function LandingPage() {
         ) : (
           <>
             <div className="navbar">
-              <div className="halfcontainer">
+              <div className="halfcontainersmallnav">
                 <img className="navlogo" src={navlogo}></img>
+                <p className="navtitle">Botbay</p>
               </div>
               <div className="halfcontainer">
                 <div className="navtexthelper">

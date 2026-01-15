@@ -36,6 +36,17 @@ body{
   height: 100%;
 }
 
+.halfcontainersmallnav{
+  box-sizing: border-box;
+  padding: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  width: 50%;
+  height: 100%;
+}
+
 .vertical33container {
   display: flex;
   flex-direction: row;
@@ -60,6 +71,20 @@ body{
   color: white;
   font-family: 'IniriaSansBold';
   font-size: 4rem;
+}
+
+.navtitle{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 0;
+  color: white;
+  font-family: 'RobotoCondensedBI';
+  font-size: 4rem;
+  width: auto;
+  text-align: center;
 }
 
 ul {
@@ -329,6 +354,17 @@ li {
     color: white;
     font-family: 'IniriaSansBold';
     font-size: 8rem;
+  }
+
+  .navtitle{
+    display: inline-block;
+    padding: 50px;
+    box-sizing: border-box;
+    margin: 0;
+    color: white;
+    font-family: 'RobotoCondensedBI';
+    font-size: 8rem;
+    width: auto;
   }
 
   .herobutton {
