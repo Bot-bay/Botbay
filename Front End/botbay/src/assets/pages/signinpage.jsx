@@ -10,8 +10,8 @@ function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
 
+  const goToSignUp = switchToPage('/signup');
   const goToForgot = switchToPage('/forgotpassword');
-  const goToSignIn = switchToPage('/signin');
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -46,11 +46,11 @@ function SignUpPage() {
             </div>
             <div className="bottomcontainer">
               <p className="bottomtext">Forgot your password? <span className="forgotpasswordspan" onClick={goToForgot}>Click here</span></p>
-              <p className="bottomtext">Already have an account? <span className="forgotpasswordspan" onClick={goToSignIn}>Click here</span></p>
+              <p className="bottomtext">Don't have an account yet? <span className="forgotpasswordspan" onClick={goToSignUp}>Click here</span></p>
               <p id="noticetext" style={{color: "transparent", fontSize: "0rem"}}>Hello</p>
             </div>
             <div className="bottomcontainer">
-              <button className="signupbutton">Sign Up</button>
+              <button className="signupbutton">Sign In</button>
             </div>
           </div>
         </div>
