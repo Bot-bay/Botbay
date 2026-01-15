@@ -1,8 +1,29 @@
+.logocontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.signupheader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0;
+    color: white;
+    font-family: 'RobotoCondensedBI';
+    font-size: 4rem;
+    width: auto;
+    text-align: center;
+}
+
 .signuplogo {
 	box-sizing: border-box;
 	padding: 0.625rem;
 	height: auto;
-	max-height: 95%;
+	max-height: 100px;
 	max-width: 67%;
 }
 

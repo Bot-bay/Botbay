@@ -21,3 +21,11 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'RobotoCondensedBI';
+  src: url('./fonts/RobotoCondensedBI.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
