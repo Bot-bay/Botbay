@@ -4,36 +4,36 @@
 
 
 import flask
-import supabase
+from flask_socketio import SocketIO, emit
 import os
-from dotenv import load_dotenv
-
-
-load_dotenv() # So it can work on Virtual Environment
 
 
 
-
-
-URL : str = os.environ.get("DBURL")
-KEY : str =  os.environ.get("DBKEY")
+App = flask.Flask(__name__)
+Websocket = SocketIO(App)
 
 
 
-DbClient = supabase.create_client(URL,KEY)
-
-
-App = flask.Flask("BotBayBackend")
+def ServerMessage(Status : str):
+    emit("ServerMessage",{"Status":Status})
 
 
 
 
+@Websocket.on("Ping")
+def Ping():
+    ServerMessage("Server is healthy")
+    
+
+@App.route("/")
+def Debug():
+    return "Server is up!"
 
 
 
 
 
-
+Websocket.run(App)
 
 
 
