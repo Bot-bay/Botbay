@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useMediaQuery } from 'react-responsive'
 import '../styles/landingpage.css'
 import '../styles/sharedstyles.css'
-import { switchToPage } from '../scripts/navigation.js';
+import { switchToPage,WikiUrl } from '../scripts/navigation.js';
 
 import multiDeviceIcon from '../images/multideviceicon.png';
 import listIcon from '../images/listicon.png';
@@ -16,6 +16,8 @@ function LandingPage() {
   const isDesktop = useMediaQuery({ query: '(min-width: 1100px)' });
   const goToSignUp = switchToPage('/signup');
   const goToSignIn = switchToPage('/signin');
+  const goToDashboard = switchToPage('/dashboard');
+  const goToWiki = window.open(WikiUrl) // The wiki is going to be on github using the wiki feature.
 
   const aboutRef = useRef(null);
 
@@ -31,14 +33,14 @@ function LandingPage() {
             <div className="navbar">
               <div className="halfcontainer">
                 <div className="leftcontainer">
-                  <img className="navlogo" src={navlogo}></img>
+                  <img draggable="false" className="navlogo" src={navlogo}></img>
                   <p className="navtitle">Botbay</p>
                 </div>
               </div>
               <div className="halfcontainer">
                 <div className="rightcontainer">
                   <div className="navtexthelper">
-                    <p className="navunderlinebutton">Wiki</p>
+                    <p className="navunderlinebutton" onClick={goToWiki}>Wiki</p>
                     <p className="navunderlinebutton" onClick={scrollToAbout}>About</p>
                     <button className="navbutton" onClick={goToSignIn}>Sign In</button>
                   </div>
@@ -63,16 +65,16 @@ function LandingPage() {
                   </div>
                   <div className="halfcontainer">
                     <div className="rowcontainer">
-                      <img className="heroicon" src={multiDeviceIcon}></img>
-                      <img className="heroicon" src={listIcon}></img>
-                      <img className="heroicon" src={bookIcon}></img>
+                      <img draggable="false" className="heroicon" src={multiDeviceIcon}></img>
+                      <img draggable="false" className="heroicon" src={listIcon}></img>
+                      <img draggable="false" className="heroicon" src={bookIcon}></img>
                     </div>
                   </div>
                 </div>
                 <div className="vertical33container">
                   <div className="evenspreadflex">
                     <button className="herobutton" onClick={goToSignUp}>Sign Up</button>
-                    <button className="herobutton">Try it Out</button>
+                    <button className="herobutton"  onClick={goToDashboard}>Try it Out</button>
                   </div>
                 </div>
               </div>
@@ -85,7 +87,7 @@ function LandingPage() {
           <>
             <div className="navbar">
               <div className="halfcontainersmallnav">
-                <img className="navlogo" src={navlogo}></img>
+                <img draggable="false" className="navlogo" src={navlogo}></img>
                 <p className="navtitle">Botbay</p>
               </div>
               <div className="halfcontainer">
@@ -107,9 +109,9 @@ function LandingPage() {
                     </ul>
                   </center>
                   <div className="rowcontainer">
-                    <img className="heroicon" src={multiDeviceIcon}></img>
-                    <img className="heroicon" src={listIcon}></img>
-                    <img className="heroicon" src={bookIcon}></img>
+                    <img draggable="false" className="heroicon" src={multiDeviceIcon}></img>
+                    <img draggable="false" className="heroicon" src={listIcon}></img>
+                    <img draggable="false" className="heroicon" src={bookIcon}></img>
                   </div>
                   <div className="evenspreadflex">
                     <button className="herobutton">Sign Up</button>
@@ -125,8 +127,8 @@ function LandingPage() {
         <p className="abouttext">Compete stronger with the peace of mind of knowing you have everything you need to be ready at all your competitions.</p>
         <p className='abouttext'>Botbay is a collaborative effort built and designed by FTC Teams #16423 and #27966.</p>
         <div className="teamlogocontainer">
-          <img className="teamlogo" src={stormLogo}></img>
-          <img className="teamlogo" src={knightsLogo}></img>
+          <img  draggable="false" className="teamlogo" src={stormLogo}></img>
+          <img draggable="false" className="teamlogo" src={knightsLogo}></img>
         </div>
       </div>
     </>

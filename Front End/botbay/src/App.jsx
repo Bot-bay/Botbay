@@ -4,6 +4,7 @@ import LandingPage from './assets/pages/landingpage.jsx';
 import SignUpPage from './assets/pages/signuppage.jsx'
 import SignInPage from './assets/pages/signinpage.jsx'
 import ForgotPasswordPage from './assets/pages/forgotpasswordpage.jsx'
+import Dashboard from './assets/pages/dashboard.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+          <Route path="/dashboard" element={<Dashboard />}/>
         </Routes>
       </div>
     </Router>
