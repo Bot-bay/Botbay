@@ -17,7 +17,10 @@ function LandingPage() {
   const goToSignUp = switchToPage('/signup');
   const goToSignIn = switchToPage('/signin');
   const goToDashboard = switchToPage('/dashboard');
-  const goToWiki = window.open(WikiUrl) // The wiki is going to be on github using the wiki feature.
+  
+  const goToWiki = () => {
+    window.open(WikiUrl);
+  };
 
   const aboutRef = useRef(null);
 
