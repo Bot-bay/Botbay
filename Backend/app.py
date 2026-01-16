@@ -16,8 +16,6 @@ DataBaseService.InitializeEnviron()
 App = flask.Flask(__name__)
 Websocket = SocketIO(App)
 
-if os.path.exists('templates'):
-    print(f"Files in templates: {os.listdir('templates')}")
 
 def ServerMessage(Status : str):
     emit("ServerMessage",{"Status":Status})
