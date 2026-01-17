@@ -1,0 +1,49 @@
+.dashboardscreencontainer{
+    display: flex;
+    min-height: 100vh;
+    background-color: #000017;
+    width: 100%;
+}
+
+.sidebar{
+    background-color: #1d1e2c;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    flex-direction: column;
+    width: 13%;
+    box-sizing: border-box;
+    margin-right: 15px;
+}
+
+.dashboardcontainer{
+    display: flex;
+    width: 90%;
+    margin: 15px;
+    box-sizing: border-box;
+}
+
+.d-titlecontainer{
+    box-sizing: border-box;
+    width: 100%;
+    height: 10%;
+    margin: 0px;
+    padding: 10px;
+    font-family: "Interbold";
+    font-size: 3rem;
+}
+
+.d-titlecontainer p{
+    margin:0px;
+    color: white;
+    user-select: none;
+}
+
+.sidebarlogo{
+    box-sizing: border-box;
+    padding: 0.625rem;
+    height: auto;
+    max-height: 50%;
+    max-width: 50%;
+}
