@@ -3,6 +3,13 @@ import '../styles/sharedstyles.css'
 import '../styles/dashboard.css'
 import { useMediaQuery } from 'react-responsive'
 
+import { FaHome } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+import { FaTools } from "react-icons/fa";
+import { PiBlueprint } from "react-icons/pi";
+import { FaBatteryFull } from "react-icons/fa";
+import { FaBox } from "react-icons/fa";
+
 import HomePageDesktop from './sub-pages/desktop/dashboardHome';
 import HomePagePhone from './sub-pages/phone/dashboardHome';
 
@@ -74,6 +81,31 @@ function Dashboard(){
                 <>
                 <div className="sidebar">
                     <img className='sidebarlogo' src={sidebarLogo} alt="logo"></img>
+                    <div className='sidebaritemcontainer'>
+                        <div className={`sidebaritem ${pageIndex === 0 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(0)}>
+                            <p><FaHome style={{ marginRight: '6px' }} />Home</p>
+                        </div>
+
+                        <div className={`sidebaritem ${pageIndex === 1 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(1)}>
+                            <p><FaTools style={{ marginRight: '6px' }} />Parts</p>
+                        </div>
+
+                        <div className={`sidebaritem ${pageIndex === 2 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(2)}>
+                            <p><PiBlueprint style={{ marginRight: '6px' }} />Plan</p>
+                        </div>
+
+                        <div className={`sidebaritem ${pageIndex === 3 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(3)}>
+                            <p><FaBox style={{ marginRight: '6px' }} />Pack</p>
+                        </div>
+
+                        <div className={`sidebaritem ${pageIndex === 4 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(4)}>
+                            <p><FaBatteryFull style={{ marginRight: '6px' }} />Batteries</p>
+                        </div>
+
+                        <div className={`sidebaritem ${pageIndex === 5 ? 'sidebaritemhighlighted' : ''}`} onClick={() => setPageIndex(5)}>
+                            <p><IoMdSettings style={{ marginRight: '6px' }} />Settings</p>
+                        </div>
+                    </div>
                 </div>
                 
                 </>
