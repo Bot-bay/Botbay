@@ -124,9 +124,13 @@
     border-radius: 10px;
     padding: 15px;
     box-sizing: border-box;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 4px 16px 0px;
 }
 
 .d-griditem-2r{
+    overflow: auto;
+    scrollbar-color: #888 #f1f1f1;
+    scrollbar-width: thin;
     grid-column: 1;
     grid-row: 1 / span 2;
     display: flex;
@@ -137,7 +141,35 @@
     border-radius: 10px;
     padding: 15px;
     box-sizing: border-box;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 4px 16px 0px;
 }
+
+.d-griditem-2r > #d-griditem-membertable {
+    border-collapse: collapse;
+    width: 90%;
+}
+
+.d-griditem-2r > #d-griditem-membertable tbody tr td{
+    border-top: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(255, 255, 255);
+    text-align: center;
+    font-family: "Inter";
+    color: white;
+    font-size: 1rem;
+}
+
+.d-griditem-2r > #d-griditem-membertable tbody tr th{
+    color: white;
+    font-family: "Interbold";
+    font-size: 1.2rem;
+}
+
+.d-griditem-2r > #d-griditem-membertable tbody tr td:hover{
+    text-decoration: line-through;
+    cursor: pointer;
+}
+
+.d-griditem-2r > #d-griditem-membertable tbody tr:nth-child(even) {background-color: #161616;}
 
 .d-griditem-reg  > #d-griditem-title, .d-griditem-2r > #d-griditem-title {
     user-select: none;
@@ -146,6 +178,26 @@
     font-family: "Interbold";
     font-size: 2.5rem;
     text-align: center;
+}
+
+.d-griditem-membertable-bottombuttoncontainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 90%;
+}
+
+.d-griditem-membertable-bottombuttoncontainer > #d-griditem-membertable-bottombuttoncontainer-1{
+    width: 80%;
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.d-griditem-membertable-bottombuttoncontainer > #d-griditem-membertable-bottombuttoncontainer-2{
+    margin: 10px;
+    width: 20%;
+    box-sizing: border-box;
 }
 
 .scrollable::-webkit-scrollbar {
