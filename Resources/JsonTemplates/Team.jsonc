@@ -6,7 +6,6 @@
         "Members" : [1,2,4], //Store user ids.
         "Owner" : 3 // Store owner of team user id.
     },
-    "ID" : 0, // Id of team
     "Parts" : [ // list to store parts
 
     {"Type" : "Part", "ID" : 1,"Quantity" : 10},
