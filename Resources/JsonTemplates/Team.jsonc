@@ -8,8 +8,10 @@
     },
     "Parts" : [ // list to store parts
 
-    {"Type" : "Part", "ID" : 1,"Quantity" : 10},
-    {"Type" : "Part", "ID" : 5,"Quantity" : 3}
+        // Added tags, name, and manufacturer id
+
+        {"Type" : "motor", "ID" : 1, "Quantity" : 10, "tags":["motor"], "name": "NeveRest Orbital 20 Gearmotor", "manufacturerId": "am-3637"},
+        {"Type" : "part", "ID" : 5, "Quantity" : 3, "tags":["structural", "custom", "3dprint"], "name": "Wheel Support", "manufacturerId":null}
 
     ],
 
