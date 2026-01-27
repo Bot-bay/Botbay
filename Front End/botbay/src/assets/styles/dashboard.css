@@ -134,6 +134,91 @@
     transition: color 200ms ease;
 }
 
+.d-partslistheader, 
+.d-partslistwrapper, 
+.d-partslistcontainer {
+    overflow: visible !important;
+}
+
+.custom-tag-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.d-dropdown-btn {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background-color: #281a68;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.d-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 9999;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    max-height: 250px; 
+    overflow-y: auto;   
+    overflow-x: hidden; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column; 
+}
+
+.d-tag-label {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    text-transform: capitalize; 
+}
+
+.d-add-button{
+    background-color: #281a68;
+    font-size: 1rem !important; 
+    font-weight: 600 !important; 
+}
+
+.d-tag-checkbox {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+/* Scrollbar styling */
+.d-dropdown-menu::-webkit-scrollbar {
+    width: 5px;
+}
+.d-dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.d-dropdown-menu::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
 .d-partslistheader{
     box-sizing: border-box;
     padding: 10px;
