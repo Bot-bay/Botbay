@@ -15,6 +15,10 @@ function PartsPageDesktop() {
         return (yiq >= 128) ? 'black' : 'white';
     }
 
+    function onRowClick(itemId){
+        alert("hello world, "+itemId);
+    }
+
     const [query, setQuery] = useState("");
     const [listResults, setListResults] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -137,10 +141,10 @@ function PartsPageDesktop() {
                     </div>
                     <div className="d-partslistwrapper" id="partslistwrapper">
                         <div className="d-partslistheader">
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer' }} onClick={() => reloadPartsList('manufacturerId')}>Id {getSortIcon('manufacturerId')}</span></div>
-                            <div style={{ width: '50%' }}><span style={{ cursor: 'pointer' }} onClick={() => reloadPartsList('name')}>Name {getSortIcon('name')}</span></div>
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer' }} onClick={() => reloadPartsList('quantity')}>Quantity {getSortIcon('quantity')}</span></div>
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer' }} onClick={() => reloadPartsList('needed')}>Needed {getSortIcon('needed')}</span></div>
+                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('manufacturerId')}>Id {getSortIcon('manufacturerId')}</span></div>
+                            <div style={{ width: '50%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('name')}>Name {getSortIcon('name')}</span></div>
+                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('quantity')}>Quantity {getSortIcon('quantity')}</span></div>
+                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('needed')}>Needed {getSortIcon('needed')}</span></div>
                             <div style={{ width: '10%', display: 'flex', justifyContent: 'center' }}>
                                 <div className="custom-tag-dropdown" ref={dropdownRef}>
                                     <button 
@@ -186,7 +190,7 @@ function PartsPageDesktop() {
                             </div>
                         </div>
                         {filteredResults.map((item) => (
-                            <PartItem key={item.id} part={item} />
+                            <PartItem key={item.id} part={item} onRowClick={onRowClick} />
                         ))}
                     </div>
                 </div>
