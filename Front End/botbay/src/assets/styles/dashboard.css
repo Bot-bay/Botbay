@@ -133,6 +133,68 @@
     transition: color 200ms ease;
 }
 
+.d-partoverlay {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    overflow-y: auto;
+    position: absolute;
+    max-height: 100vh;
+    left: 13%;
+    width: 87%;
+    background-color: #000017;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 10000;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+.d-partoverlay::-webkit-scrollbar {
+    width: 5px;
+}
+.d-partoverlay::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.d-partoverlay::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.thirdcontainer img{
+    max-width: 90%;
+}
+
+.d-partoverlay-infodiv1{
+    background-color: #1d1e2c;
+    width: 80%;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.d-partoverlay-infodiv1 p{
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: white;
+}
+
+.d-partoverlay-infodiv1 ul li{
+    font-size: 1rem;
+    color: white;
+}
+
+.d-partoverlay-infodiv1 ul li a{
+    color: white;
+}
+
+.d-partoverlay-infodiv1 ul li a:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .d-partslistheader, 
 .d-partslistwrapper, 
 .d-partslistcontainer {

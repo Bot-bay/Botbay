@@ -195,6 +195,52 @@ function PartsPageDesktop() {
                     </div>
                 </div>
             </div>
+            {/* style={{ display: "none" }} */}
+            <div className='d-partoverlay' >
+                <div className='leftcontainer'>
+                    <div className='thirdcontainer'>
+                        <div className='d-titlecontainer' style={{paddingLeft:"5%"}}>
+                            <p>Motor</p>
+                        </div>
+                        <img src="https://andymark.com/cdn/shop/files/am-3637b_700x700.jpg?v=1749948680" alt="Item image" />
+                        <div className='d-partoverlay-infodiv1'>
+                            <p>Links:</p>
+                            <ul>
+                                <li><a href='https://andymark.com'>CAD</a></li>
+                                <li><a>Store</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className='thirdcontainer'>
+                        <div className='d-partoverlay-infodiv1'>
+                            <p>Stats:</p>
+                            <ul>
+                                <li>Connector Types: JST-VH-2, Anderson Powerpoles</li>
+                                <li>Max Power: 14W</li>
+                            </ul>
+                        </div>
+                        <div className='d-partoverlay-infodiv1'>
+                            <div className='leftcontainer'>
+                                <div className='halfcontainer'>
+                                    <p>Quantity: 4</p>
+                                </div>
+                                <div className='halfcontainer'>
+                                    <p>Needed: 0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='thirdcontainer'>
+                        <div className='d-partoverlay-infodiv1'>
+                            <p>Tags:</p>
+                            <ul>
+                                <li>Motor</li>
+                                <li>Actuator</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
