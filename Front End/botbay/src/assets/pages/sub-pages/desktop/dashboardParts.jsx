@@ -3,105 +3,18 @@ import Select from 'react-select';
 import { MdDownload, MdUpload } from "react-icons/md";
 import { RiExpandUpDownFill, RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import PartItem from '../../components/partItem';
-
-import MotorList from '../../components/partStatComponents/Desktop/motor'
+import MotorList from '../../components/partStatComponents/Desktop/motor';
+import Blocker from '../../components/blocker';
+import Sketch from '@uiw/react-color-sketch';
 
 function PartsPageDesktop() {
+    const [newTagName, setNewTagName] = useState("");
+    const [tagError, setTagError] = useState("");
 
-    // Part type indexes:
-    // 0 -> Motor
-    // 1 -> Servo
-    // 2 -> Structural
-    // 3 -> Electrical
-    // 4 -> Sensor
-    // 5 -> 3D Printed
-    // 6 -> Machined
-    // 7 -> Other
-    // 8 -> Wheel
-
-    // *** MORE CAN BE ADDED ON LATER, JUST ADD TO THE INDEX, DO NOT REARRANGE *** //
-
-    const [partType, setPartType] = React.useState(0);
-
+    const [partType, setPartType] = useState(0);
     const [currentItem, setCurrentItem] = useState(null);
-
     const [currentQuant, setCurrentQuant] = useState(0);
     const [currentNeeded, setCurrentNeeded] = useState(0);
-
-    function handleNumChangeClick(target, operation){
-        // Target 0 = quant, target 1 = needed
-        // Operation 0 = add, operation 1 = subtract
-        if(target == 0){
-            if(operation == 0){
-                setCurrentQuant(currentQuant + 1);
-            }else{
-                if(currentQuant - 1 > -1){
-                    setCurrentQuant(currentQuant - 1);
-                }
-            }
-        }else{
-            if(operation == 0){
-                setCurrentNeeded(currentNeeded + 1);
-            }else{
-                if(currentNeeded - 1 > -1){
-                    setCurrentNeeded(currentNeeded - 1);
-                }
-            }
-        }
-    }
-
-    const renderStatContent = () => {
-        switch(partType) {
-            case 0:
-                return <MotorList part={currentItem} />;
-            case 1:
-                return <MotorList part={currentItem} />;
-            case 2:
-                return <MotorList part={currentItem} />;
-            case 3:
-                return <MotorList part={currentItem} />;
-            case 4:
-                return <MotorList part={currentItem} />;
-            case 5:
-                return <MotorList part={currentItem} />;
-            case 6:
-                return <MotorList part={currentItem} />;
-            case 7:
-                return <MotorList part={currentItem} />;
-            case 8:
-                return <MotorList part={currentItem} />;
-            default:
-                return <MotorList part={currentItem} />;
-        }
-    }
-
-    function getContrastYIQ(hexcolor) {
-        if (!hexcolor) return 'black';
-        hexcolor = hexcolor.replace("#", "");
-        const r = parseInt(hexcolor.substr(0, 2), 16);
-        const g = parseInt(hexcolor.substr(2, 2), 16);
-        const b = parseInt(hexcolor.substr(4, 2), 16);
-        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        return (yiq >= 128) ? 'black' : 'white';
-    }
-
-    function onRowClick(item) {
-        setCurrentItem(item);
-        setIsPartOverlayOpen(true);
-        setCurrentQuant(item?.quantity);
-        setCurrentNeeded(item?.needed);
-    }
-
-    function onExitClick() {
-        setIsPartOverlayOpen(false);
-        setCurrentItem(null);
-
-        fetch("/partslist.json")
-            .then(res => res.json())
-            .then(data => setListResults(data))
-            .catch(err => console.error("Error reloading JSON:", err));
-    }
-
 
     const [query, setQuery] = useState("");
     const [listResults, setListResults] = useState([]);
@@ -109,20 +22,49 @@ function PartsPageDesktop() {
 
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
-    
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-
     const [isPartOverlayOpen, setIsPartOverlayOpen] = useState(false);
 
-    const toggleTag = (tagName) => {
-        setSelectedTags(prev =>
-            prev.includes(tagName)
-                ? prev.filter(t => t !== tagName)
-                : [...prev, tagName]
-        );
+    const [isBlockerOpen, setIsBlockerOpen] = useState(false);
+    const [isCreateTagOpen, setIsCreateTagOpen] = useState(false);
+
+    // Load parts from localStorage
+    useEffect(() => {
+        const savedData = localStorage.getItem("partData");
+        if (savedData) {
+            setListResults(JSON.parse(savedData));
+        } else {
+            setListResults([]);
+        }
+    }, []);
+
+    // Load tags from localStorage
+    useEffect(() => {
+        const savedTags = localStorage.getItem("taglist");
+        if (savedTags) {
+            setTags(JSON.parse(savedTags));
+        } else {
+            setTags([]); // fallback to empty array
+            localStorage.setItem("taglist", JSON.stringify([])); // initialize localStorage
+        }
+    }, []);
+
+    // Add new tag
+    const addTag = (tagName, color) => {
+        const newTag = { name: tagName, color };
+        setTags(prevTags => {
+            const updatedTags = [...prevTags, newTag];
+            localStorage.setItem("taglist", JSON.stringify(updatedTags));
+            return updatedTags;
+        });
+        onTagExitClick();
     };
 
+    const [hex, setHex] = useState("#fff");
+    
+
+    // Close dropdown if clicked outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -133,29 +75,75 @@ function PartsPageDesktop() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    useEffect(() => {
-        fetch("/taglist.json")
-            .then(res => res.json())
-            .then(data => setTags(data))
-            .catch(err => console.error(err));
-    }, []);
+    const toggleTag = (tagName) => {
+        setSelectedTags(prev =>
+            prev.includes(tagName)
+                ? prev.filter(t => t !== tagName)
+                : [...prev, tagName]
+        );
+    };
 
-    const allTags = React.useMemo(() => {
-        return Array.from(new Set(listResults.flatMap(part => part.tags || [])));
-    }, [listResults]);
+    const renderStatContent = () => <MotorList part={currentItem} />;
 
-    useEffect(() => {
-        const fetchParts = async () => {
-            try {
-                const response = await fetch("/partslist.json");
-                const data = await response.json();
-                setListResults(data);
-            } catch (err) {
-                console.error("Error loading JSON:", err);
-            }
-        };
-        fetchParts();
-    }, []);
+    const getContrastYIQ = (hexcolor) => {
+        if (!hexcolor) return 'black';
+        hexcolor = hexcolor.replace("#", "");
+        const r = parseInt(hexcolor.substr(0, 2), 16);
+        const g = parseInt(hexcolor.substr(2, 2), 16);
+        const b = parseInt(hexcolor.substr(4, 2), 16);
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 128) ? 'black' : 'white';
+    };
+
+    const onRowClick = (item) => {
+        setCurrentItem(item);
+        setIsPartOverlayOpen(true);
+        setCurrentQuant(item?.quantity);
+        setCurrentNeeded(item?.needed);
+    };
+
+    const onExitClick = () => {
+        setIsPartOverlayOpen(false);
+        setCurrentItem(null);
+
+        const savedData = localStorage.getItem("partData");
+        setListResults(savedData ? JSON.parse(savedData) : []);
+    };
+
+    const onTagExitClick = () => {
+        setIsBlockerOpen(false);
+        setIsCreateTagOpen(false);
+    }
+
+    const onTagOpenClick = () => {
+        setIsBlockerOpen(true);
+        setIsCreateTagOpen(true);
+    }
+
+    const handleNumChangeClick = (target, operation) => {
+        if (target === 0) {
+            const newQuant = operation === 0 ? currentQuant + 1 : Math.max(currentQuant - 1, 0);
+            setCurrentQuant(newQuant);
+            updatePartData(currentItem.id, newQuant, currentNeeded);
+        } else {
+            const newNeeded = operation === 0 ? currentNeeded + 1 : Math.max(currentNeeded - 1, 0);
+            setCurrentNeeded(newNeeded);
+            updatePartData(currentItem.id, currentQuant, newNeeded);
+        }
+    };
+
+    const updatePartData = (id, newQuant, newNeeded) => {
+        setListResults(prevList => {
+            const updatedList = prevList.map(part => {
+                if (part.id === id) {
+                    return { ...part, quantity: newQuant, needed: newNeeded };
+                }
+                return part;
+            });
+            localStorage.setItem("partData", JSON.stringify(updatedList));
+            return updatedList;
+        });
+    };
 
     const getSortIcon = (columnKey) => {
         if (sortConfig.key !== columnKey) return <RiExpandUpDownFill />;
@@ -183,16 +171,11 @@ function PartsPageDesktop() {
     };
 
     const filteredResults = listResults.filter(item => {
-        // 1. TAG PRIORITY (The Gatekeeper)
-        // If user has selected tags, the item MUST match at least one selected tag.
-        // If no tags are selected, we let everything through to the search filter.
         const matchesTags = selectedTags.length === 0 || 
             (item.tags && item.tags.some(tag => selectedTags.includes(tag)));
 
         if (!matchesTags) return false;
 
-        // 2. SEARCH MATCH
-        // Only items that passed the tag filter get checked for the search query.
         const lowerQuery = query.toLowerCase();
         const matchesQuery = (
             item.name.toLowerCase().includes(lowerQuery) ||
@@ -216,6 +199,7 @@ function PartsPageDesktop() {
                         />
                     </div>
                 </div>
+
                 <div className="d-partslistcontainer">
                     <div className="d-titlecontainer-small">
                         <button>+ Add Item</button>
@@ -225,12 +209,29 @@ function PartsPageDesktop() {
                             <button><MdUpload /><span style={{ marginLeft: 4 }}>Import</span></button>
                         </div>
                     </div>
+
                     <div className="d-partslistwrapper" id="partslistwrapper">
                         <div className="d-partslistheader">
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('manufacturerId')}>Id {getSortIcon('manufacturerId')}</span></div>
-                            <div style={{ width: '50%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('name')}>Name {getSortIcon('name')}</span></div>
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('quantity')}>Quantity {getSortIcon('quantity')}</span></div>
-                            <div style={{ width: '15%' }}><span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('needed')}>Needed {getSortIcon('needed')}</span></div>
+                            <div style={{ width: '15%' }}>
+                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('manufacturerId')}>
+                                    Id {getSortIcon('manufacturerId')}
+                                </span>
+                            </div>
+                            <div style={{ width: '50%' }}>
+                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('name')}>
+                                    Name {getSortIcon('name')}
+                                </span>
+                            </div>
+                            <div style={{ width: '15%' }}>
+                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('quantity')}>
+                                    Quantity {getSortIcon('quantity')}
+                                </span>
+                            </div>
+                            <div style={{ width: '15%' }}>
+                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('needed')}>
+                                    Needed {getSortIcon('needed')}
+                                </span>
+                            </div>
                             <div style={{ width: '10%', display: 'flex', justifyContent: 'center' }}>
                                 <div className="custom-tag-dropdown" ref={dropdownRef}>
                                     <button 
@@ -266,8 +267,7 @@ function PartsPageDesktop() {
                                                     {tag.name}
                                                 </label>
                                             ))}
-
-                                            <div className="d-add-button d-tag-label" onClick={() => console.log("Add Tag Logic Here")}>
+                                            <div className="d-add-button d-tag-label" onClick={onTagOpenClick}>
                                                 <span style={{ marginRight: '12px', fontSize: '1rem', lineHeight: 0 }}>+</span>Add Tag
                                             </div>
                                         </div>
@@ -275,12 +275,14 @@ function PartsPageDesktop() {
                                 </div>
                             </div>
                         </div>
+
                         {filteredResults.map((item) => (
                             <PartItem key={item.id} part={item} onRowClick={onRowClick} />
                         ))}
                     </div>
                 </div>
             </div>
+
             {isPartOverlayOpen && currentItem && (
                 <div id="d-partoverlay" className='d-partoverlay'>
                     <div className='leftcontainer'>
@@ -297,13 +299,14 @@ function PartsPageDesktop() {
                                         .filter(([name, url]) => url)
                                         .map(([name, url]) => (
                                             <li key={name}>
-                                            <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
+                                                <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
                                             </li>
                                         ))
                                     }
                                 </ul>
                             </div>
                         </div>
+
                         <div className='thirdcontainer'>
                             <div className='d-partoverlay-infodiv1'>
                                 <p>Stats:</p>
@@ -328,6 +331,7 @@ function PartsPageDesktop() {
                                 </div>
                             </div>
                         </div>
+
                         <div className='thirdcontainer'>
                             <div className='d-partoverlay-infodiv1'>
                                 <p>Tags:</p>
@@ -340,6 +344,63 @@ function PartsPageDesktop() {
                         </div>
                     </div>
                     <button className='d-partoverlay-exitbutton' onClick={onExitClick}>X</button>
+                </div>
+            )}
+            {isBlockerOpen && (<Blocker id="blocker1"></Blocker>)}
+            {isCreateTagOpen &&(
+                <div className='d-createtagoverlay'>
+                    <button className='d-partoverlay-exitbutton' onClick={onTagExitClick}>X</button>
+                    <p>Custom Tag</p>
+                    {tagError && <p style={{ color: 'red', margin: '0 0 5px 0', fontSize: '0.9rem' }}>{tagError}</p>}
+                    <input
+                        id="createtaginput"
+                        placeholder="Tag Name..."
+                        value={newTagName}
+                        onChange={(e) => {
+                            setNewTagName(e.target.value);
+                            setTagError("");
+                        }}
+                        style={{
+                            border: tagError ? '1px solid red' : '1px solid #ccc',
+                            padding: '6px 10px',
+                            borderRadius: '4px',
+                            width: '100%',
+                            boxSizing: 'border-box'
+                        }}
+                    />
+                    <Sketch
+                        style={{ backgroundColor:"#ffffff", color:'white' }}
+                        color={hex}
+                        disableAlpha={true}
+                        onChange={(color) => {
+                            setHex(color.hex);
+                        }}
+                    />
+                    <button
+                        onClick={() => {
+                            const trimmedName = newTagName.trim();
+                            
+                            // 1 Check for empty input
+                            if (!trimmedName) {
+                                setTagError("Tag name cannot be empty");
+                                return;
+                            }
+
+                            // 2 Check for duplicates
+                            const isDuplicate = tags.some(tag => tag.name.toLowerCase() === trimmedName.toLowerCase());
+                            if (isDuplicate) {
+                                setTagError("Tag name already exists");
+                                return;
+                            }
+
+                            // Add tag
+                            addTag(trimmedName, hex);
+                            setNewTagName("");  // reset input
+                            setTagError("");       // clear any previous error
+                        }}
+                    >
+                    Create Tag
+                    </button>
                 </div>
             )}
         </>

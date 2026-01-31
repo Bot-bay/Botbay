@@ -253,6 +253,44 @@
     transition: background-color 200ms ease;
 }
 
+.d-createtagoverlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10001;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1D1E2C;
+    width: 20%;
+    border-radius: 10px;
+    padding: 20px;
+    gap: 20px
+}
+
+.d-createtagoverlay p{
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.d-createtagoverlay input{
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: none;
+}
+
+.d-createtagoverlay button{
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    background-color: #44327a;
+    color: white;
+}
+
 .d-partslistheader, 
 .d-partslistwrapper, 
 .d-partslistcontainer {
