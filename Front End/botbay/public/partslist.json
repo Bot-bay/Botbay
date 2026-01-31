@@ -1,5 +1,6 @@
 [
     {
+        "editable": false,
         "manufacturerId": "am-3637", 
         "id": 1,
         "name": "NeveRest Orbital 20 Gearmotor", 
@@ -20,9 +21,14 @@
         },
         "quantity": 4,
         "needed": 0,
-        "icon":"https://andymark.com/cdn/shop/files/am-3637b_700x700.jpg?v=1749948680"
+        "icon":"https://andymark.com/cdn/shop/files/am-3637b_700x700.jpg?v=1749948680",
+        "links":{
+            "CAD": "https://andymark.com",
+            "Store": "https://andymark.com/products/neverest-orbital-gearmotors"
+        }
     },
     {
+        "editable": false,
         "manufacturerId": "75001-37", 
         "id": 12,
         "name": "Maverick Hex Planetary Gearbox Motor w/Encoder (3.7:1 Ratio gearbox)", 
