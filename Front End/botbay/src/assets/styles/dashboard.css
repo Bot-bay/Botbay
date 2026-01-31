@@ -133,6 +133,27 @@
     transition: color 200ms ease;
 }
 
+.d-partoverlay-exitbutton {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    background-color: #d94a4a;
+    transition: background-color 200ms ease;
+    color: white;
+    border: none;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-partoverlay-exitbutton:hover{
+    background-color: #9c2121;
+    transition: background-color 200ms ease;
+    border: none;
+}
+
 .d-partoverlay {
     padding-top: 30px;
     padding-bottom: 30px;
@@ -193,6 +214,43 @@
 .d-partoverlay-infodiv1 ul li a:hover{
     cursor: pointer;
     text-decoration: underline;
+}
+
+.d-partoverlay-editquant{
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    height: 98%;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.d-partoverlay-editquant p{
+    font-size: 1.2rem;
+}
+
+.d-partoverlay-editquant button{
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    transition: background-color 200ms ease;
+}
+
+.d-partoverlay-editquant button:hover{
+    background-color: #44327a;
+    transition: background-color 200ms ease;
 }
 
 .d-partslistheader, 

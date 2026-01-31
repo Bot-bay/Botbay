@@ -4,7 +4,77 @@ import { MdDownload, MdUpload } from "react-icons/md";
 import { RiExpandUpDownFill, RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import PartItem from '../../components/partItem';
 
+import MotorList from '../../components/partStatComponents/Desktop/motor'
+
 function PartsPageDesktop() {
+
+    // Part type indexes:
+    // 0 -> Motor
+    // 1 -> Servo
+    // 2 -> Structural
+    // 3 -> Electrical
+    // 4 -> Sensor
+    // 5 -> 3D Printed
+    // 6 -> Machined
+    // 7 -> Other
+    // 8 -> Wheel
+
+    // *** MORE CAN BE ADDED ON LATER, JUST ADD TO THE INDEX, DO NOT REARRANGE *** //
+
+    const [partType, setPartType] = React.useState(0);
+
+    const [currentItem, setCurrentItem] = useState(null);
+
+    const [currentQuant, setCurrentQuant] = useState(0);
+    const [currentNeeded, setCurrentNeeded] = useState(0);
+
+    function handleNumChangeClick(target, operation){
+        // Target 0 = quant, target 1 = needed
+        // Operation 0 = add, operation 1 = subtract
+        if(target == 0){
+            if(operation == 0){
+                setCurrentQuant(currentQuant + 1);
+            }else{
+                if(currentQuant - 1 > -1){
+                    setCurrentQuant(currentQuant - 1);
+                }
+            }
+        }else{
+            if(operation == 0){
+                setCurrentNeeded(currentNeeded + 1);
+            }else{
+                if(currentNeeded - 1 > -1){
+                    setCurrentNeeded(currentNeeded - 1);
+                }
+            }
+        }
+    }
+
+    const renderStatContent = () => {
+        switch(partType) {
+            case 0:
+                return <MotorList part={currentItem} />;
+            case 1:
+                return <MotorList part={currentItem} />;
+            case 2:
+                return <MotorList part={currentItem} />;
+            case 3:
+                return <MotorList part={currentItem} />;
+            case 4:
+                return <MotorList part={currentItem} />;
+            case 5:
+                return <MotorList part={currentItem} />;
+            case 6:
+                return <MotorList part={currentItem} />;
+            case 7:
+                return <MotorList part={currentItem} />;
+            case 8:
+                return <MotorList part={currentItem} />;
+            default:
+                return <MotorList part={currentItem} />;
+        }
+    }
+
     function getContrastYIQ(hexcolor) {
         if (!hexcolor) return 'black';
         hexcolor = hexcolor.replace("#", "");
@@ -15,9 +85,23 @@ function PartsPageDesktop() {
         return (yiq >= 128) ? 'black' : 'white';
     }
 
-    function onRowClick(itemId){
-        alert("hello world, "+itemId);
+    function onRowClick(item) {
+        setCurrentItem(item);
+        setIsPartOverlayOpen(true);
+        setCurrentQuant(item?.quantity);
+        setCurrentNeeded(item?.needed);
     }
+
+    function onExitClick() {
+        setIsPartOverlayOpen(false);
+        setCurrentItem(null);
+
+        fetch("/partslist.json")
+            .then(res => res.json())
+            .then(data => setListResults(data))
+            .catch(err => console.error("Error reloading JSON:", err));
+    }
+
 
     const [query, setQuery] = useState("");
     const [listResults, setListResults] = useState([]);
@@ -28,6 +112,8 @@ function PartsPageDesktop() {
     
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+
+    const [isPartOverlayOpen, setIsPartOverlayOpen] = useState(false);
 
     const toggleTag = (tagName) => {
         setSelectedTags(prev =>
@@ -195,52 +281,67 @@ function PartsPageDesktop() {
                     </div>
                 </div>
             </div>
-            {/* style={{ display: "none" }} */}
-            <div className='d-partoverlay' >
-                <div className='leftcontainer'>
-                    <div className='thirdcontainer'>
-                        <div className='d-titlecontainer' style={{paddingLeft:"5%"}}>
-                            <p>Motor</p>
+            {isPartOverlayOpen && currentItem && (
+                <div id="d-partoverlay" className='d-partoverlay'>
+                    <div className='leftcontainer'>
+                        <div className='thirdcontainer'>
+                            <div className='d-titlecontainer' style={{paddingLeft:"5%", fontSize:"2rem"}}>
+                                <p>{currentItem?.name}</p>
+                            </div>
+                            <img src={currentItem?.icon} alt={currentItem?.name} />
+                            <div className='d-partoverlay-infodiv1'>
+                                <p>Links:</p>
+                                <ul>
+                                    {currentItem?.links &&
+                                        Object.entries(currentItem.links)
+                                        .filter(([name, url]) => url)
+                                        .map(([name, url]) => (
+                                            <li key={name}>
+                                            <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
                         </div>
-                        <img src="https://andymark.com/cdn/shop/files/am-3637b_700x700.jpg?v=1749948680" alt="Item image" />
-                        <div className='d-partoverlay-infodiv1'>
-                            <p>Links:</p>
-                            <ul>
-                                <li><a href='https://andymark.com'>CAD</a></li>
-                                <li><a>Store</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className='thirdcontainer'>
-                        <div className='d-partoverlay-infodiv1'>
-                            <p>Stats:</p>
-                            <ul>
-                                <li>Connector Types: JST-VH-2, Anderson Powerpoles</li>
-                                <li>Max Power: 14W</li>
-                            </ul>
-                        </div>
-                        <div className='d-partoverlay-infodiv1'>
-                            <div className='leftcontainer'>
-                                <div className='halfcontainer'>
-                                    <p>Quantity: 4</p>
-                                </div>
-                                <div className='halfcontainer'>
-                                    <p>Needed: 0</p>
+                        <div className='thirdcontainer'>
+                            <div className='d-partoverlay-infodiv1'>
+                                <p>Stats:</p>
+                                {renderStatContent()}
+                            </div>
+                            <div className='d-partoverlay-infodiv1'>
+                                <div className='leftcontainer'>
+                                    <div className='halfcontainer'>
+                                        <div className='d-partoverlay-editquant'>
+                                            <button onClick={() => handleNumChangeClick(0, 1)}>-</button>
+                                            <p>Quantity: {currentQuant}</p>
+                                            <button onClick={() => handleNumChangeClick(0, 0)}>+</button>
+                                        </div>
+                                    </div>
+                                    <div className='halfcontainer'>
+                                        <div className='d-partoverlay-editquant'>
+                                            <button onClick={() => handleNumChangeClick(1, 1)}>-</button>
+                                            <p>Needed: {currentNeeded}</p>
+                                            <button onClick={() => handleNumChangeClick(1, 0)}>+</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className='thirdcontainer'>
-                        <div className='d-partoverlay-infodiv1'>
-                            <p>Tags:</p>
-                            <ul>
-                                <li>Motor</li>
-                                <li>Actuator</li>
-                            </ul>
+                        <div className='thirdcontainer'>
+                            <div className='d-partoverlay-infodiv1'>
+                                <p>Tags:</p>
+                                <ul>
+                                    {currentItem?.tags?.map(tag => (
+                                        <li key={tag}>{tag}</li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <button className='d-partoverlay-exitbutton' onClick={onExitClick}>X</button>
                 </div>
-            </div>
+            )}
         </>
     )
 }
