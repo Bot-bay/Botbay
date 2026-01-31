@@ -1,0 +1,62 @@
+.s-popup{
+    width: 20vw;
+    height: 40vh;
+    z-index: 10002;
+    position: fixed;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1d1e2c;
+    color: white;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    padding: 10px;
+    gap: 2px;
+}
+
+.s-popup p{
+    padding: 0px;
+}
+
+.s-popup > #s-popup-warning-title{
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.s-popup div div > #s-popup-warning-button-yes{
+    background-color: #47d5a6;
+    font-weight: 600;
+    font-size: 1.3rem;
+    padding: 5px;
+    width: 60%;
+    height: 30%;
+    border: none;
+    color: white;
+    transition: background-color 200ms ease;
+}
+
+.s-popup div div > #s-popup-warning-button-yes:hover{
+    background-color: #22946e;
+    transition: background-color 200ms ease;
+}
+
+.s-popup div div > #s-popup-warning-button-no{
+    background-color: #d94a4a;
+    font-weight: 600;
+    font-size: 1.3rem;
+    padding: 5px;
+    width: 60%;
+    height: 30%;
+    border: none;
+    color: white;
+    transition: background-color 200ms ease;
+}
+
+.s-popup div div > #s-popup-warning-button-no:hover{
+    background-color: #9c2121;
+    transition: background-color 200ms ease;
+}

@@ -138,7 +138,7 @@
     top: 16px;
     right: 16px;
     z-index: 1000;
-    background-color: #d94a4a;
+    background-color: #d94a4a !important;
     transition: background-color 200ms ease;
     color: white;
     border: none;
@@ -149,7 +149,7 @@
 }
 
 .d-partoverlay-exitbutton:hover{
-    background-color: #9c2121;
+    background-color: #9c2121 !important;
     transition: background-color 200ms ease;
     border: none;
 }

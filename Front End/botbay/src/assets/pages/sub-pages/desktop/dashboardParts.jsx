@@ -6,6 +6,7 @@ import PartItem from '../../components/partItem';
 import MotorList from '../../components/partStatComponents/Desktop/motor';
 import Blocker from '../../components/blocker';
 import Sketch from '@uiw/react-color-sketch';
+import WarningPopup from '../../components/warningpopup';
 
 function PartsPageDesktop() {
     const [newTagName, setNewTagName] = useState("");
