@@ -81,7 +81,7 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-    width: 35%;
+    width: 38%;
 }
 
 .d-partslistwrapper{
@@ -129,7 +129,7 @@
 }
 
 .d-partitem-iconbutton2:hover{
-    color: #d94a4a;
+    color: #d94a4a !important;
     transition: color 200ms ease;
 }
 
@@ -254,8 +254,9 @@
 }
 
 .d-createtagoverlay {
+    max-height: 80%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; 
     align-items: center;
     flex-direction: column;
     z-index: 10001;
@@ -267,7 +268,27 @@
     width: 20%;
     border-radius: 10px;
     padding: 20px;
-    gap: 20px
+    gap: 20px;
+    overflow-y: auto;
+    overflow-x: hidden; 
+}
+
+.d-createtagoverlay::-webkit-scrollbar {
+    width: 5px;
+}
+
+.d-createtagoverlay::-webkit-scrollbar-track {
+    background: #2a2b3d; 
+    border-radius: 10px;
+}
+
+.d-createtagoverlay::-webkit-scrollbar-thumb {
+    background: #555; 
+    border-radius: 10px;
+}
+
+.d-createtagoverlay::-webkit-scrollbar-thumb:hover {
+    background: #888;
 }
 
 .d-createtagoverlay p{
@@ -349,7 +370,6 @@
     font-weight: bold;
     white-space: nowrap;
     flex-shrink: 0;
-
     text-transform: capitalize; 
 }
 

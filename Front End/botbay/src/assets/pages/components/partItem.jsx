@@ -4,7 +4,7 @@ import { PiPencilSimple } from "react-icons/pi";
 import { PiPencilSimpleSlash } from "react-icons/pi";
 import WarningPopup from './warningpopup';
 
-function PartItem({ part, onRowClick }) {
+function PartItem({ part, onRowClick, onDelete }) {
     const [imgLoaded, setImgLoaded] = useState(true);
     const [warningOn, setWarningOn] = useState(false);
     const [visible, setVisible] = useState(true);
@@ -23,6 +23,7 @@ function PartItem({ part, onRowClick }) {
 
         // hide this item from UI
         setVisible(false);
+        onDelete();
     };
 
 

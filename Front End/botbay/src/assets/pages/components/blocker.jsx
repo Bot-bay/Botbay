@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function Blocker() {
+function Blocker({ style = {} }) { 
     return ReactDOM.createPortal(
         <div 
             style={{
@@ -11,7 +11,8 @@ function Blocker() {
                 position: "fixed",
                 top: 0,
                 left: 0,
-                zIndex: 10000
+                zIndex: 10000, 
+                ...style 
             }}
         />,
         document.body

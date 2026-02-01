@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import { MdDownload, MdUpload } from "react-icons/md";
 import { RiExpandUpDownFill, RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
+import { FaTags } from "react-icons/fa";
+import { IoTrashSharp } from "react-icons/io5";
 import PartItem from '../../components/partItem';
 import MotorList from '../../components/partStatComponents/Desktop/motor';
 import ServoList from '../../components/partStatComponents/Desktop/servo';
@@ -15,6 +17,9 @@ import Sketch from '@uiw/react-color-sketch';
 import WarningPopup from '../../components/warningpopup';
 
 function PartsPageDesktop() {
+    const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
+    const [deletingTagName, setDeletingTagName] = useState(null);
+
     const [newTagName, setNewTagName] = useState("");
     const [tagError, setTagError] = useState("");
 
@@ -58,13 +63,47 @@ function PartsPageDesktop() {
 
     // Add new tag
     const addTag = (tagName, color) => {
-        const newTag = { name: tagName, color };
+        const newTag = { name: tagName, color, deletable: true };
         setTags(prevTags => {
             const updatedTags = [...prevTags, newTag];
             localStorage.setItem("taglist", JSON.stringify(updatedTags));
             return updatedTags;
         });
         onTagExitClick();
+    };
+
+    const deleteTag = (tagName) => {
+        // 1. Get the freshest data directly from Storage to avoid state-sync issues
+        const rawParts = JSON.parse(localStorage.getItem('partData') || '[]');
+        const rawTags = JSON.parse(localStorage.getItem('taglist') || '[]');
+
+        // 2. Filter out the tag from the Master Tag List
+        const updatedTagList = rawTags.filter(tag => tag.name !== tagName);
+        
+        // 3. Scrub the tag from every single part's tag array
+        const updatedParts = rawParts.map(part => {
+            if (part.tags && Array.isArray(part.tags)) {
+                return {
+                    ...part,
+                    tags: part.tags.filter(t => t !== tagName)
+                };
+            }
+            return part;
+        });
+
+        // 4. Update LocalStorage (The Source of Truth)
+        localStorage.setItem('taglist', JSON.stringify(updatedTagList));
+        localStorage.setItem('partData', JSON.stringify(updatedParts));
+
+        // 5. Update React State (The UI)
+        setTags(updatedTagList);
+        setListResults(updatedParts);
+        
+        // 6. Remove from active filters if it was selected
+        setSelectedTags(prev => prev.filter(t => t !== tagName));
+
+        // 7. UI Cleanup
+        setDeletingTagName(null);
     };
 
     const [hex, setHex] = useState("#fff");
@@ -127,6 +166,16 @@ function PartsPageDesktop() {
             default:
                 return <MotorList part={currentItem} />;
         }
+    }
+
+    function handleTagManageOpen(){
+        setIsManageTagPopupOpen(true);
+        setIsBlockerOpen(true);
+    }
+
+    function handleTagManageClose(){
+        setIsManageTagPopupOpen(false);
+        setIsBlockerOpen(false);
     }
 
     const getContrastYIQ = (hexcolor) => {
@@ -240,11 +289,15 @@ function PartsPageDesktop() {
     };
 
     const filteredResults = listResults.filter(item => {
+        // 1. Tag Filtering (Case-Insensitive)
         const matchesTags = selectedTags.length === 0 || 
-            (item.tags && item.tags.some(tag => selectedTags.includes(tag)));
+            (item.tags && item.tags.some(partTag => 
+                selectedTags.some(selected => selected.toLowerCase() === partTag.toLowerCase())
+            ));
 
         if (!matchesTags) return false;
 
+        // 2. Search Query Filtering
         const lowerQuery = query.toLowerCase();
         const matchesQuery = (
             item.name.toLowerCase().includes(lowerQuery) ||
@@ -273,7 +326,7 @@ function PartsPageDesktop() {
                     <div className="d-titlecontainer-small">
                         <button>+ Add Item</button>
                         <div className='d-titlecontainer-small-downloadwrapper'>
-                            <button><MdDownload /><span style={{ marginLeft: 4 }}>CSV</span></button>
+                            <button onClick={handleTagManageOpen}><FaTags /><span style={{ marginLeft: 4 }}>Manage Tags</span></button>
                             <button><MdDownload /><span style={{ marginLeft: 4 }}>JSON</span></button>
                             <button><MdUpload /><span style={{ marginLeft: 4 }}>Import</span></button>
                         </div>
@@ -318,26 +371,35 @@ function PartsPageDesktop() {
 
                                     {isDropdownOpen && (
                                         <div className="d-dropdown-menu">
-                                            {tags.map(tag => (
-                                                <label 
-                                                    key={tag.name} 
-                                                    className="d-tag-label"
-                                                    style={{ 
-                                                        backgroundColor: tag.color, 
-                                                        color: getContrastYIQ(tag.color) 
-                                                    }}
-                                                >
-                                                    <input 
-                                                        type="checkbox" 
-                                                        className="d-tag-checkbox"
-                                                        checked={selectedTags.includes(tag.name)}
-                                                        onChange={() => toggleTag(tag.name)}
-                                                    />
-                                                    {tag.name}
-                                                </label>
-                                            ))}
+                                            {/* Filter tags to only show those present in partData */}
+                                            {tags.filter(tag => 
+                                                    // Checks if ANY part has this tag, ignoring capital letters
+                                                    listResults.some(part => 
+                                                        part.tags && part.tags.some(t => t.toLowerCase() === tag.name.toLowerCase())
+                                                    )
+                                                ).map(tag => (
+                                                    <label 
+                                                        key={tag.name} 
+                                                        className="d-tag-label"
+                                                        style={{ 
+                                                            backgroundColor: tag.color, 
+                                                            color: getContrastYIQ(tag.color) 
+                                                        }}
+                                                    >
+                                                        <input 
+                                                            type="checkbox" 
+                                                            className="d-tag-checkbox"
+                                                            checked={selectedTags.includes(tag.name)}
+                                                            onChange={() => toggleTag(tag.name)}
+                                                        />
+                                                        {tag.name}
+                                                    </label>
+                                                ))
+                                            }
+                                            
                                             <div className="d-add-button d-tag-label" onClick={onTagOpenClick}>
-                                                <span style={{ marginRight: '12px', fontSize: '1rem', lineHeight: 0 }}>+</span>Add Tag
+                                                <span style={{ marginRight: '12px', fontSize: '1rem', lineHeight: 0 }}>+</span>
+                                                Add Tag
                                             </div>
                                         </div>
                                     )}
@@ -346,7 +408,7 @@ function PartsPageDesktop() {
                         </div>
 
                         {filteredResults.map((item) => (
-                            <PartItem key={item.id} part={item} onRowClick={onRowClick} />
+                            <PartItem key={item.id} part={item} onRowClick={onRowClick} onDelete={() => setListResults(JSON.parse(localStorage.getItem("partData")) || [])} />
                         ))}
                     </div>
                 </div>
@@ -417,7 +479,7 @@ function PartsPageDesktop() {
                                         const textColor = getContrastYIQ(bgColor);
 
                                         return (
-                                            <div key={tagName} style={{backgroundColor: bgColor, color: textColor, padding: '6px 10px', borderRadius: '12px', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '30px'}}>
+                                            <div key={tagName} style={{textTransform: "capitalize", backgroundColor: bgColor, color: textColor, padding: '6px 10px', borderRadius: '12px', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '30px'}}>
                                                 {tagName}
                                             </div>
                                         );
@@ -478,12 +540,98 @@ function PartsPageDesktop() {
 
                             // Add tag
                             addTag(trimmedName, hex);
-                            setNewTagName("");  // reset input
-                            setTagError("");       // clear any previous error
+                            setNewTagName(""); // reset input
+                            setTagError(""); // clear any previous error
                         }}
                     >
                     Create Tag
                     </button>
+                </div>
+            )}
+
+            {isManageTagPopupOpen &&(
+                <div className='d-createtagoverlay'>
+                    <button className='d-partoverlay-exitbutton' onClick={handleTagManageClose}>X</button>
+                    <p>Manage Tags</p>
+
+                    <div style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        width: '100%',
+                        marginTop: '10px'
+                    }}>
+                        <div style={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            gap: '10px',
+                            width: '100%', 
+                            maxWidth: '400px' 
+                        }}>
+                            {JSON.parse(localStorage.getItem('taglist') || '[]')
+                                .filter(tag => tag.deletable === true)
+                                .map(tag => {
+                                    const bgColor = tag.color || '#ccc'; 
+                                    const textColor = getContrastYIQ(bgColor);
+
+                                    return (
+                                        <div key={tag.name} style={{ 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center',
+                                            gap: '10px' 
+                                        }}>
+                                            <div style={{
+                                                textTransform: "capitalize", 
+                                                backgroundColor: bgColor, 
+                                                color: textColor, 
+                                                padding: '4px 12px', 
+                                                borderRadius: '12px', 
+                                                fontSize: '0.8rem', 
+                                                fontWeight: 'bold', 
+                                                display: 'flex', 
+                                                alignItems: 'center', 
+                                                justifyContent: 'center', 
+                                                minHeight: '30px',
+                                                flexGrow: 1
+                                            }}>
+                                                {tag.name}
+                                            </div>
+
+                                            <div 
+                                                className="d-partitem-iconbutton2" 
+                                                onClick={() => setDeletingTagName(tag.name)}
+                                                style={{ 
+                                                    cursor: 'pointer', 
+                                                    width: '3rem', 
+                                                    height: '3rem', 
+                                                    display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                    fontSize: '2.6rem',
+                                                    color: "white"
+                                                }}
+                                            >
+                                                <IoTrashSharp />
+                                            </div>
+                                            {deletingTagName === tag.name && (
+                                                <WarningPopup 
+                                                    message={`This will delete ${tag.name}`} 
+                                                    complete={() => {
+                                                        deleteTag(tag.name);
+                                                        setDeletingTagName(null);
+                                                    }} 
+                                                    close={() => setDeletingTagName(null)}
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                    </div>
+
                 </div>
             )}
         </>
