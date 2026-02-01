@@ -11,7 +11,7 @@ function Blocker() {
                 position: "fixed",
                 top: 0,
                 left: 0,
-                zIndex: 10001
+                zIndex: 10000
             }}
         />,
         document.body

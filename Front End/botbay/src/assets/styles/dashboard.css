@@ -159,7 +159,7 @@
     padding-bottom: 30px;
     overflow-y: auto;
     position: absolute;
-    max-height: 100vh;
+    height: 100vh;
     left: 13%;
     width: 87%;
     background-color: #000017;

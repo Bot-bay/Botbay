@@ -4,6 +4,12 @@ import { MdDownload, MdUpload } from "react-icons/md";
 import { RiExpandUpDownFill, RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
 import PartItem from '../../components/partItem';
 import MotorList from '../../components/partStatComponents/Desktop/motor';
+import ServoList from '../../components/partStatComponents/Desktop/servo';
+import StructuralList from '../../components/partStatComponents/Desktop/structural';
+import ElectricalList from '../../components/partStatComponents/Desktop/electrical';
+import SensorList from '../../components/partStatComponents/Desktop/sensor';
+import PrintedList from '../../components/partStatComponents/Desktop/3dprint';
+import MachinedList from '../../components/partStatComponents/Desktop/machined';
 import Blocker from '../../components/blocker';
 import Sketch from '@uiw/react-color-sketch';
 import WarningPopup from '../../components/warningpopup';
@@ -12,7 +18,6 @@ function PartsPageDesktop() {
     const [newTagName, setNewTagName] = useState("");
     const [tagError, setTagError] = useState("");
 
-    const [partType, setPartType] = useState(0);
     const [currentItem, setCurrentItem] = useState(null);
     const [currentQuant, setCurrentQuant] = useState(0);
     const [currentNeeded, setCurrentNeeded] = useState(0);
@@ -84,7 +89,45 @@ function PartsPageDesktop() {
         );
     };
 
-    const renderStatContent = () => <MotorList part={currentItem} />;
+    // Part type indexes:
+    // 0 -> Motor
+    // 1 -> Servo
+    // 2 -> Structural
+    // 3 -> Electrical
+    // 4 -> Sensor
+    // 5 -> 3D Printed
+    // 6 -> Machined
+    // 7 -> Other
+    // 8 -> Wheel
+
+    // *** MORE CAN BE ADDED ON LATER, JUST ADD TO THE INDEX, DO NOT REARRANGE *** //
+
+    const [partType, setPartType] = React.useState(0);
+
+    const renderStatContent = () => {
+        switch(partType) {
+            case 0:
+                return <MotorList part={currentItem} />;
+            case 1:
+                return <ServoList part={currentItem} />;
+            case 2:
+                return <StructuralList part={currentItem} />;
+            case 3:
+                return <ElectricalList part={currentItem} />;
+            case 4:
+                return <SensorList part={currentItem} />;
+            case 5:
+                return <PrintedList part={currentItem} />;
+            case 6:
+                return <MachinedList part={currentItem} />;
+            case 7:
+                return null;
+            case 8:
+                return null;
+            default:
+                return <MotorList part={currentItem} />;
+        }
+    }
 
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return 'black';
@@ -96,7 +139,32 @@ function PartsPageDesktop() {
         return (yiq >= 128) ? 'black' : 'white';
     };
 
+    // Part type indexes:
+    // 0 -> Motor
+    // 1 -> Servo
+    // 2 -> Structural
+    // 3 -> Electrical
+    // 4 -> Sensor
+    // 5 -> 3D Printed
+    // 6 -> Machined
+    // 7 -> Other
+    // 8 -> Wheel
+
     const onRowClick = (item) => {
+        const partTypeMap = {
+            motor: 0,
+            servo: 1,
+            structural: 2,
+            electrical: 3,
+            sensor: 4,
+            "3d-printed": 5,
+            machined: 6,
+            other: 7,
+            wheel: 8
+        };
+
+        setPartType(partTypeMap[item.stats.type]);
+
         setCurrentItem(item);
         setIsPartOverlayOpen(true);
         setCurrentQuant(item?.quantity);
@@ -336,11 +404,25 @@ function PartsPageDesktop() {
                         <div className='thirdcontainer'>
                             <div className='d-partoverlay-infodiv1'>
                                 <p>Tags:</p>
-                                <ul>
-                                    {currentItem?.tags?.map(tag => (
-                                        <li key={tag}>{tag}</li>
-                                    ))}
-                                </ul>
+                                <div style={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(4, 1fr)', 
+                                    gap: '10px',
+                                    listStyle: 'none',
+                                    marginTop: '10px'
+                                }}>
+                                    {currentItem?.tags?.map(tagName => {
+                                        const tagData = tags.find(t => t.name === tagName);
+                                        const bgColor = tagData ? tagData.color : '#ccc'; 
+                                        const textColor = getContrastYIQ(bgColor);
+
+                                        return (
+                                            <div key={tagName} style={{backgroundColor: bgColor, color: textColor, padding: '6px 10px', borderRadius: '12px', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '30px'}}>
+                                                {tagName}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
                     </div>
