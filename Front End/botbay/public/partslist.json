@@ -158,7 +158,9 @@
             "brim_type":"auto",
             "brim_width":null,
             "brim_object_gap":null,
-            "filament_amount":3.32
+            "filament_amount":3.32,
+            "cost":0.08,
+            "time":[0, 17]
         },
         "quantity": 4,
         "needed": 0,

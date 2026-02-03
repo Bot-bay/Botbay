@@ -18,6 +18,16 @@ function PrintedList({ part }) {
             value: stats.filament_amount != null ? `${stats.filament_amount} g` : null
         },
         {
+            label: "Cost",
+            value: stats.cost != null ? `$${stats.cost.toFixed(2)}` : null
+        },
+        {
+            label: "Print Time",
+            value: Array.isArray(stats.time) && stats.time.length === 2 
+                ? `${stats.time[0]}h ${stats.time[1]}m` 
+                : null
+        },
+        {
             label: "Infill",
             value: stats.infill != null ? `${stats.infill}% (${stats.infill_pattern})` : null
         },
