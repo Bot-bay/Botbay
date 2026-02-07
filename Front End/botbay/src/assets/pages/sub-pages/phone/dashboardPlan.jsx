@@ -1,9 +1,7 @@
-import React from 'react';
+import React from "react";
 
-function PlanPagePhone(){
-    return (
-        <></>
-    )
+function PlanPagePhone() {
+    return <></>;
 }
 
 export default PlanPagePhone;

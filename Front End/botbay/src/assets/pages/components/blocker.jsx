@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-function Blocker({ style = {} }) { 
+function Blocker({ style = {} }) {
     return ReactDOM.createPortal(
-        <div 
+        <div
             style={{
                 background: "rgba(10, 10, 10, 0.35)",
                 width: "100vw",
@@ -11,11 +11,11 @@ function Blocker({ style = {} }) {
                 position: "fixed",
                 top: 0,
                 left: 0,
-                zIndex: 10000, 
-                ...style 
+                zIndex: 10000,
+                ...style,
             }}
         />,
-        document.body
+        document.body,
     );
 }
 

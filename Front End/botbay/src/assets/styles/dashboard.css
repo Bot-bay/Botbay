@@ -1,11 +1,11 @@
-.dashboardscreencontainer{
+.dashboardscreencontainer {
     display: flex;
     min-height: 100vh;
     background-color: #000017;
     width: 100%;
 }
 
-.sidebar{
+.sidebar {
     background-color: #1d1e2c;
     display: flex;
     justify-content: flex-start;
@@ -17,7 +17,7 @@
     margin-right: 15px;
 }
 
-.dashboardcontainer{
+.dashboardcontainer {
     display: flex;
     flex-direction: column;
     width: 90%;
@@ -25,11 +25,11 @@
     box-sizing: border-box;
 }
 
-.d-titlecontainer{
+.d-titlecontainer {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex-direction: row; 
+    flex-direction: row;
     box-sizing: border-box;
     width: 100%;
     height: 10%;
@@ -40,19 +40,19 @@
     gap: 15px;
 }
 
-.d-titlecontainer p{
-    margin:0px;
+.d-titlecontainer p {
+    margin: 0px;
     color: white;
     user-select: none;
 }
 
-.d-titlecontainer-small{
+.d-titlecontainer-small {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row; 
+    flex-direction: row;
     box-sizing: border-box;
-    width: 100%;
+    width: 95%;
     height: 4%;
     margin: 0px;
     padding: 10px;
@@ -61,13 +61,13 @@
     gap: 15px;
 }
 
-.d-titlecontainer-small p{
-    margin:0px;
+.d-titlecontainer-small p {
+    margin: 0px;
     color: white;
     user-select: none;
 }
 
-.d-titlecontainer-small button{
+.d-titlecontainer-small button {
     text-align: center;
     display: flex;
     justify-content: center;
@@ -76,7 +76,7 @@
     background-color: #281a68;
 }
 
-.d-titlecontainer-small-downloadwrapper{
+.d-titlecontainer-small-downloadwrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,21 +84,21 @@
     width: 38%;
 }
 
-.d-partslistwrapper{
+.d-partslistwrapper {
     border-radius: 10px;
     width: 95%;
     overflow: hidden;
 }
 
-.d-partslistwrapper > :nth-child(odd){
-    background-color: #1D1E2C;
+.d-partslistwrapper > :nth-child(odd) {
+    background-color: #1d1e2c;
 }
 
-.d-partslistwrapper > :nth-child(even){
+.d-partslistwrapper > :nth-child(even) {
     background-color: #161616;
 }
 
-.d-partitem{
+.d-partitem {
     color: white;
     font-size: 1.2rem;
     display: flex;
@@ -110,25 +110,26 @@
     transition: background-color 200ms ease;
 }
 
-.d-partitem:hover{
+.d-partitem:hover {
     background-color: #44327a;
     cursor: pointer;
     transition: background-color 200ms ease;
 }
 
-.d-partitem-iconbutton1, .d-partitem-iconbutton2{
+.d-partitem-iconbutton1,
+.d-partitem-iconbutton2 {
     cursor: pointer;
     height: 100%;
     width: 80%;
     transition: color 200ms ease;
 }
 
-.d-partitem-iconbutton1:hover{
+.d-partitem-iconbutton1:hover {
     color: #92b2e5;
     transition: color 200ms ease;
 }
 
-.d-partitem-iconbutton2:hover{
+.d-partitem-iconbutton2:hover {
     color: #d94a4a !important;
     transition: color 200ms ease;
 }
@@ -148,7 +149,7 @@
     align-items: center;
 }
 
-.d-partoverlay-exitbutton:hover{
+.d-partoverlay-exitbutton:hover {
     background-color: #9c2121 !important;
     transition: background-color 200ms ease;
     border: none;
@@ -183,11 +184,11 @@
     border-radius: 10px;
 }
 
-.thirdcontainer img{
+.thirdcontainer img {
     max-width: 90%;
 }
 
-.d-partoverlay-infodiv1{
+.d-partoverlay-infodiv1 {
     background-color: #1d1e2c;
     width: 80%;
     border-radius: 10px;
@@ -196,27 +197,27 @@
     margin-top: 20px;
 }
 
-.d-partoverlay-infodiv1 p{
+.d-partoverlay-infodiv1 p {
     font-weight: 600;
     font-size: 1.4rem;
     color: white;
 }
 
-.d-partoverlay-infodiv1 ul li{
+.d-partoverlay-infodiv1 ul li {
     font-size: 1rem;
     color: white;
 }
 
-.d-partoverlay-infodiv1 ul li a{
+.d-partoverlay-infodiv1 ul li a {
     color: white;
 }
 
-.d-partoverlay-infodiv1 ul li a:hover{
+.d-partoverlay-infodiv1 ul li a:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 
-.d-partoverlay-editquant{
+.d-partoverlay-editquant {
     gap: 10px;
     display: flex;
     flex-direction: row;
@@ -229,11 +230,11 @@
     border-radius: 10px;
 }
 
-.d-partoverlay-editquant p{
+.d-partoverlay-editquant p {
     font-size: 1.2rem;
 }
 
-.d-partoverlay-editquant button{
+.d-partoverlay-editquant button {
     font-size: 1.5rem;
     width: 2rem;
     height: 2rem;
@@ -248,7 +249,7 @@
     transition: background-color 200ms ease;
 }
 
-.d-partoverlay-editquant button:hover{
+.d-partoverlay-editquant button:hover {
     background-color: #44327a;
     transition: background-color 200ms ease;
 }
@@ -256,7 +257,7 @@
 .d-createtagoverlay {
     max-height: 80%;
     display: flex;
-    justify-content: flex-start; 
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     z-index: 10001;
@@ -264,13 +265,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #1D1E2C;
+    background-color: #1d1e2c;
     width: 20%;
     border-radius: 10px;
     padding: 20px;
     gap: 20px;
     overflow-y: auto;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 .d-createtagoverlay::-webkit-scrollbar {
@@ -278,12 +279,12 @@
 }
 
 .d-createtagoverlay::-webkit-scrollbar-track {
-    background: #2a2b3d; 
+    background: #2a2b3d;
     border-radius: 10px;
 }
 
 .d-createtagoverlay::-webkit-scrollbar-thumb {
-    background: #555; 
+    background: #555;
     border-radius: 10px;
 }
 
@@ -291,19 +292,19 @@
     background: #888;
 }
 
-.d-createtagoverlay p{
+.d-createtagoverlay p {
     color: white;
     font-size: 1.5rem;
     font-weight: 600;
 }
 
-.d-createtagoverlay input{
+.d-createtagoverlay input {
     font-size: 1.2rem;
     border-radius: 5px;
     border: none;
 }
 
-.d-createtagoverlay button{
+.d-createtagoverlay button {
     font-size: 1.2rem;
     padding: 10px;
     border-radius: 10px;
@@ -312,8 +313,15 @@
     color: white;
 }
 
-.d-partslistheader, 
-.d-partslistwrapper, 
+.d-additemoverlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+}
+
+.d-partslistheader,
+.d-partslistwrapper,
 .d-partslistcontainer {
     overflow: visible !important;
 }
@@ -348,12 +356,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 200px;
-    max-height: 250px; 
-    overflow-y: auto;   
-    overflow-x: hidden; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
 .d-tag-label {
@@ -365,18 +373,18 @@
     width: 100%;
     font-weight: 600;
     box-sizing: border-box;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 1rem;
     font-weight: bold;
     white-space: nowrap;
     flex-shrink: 0;
-    text-transform: capitalize; 
+    text-transform: capitalize;
 }
 
-.d-add-button{
+.d-add-button {
     background-color: #281a68;
-    font-size: 1rem !important; 
-    font-weight: 600 !important; 
+    font-size: 1rem !important;
+    font-weight: 600 !important;
 }
 
 .d-tag-checkbox {
@@ -396,10 +404,10 @@
     border-radius: 10px;
 }
 
-.d-partslistheader{
+.d-partslistheader {
     box-sizing: border-box;
     padding: 10px;
-    background-color: #1D1E2C;
+    background-color: #1d1e2c;
     width: 100%;
     display: flex;
     align-items: center;
@@ -408,7 +416,7 @@
     border-bottom: 1px solid white;
 }
 
-.d-partslistheader div{
+.d-partslistheader div {
     display: flex;
     text-align: center;
     justify-content: flex-start;
@@ -419,18 +427,18 @@
     user-select: none;
 }
 
-.d-partslistheader div span:hover{
+.d-partslistheader div span:hover {
     cursor: pointer;
 }
 
-.d-partslistcontainer{
+.d-partslistcontainer {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.sidebarlogo{
+.sidebarlogo {
     box-sizing: border-box;
     padding: 0.625rem;
     height: auto;
@@ -438,16 +446,16 @@
     max-width: 50%;
 }
 
-.sidebaritemcontainer{
+.sidebaritemcontainer {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top:30px;
+    margin-top: 30px;
     width: 100%;
 }
 
-.sidebaritem{
+.sidebaritem {
     width: 80%;
     border-radius: 10px;
     display: flex;
@@ -461,7 +469,7 @@
     margin-bottom: 10px;
 }
 
-.sidebaritem p{
+.sidebaritem p {
     display: flex;
     text-align: center;
     align-items: center;
@@ -476,18 +484,18 @@
     user-select: none;
 }
 
-.sidebaritem:hover{
+.sidebaritem:hover {
     cursor: pointer;
     background-color: #4e4e5a;
     transition: background-color 200ms ease;
 }
 
-.sidebaritemhighlighted p{
+.sidebaritemhighlighted p {
     transition: color 200ms ease;
     color: #5f4d8d;
 }
 
-.d-gridcontainer-3c2r{
+.d-gridcontainer-3c2r {
     gap: 20px;
     display: grid;
     width: 100%;
@@ -496,7 +504,7 @@
     grid-template-rows: repeat(2, 1fr);
 }
 
-.d-griditem-reg{
+.d-griditem-reg {
     overflow: auto;
     scrollbar-color: #888 #f1f1f1;
     scrollbar-width: thin;
@@ -511,7 +519,7 @@
     box-shadow: rgba(99, 99, 99, 0.2) 0px 4px 16px 0px;
 }
 
-.d-griditem-2r{
+.d-griditem-2r {
     overflow: auto;
     scrollbar-color: #888 #f1f1f1;
     scrollbar-width: thin;
@@ -533,7 +541,7 @@
     width: 90%;
 }
 
-.d-griditem-2r > #d-griditem-membertable tbody tr td{
+.d-griditem-2r > #d-griditem-membertable tbody tr td {
     border-top: 1px solid rgb(255, 255, 255);
     border-bottom: 1px solid rgb(255, 255, 255);
     text-align: center;
@@ -542,20 +550,23 @@
     font-size: 1rem;
 }
 
-.d-griditem-2r > #d-griditem-membertable tbody tr th{
+.d-griditem-2r > #d-griditem-membertable tbody tr th {
     color: white;
     font-family: "Interbold";
     font-size: 1.2rem;
 }
 
-.d-griditem-2r > #d-griditem-membertable tbody tr td:hover{
+.d-griditem-2r > #d-griditem-membertable tbody tr td:hover {
     text-decoration: line-through;
     cursor: pointer;
 }
 
-.d-griditem-2r > #d-griditem-membertable tbody tr:nth-child(even) {background-color: #161616;}
+.d-griditem-2r > #d-griditem-membertable tbody tr:nth-child(even) {
+    background-color: #161616;
+}
 
-.d-griditem-reg  > #d-griditem-title, .d-griditem-2r > #d-griditem-title {
+.d-griditem-reg > #d-griditem-title,
+.d-griditem-2r > #d-griditem-title {
     user-select: none;
     margin: 0px;
     color: white;
@@ -564,7 +575,7 @@
     text-align: center;
 }
 
-.d-griditem-membertable-bottombuttoncontainer{
+.d-griditem-membertable-bottombuttoncontainer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -572,45 +583,69 @@
     width: 90%;
 }
 
-.d-griditem-membertable-bottombuttoncontainer > #d-griditem-membertable-bottombuttoncontainer-1{
+.d-griditem-membertable-bottombuttoncontainer
+    > #d-griditem-membertable-bottombuttoncontainer-1 {
     width: 80%;
     box-sizing: border-box;
     margin: 10px;
 }
 
-.d-griditem-membertable-bottombuttoncontainer > #d-griditem-membertable-bottombuttoncontainer-2{
+.d-griditem-membertable-bottombuttoncontainer
+    > #d-griditem-membertable-bottombuttoncontainer-2 {
     margin: 10px;
     width: 20%;
     box-sizing: border-box;
 }
 
 .scrollable::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 6px;
+    height: 6px;
 }
 
 .scrollable::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 .scrollable::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 3px;
-  border: 1px solid #f1f1f1;
+    background-color: #888;
+    border-radius: 3px;
+    border: 1px solid #f1f1f1;
 }
 
 .scrollable::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
+    background-color: #555;
 }
 
-.d-homepagecontainer{
+.d-homepagecontainer {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
     box-sizing: border-box;
     padding: 15px;
     min-height: 100vh;
     max-height: 100vh;
+    overflow-y: auto;
 }
 
-.d-searchbar{
+/* WebKit browsers (Chrome, Edge, Safari) */
+.d-homepagecontainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.d-homepagecontainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.d-homepagecontainer::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+    border: 1px solid #f1f1f1;
+}
+
+.d-homepagecontainer::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.d-searchbar {
     width: 100%;
     background-color: #1d1e2c;
     border-radius: 20px;
@@ -619,7 +654,9 @@
     font-size: 1.5rem;
     padding: 10px;
     box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .d-searchbar:focus {

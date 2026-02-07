@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function StructuralList({ part }) {
     const { stats } = part || {};
@@ -7,14 +7,14 @@ function StructuralList({ part }) {
     const rows = [
         {
             label: "Size",
-            value: stats.size?.map(v => `${v}mm`).join(', ') ?? ''
-        }
+            value: stats.size?.map((v) => `${v}mm`).join(", ") ?? "",
+        },
     ];
 
     return (
         <ul>
             {rows
-                .filter(row => row.value != null && row.value !== "")
+                .filter((row) => row.value != null && row.value !== "")
                 .map(({ label, value }) => (
                     <li key={label}>
                         {label}: {value}

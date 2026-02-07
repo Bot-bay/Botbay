@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function ElectricalList({ part }) {
     const { stats } = part || {};
@@ -7,51 +7,60 @@ function ElectricalList({ part }) {
     const rows = [
         {
             label: "Connectors",
-            value: stats.connector_types?.join(', ') ?? null
+            value: stats.connector_types?.join(", ") ?? null,
         },
         {
             label: "Voltage",
-            value: stats.voltage != null ? `${stats.voltage} V` : null
+            value: stats.voltage != null ? `${stats.voltage} V` : null,
         },
         {
             label: "Capacity",
-            value: stats.capacity != null ? `${stats.capacity} Ah` : null
+            value: stats.capacity != null ? `${stats.capacity} Ah` : null,
         },
         {
             label: "Wire Gauge",
-            value: stats.wire_gauge != null ? `${stats.wire_gauge} AWG` : null
+            value: stats.wire_gauge != null ? `${stats.wire_gauge} AWG` : null,
         },
         {
             label: "Wire Length",
-            value: stats.wire_length != null ? `${stats.wire_length} mm` : null
+            value: stats.wire_length != null ? `${stats.wire_length} mm` : null,
         },
         {
             label: "Max Discharge",
-            value: stats.max_discharge != null ? `${stats.max_discharge} A` : null
+            value:
+                stats.max_discharge != null ? `${stats.max_discharge} A` : null,
         },
         {
             label: "Charge Rate",
-            value: stats.charge_rates != null ? `${stats.charge_rates} C` : null
+            value:
+                stats.charge_rates != null ? `${stats.charge_rates} C` : null,
         },
         {
             label: "Weight",
-            value: stats.weight != null ? `${stats.weight} g` : null
+            value: stats.weight != null ? `${stats.weight} g` : null,
         },
         {
             label: "Replaceable Fuse",
-            value: stats.replaceable_fuse != null ? (stats.replaceable_fuse ? "Yes" : "No") : null
+            value:
+                stats.replaceable_fuse != null
+                    ? stats.replaceable_fuse
+                        ? "Yes"
+                        : "No"
+                    : null,
         },
         {
             label: "Size",
             // Handles both string sizes and array-based dimensions if applicable
-            value: Array.isArray(stats.size) ? stats.size.join(' x ') : stats.size
-        }
+            value: Array.isArray(stats.size)
+                ? stats.size.join(" x ")
+                : stats.size,
+        },
     ];
 
     return (
         <ul>
             {rows
-                .filter(row => row.value != null && row.value !== "")
+                .filter((row) => row.value != null && row.value !== "")
                 .map(({ label, value }) => (
                     <li key={label}>
                         <strong>{label}:</strong> {value}

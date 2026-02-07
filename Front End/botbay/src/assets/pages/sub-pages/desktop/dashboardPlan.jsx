@@ -1,9 +1,7 @@
-import React from 'react';
+import React from "react";
 
-function PlanPageDesktop(){
-    return (
-        <></>
-    )
+function PlanPageDesktop() {
+    return <></>;
 }
 
 export default PlanPageDesktop;

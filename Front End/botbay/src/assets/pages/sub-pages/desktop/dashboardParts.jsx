@@ -1,20 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Select from 'react-select';
+import React, { useState, useEffect, useRef } from "react";
+import Select from "react-select";
 import { MdDownload, MdUpload } from "react-icons/md";
-import { RiExpandUpDownFill, RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
+import {
+    RiExpandUpDownFill,
+    RiArrowDownSFill,
+    RiArrowUpSFill,
+} from "react-icons/ri";
 import { FaTags } from "react-icons/fa";
 import { IoTrashSharp } from "react-icons/io5";
-import PartItem from '../../components/partItem';
-import MotorList from '../../components/partStatComponents/Desktop/motor';
-import ServoList from '../../components/partStatComponents/Desktop/servo';
-import StructuralList from '../../components/partStatComponents/Desktop/structural';
-import ElectricalList from '../../components/partStatComponents/Desktop/electrical';
-import SensorList from '../../components/partStatComponents/Desktop/sensor';
-import PrintedList from '../../components/partStatComponents/Desktop/3dprint';
-import MachinedList from '../../components/partStatComponents/Desktop/machined';
-import Blocker from '../../components/blocker';
-import Sketch from '@uiw/react-color-sketch';
-import WarningPopup from '../../components/warningpopup';
+import PartItem from "../../components/partItem";
+import MotorList from "../../components/partStatComponents/Desktop/motor";
+import ServoList from "../../components/partStatComponents/Desktop/servo";
+import StructuralList from "../../components/partStatComponents/Desktop/structural";
+import ElectricalList from "../../components/partStatComponents/Desktop/electrical";
+import SensorList from "../../components/partStatComponents/Desktop/sensor";
+import PrintedList from "../../components/partStatComponents/Desktop/3dprint";
+import MachinedList from "../../components/partStatComponents/Desktop/machined";
+import Blocker from "../../components/blocker";
+import Sketch from "@uiw/react-color-sketch";
+import WarningPopup from "../../components/warningpopup";
 
 function PartsPageDesktop() {
     const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
@@ -29,7 +33,10 @@ function PartsPageDesktop() {
 
     const [query, setQuery] = useState("");
     const [listResults, setListResults] = useState([]);
-    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+    const [sortConfig, setSortConfig] = useState({
+        key: null,
+        direction: "asc",
+    });
 
     const [tags, setTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
@@ -64,7 +71,7 @@ function PartsPageDesktop() {
     // Add new tag
     const addTag = (tagName, color) => {
         const newTag = { name: tagName, color, deletable: true };
-        setTags(prevTags => {
+        setTags((prevTags) => {
             const updatedTags = [...prevTags, newTag];
             localStorage.setItem("taglist", JSON.stringify(updatedTags));
             return updatedTags;
@@ -74,57 +81,60 @@ function PartsPageDesktop() {
 
     const deleteTag = (tagName) => {
         // 1. Get the freshest data directly from Storage to avoid state-sync issues
-        const rawParts = JSON.parse(localStorage.getItem('partData') || '[]');
-        const rawTags = JSON.parse(localStorage.getItem('taglist') || '[]');
+        const rawParts = JSON.parse(localStorage.getItem("partData") || "[]");
+        const rawTags = JSON.parse(localStorage.getItem("taglist") || "[]");
 
         // 2. Filter out the tag from the Master Tag List
-        const updatedTagList = rawTags.filter(tag => tag.name !== tagName);
-        
+        const updatedTagList = rawTags.filter((tag) => tag.name !== tagName);
+
         // 3. Scrub the tag from every single part's tag array
-        const updatedParts = rawParts.map(part => {
+        const updatedParts = rawParts.map((part) => {
             if (part.tags && Array.isArray(part.tags)) {
                 return {
                     ...part,
-                    tags: part.tags.filter(t => t !== tagName)
+                    tags: part.tags.filter((t) => t !== tagName),
                 };
             }
             return part;
         });
 
         // 4. Update LocalStorage (The Source of Truth)
-        localStorage.setItem('taglist', JSON.stringify(updatedTagList));
-        localStorage.setItem('partData', JSON.stringify(updatedParts));
+        localStorage.setItem("taglist", JSON.stringify(updatedTagList));
+        localStorage.setItem("partData", JSON.stringify(updatedParts));
 
         // 5. Update React State (The UI)
         setTags(updatedTagList);
         setListResults(updatedParts);
-        
+
         // 6. Remove from active filters if it was selected
-        setSelectedTags(prev => prev.filter(t => t !== tagName));
+        setSelectedTags((prev) => prev.filter((t) => t !== tagName));
 
         // 7. UI Cleanup
         setDeletingTagName(null);
     };
 
     const [hex, setHex] = useState("#fff");
-    
 
     // Close dropdown if clicked outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
                 setIsDropdownOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const toggleTag = (tagName) => {
-        setSelectedTags(prev =>
+        setSelectedTags((prev) =>
             prev.includes(tagName)
-                ? prev.filter(t => t !== tagName)
-                : [...prev, tagName]
+                ? prev.filter((t) => t !== tagName)
+                : [...prev, tagName],
         );
     };
 
@@ -144,7 +154,7 @@ function PartsPageDesktop() {
     const [partType, setPartType] = React.useState(0);
 
     const renderStatContent = () => {
-        switch(partType) {
+        switch (partType) {
             case 0:
                 return <MotorList part={currentItem} />;
             case 1:
@@ -166,26 +176,26 @@ function PartsPageDesktop() {
             default:
                 return <MotorList part={currentItem} />;
         }
-    }
+    };
 
-    function handleTagManageOpen(){
+    function handleTagManageOpen() {
         setIsManageTagPopupOpen(true);
         setIsBlockerOpen(true);
     }
 
-    function handleTagManageClose(){
+    function handleTagManageClose() {
         setIsManageTagPopupOpen(false);
         setIsBlockerOpen(false);
     }
 
     const getContrastYIQ = (hexcolor) => {
-        if (!hexcolor) return 'black';
+        if (!hexcolor) return "black";
         hexcolor = hexcolor.replace("#", "");
         const r = parseInt(hexcolor.substr(0, 2), 16);
         const g = parseInt(hexcolor.substr(2, 2), 16);
         const b = parseInt(hexcolor.substr(4, 2), 16);
-        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        return (yiq >= 128) ? 'black' : 'white';
+        const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+        return yiq >= 128 ? "black" : "white";
     };
 
     // Part type indexes:
@@ -209,7 +219,7 @@ function PartsPageDesktop() {
             "3d-printed": 5,
             machined: 6,
             other: 7,
-            wheel: 8
+            wheel: 8,
         };
 
         setPartType(partTypeMap[item.stats.type]);
@@ -231,28 +241,34 @@ function PartsPageDesktop() {
     const onTagExitClick = () => {
         setIsBlockerOpen(false);
         setIsCreateTagOpen(false);
-    }
+    };
 
     const onTagOpenClick = () => {
         setIsBlockerOpen(true);
         setIsCreateTagOpen(true);
-    }
+    };
 
     const handleNumChangeClick = (target, operation) => {
         if (target === 0) {
-            const newQuant = operation === 0 ? currentQuant + 1 : Math.max(currentQuant - 1, 0);
+            const newQuant =
+                operation === 0
+                    ? currentQuant + 1
+                    : Math.max(currentQuant - 1, 0);
             setCurrentQuant(newQuant);
             updatePartData(currentItem.id, newQuant, currentNeeded);
         } else {
-            const newNeeded = operation === 0 ? currentNeeded + 1 : Math.max(currentNeeded - 1, 0);
+            const newNeeded =
+                operation === 0
+                    ? currentNeeded + 1
+                    : Math.max(currentNeeded - 1, 0);
             setCurrentNeeded(newNeeded);
             updatePartData(currentItem.id, currentQuant, newNeeded);
         }
     };
 
     const updatePartData = (id, newQuant, newNeeded) => {
-        setListResults(prevList => {
-            const updatedList = prevList.map(part => {
+        setListResults((prevList) => {
+            const updatedList = prevList.map((part) => {
                 if (part.id === id) {
                     return { ...part, quantity: newQuant, needed: newNeeded };
                 }
@@ -265,12 +281,17 @@ function PartsPageDesktop() {
 
     const getSortIcon = (columnKey) => {
         if (sortConfig.key !== columnKey) return <RiExpandUpDownFill />;
-        return sortConfig.direction === 'asc' ? <RiArrowUpSFill /> : <RiArrowDownSFill />;
+        return sortConfig.direction === "asc" ? (
+            <RiArrowUpSFill />
+        ) : (
+            <RiArrowDownSFill />
+        );
     };
 
     const reloadPartsList = (sortKey) => {
-        let direction = 'asc';
-        if (sortConfig.key === sortKey && sortConfig.direction === 'asc') direction = 'desc';
+        let direction = "asc";
+        if (sortConfig.key === sortKey && sortConfig.direction === "asc")
+            direction = "desc";
 
         const sorted = [...listResults].sort((a, b) => {
             let aVal = a[sortKey] ?? "";
@@ -279,8 +300,8 @@ function PartsPageDesktop() {
             if (typeof aVal === "string") aVal = aVal.toLowerCase();
             if (typeof bVal === "string") bVal = bVal.toLowerCase();
 
-            if (aVal < bVal) return direction === 'asc' ? -1 : 1;
-            if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+            if (aVal < bVal) return direction === "asc" ? -1 : 1;
+            if (aVal > bVal) return direction === "asc" ? 1 : -1;
             return 0;
         });
 
@@ -288,36 +309,41 @@ function PartsPageDesktop() {
         setSortConfig({ key: sortKey, direction });
     };
 
-    const filteredResults = listResults.filter(item => {
+    const filteredResults = listResults.filter((item) => {
         // 1. Tag Filtering (Case-Insensitive)
-        const matchesTags = selectedTags.length === 0 || 
-            (item.tags && item.tags.some(partTag => 
-                selectedTags.some(selected => selected.toLowerCase() === partTag.toLowerCase())
-            ));
+        const matchesTags =
+            selectedTags.length === 0 ||
+            (item.tags &&
+                item.tags.some((partTag) =>
+                    selectedTags.some(
+                        (selected) =>
+                            selected.toLowerCase() === partTag.toLowerCase(),
+                    ),
+                ));
 
         if (!matchesTags) return false;
 
         // 2. Search Query Filtering
         const lowerQuery = query.toLowerCase();
-        const matchesQuery = (
+        const matchesQuery =
             item.name.toLowerCase().includes(lowerQuery) ||
-            (item.manufacturerId && item.manufacturerId.toLowerCase().includes(lowerQuery))
-        );
+            (item.manufacturerId &&
+                item.manufacturerId.toLowerCase().includes(lowerQuery));
 
         return matchesQuery;
     });
 
     return (
         <>
-            <div className='d-homepagecontainer'>
-                <div className='d-titlecontainer'>
+            <div className="d-homepagecontainer">
+                <div className="d-titlecontainer">
                     <p>Parts</p>
-                    <div className='d-inputwrapper'>
+                    <div className="d-inputwrapper">
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className='d-searchbar'
-                            placeholder='Search...'
+                            className="d-searchbar"
+                            placeholder="Search..."
                         />
                     </div>
                 </div>
@@ -325,80 +351,163 @@ function PartsPageDesktop() {
                 <div className="d-partslistcontainer">
                     <div className="d-titlecontainer-small">
                         <button>+ Add Item</button>
-                        <div className='d-titlecontainer-small-downloadwrapper'>
-                            <button onClick={handleTagManageOpen}><FaTags /><span style={{ marginLeft: 4 }}>Manage Tags</span></button>
-                            <button><MdDownload /><span style={{ marginLeft: 4 }}>JSON</span></button>
-                            <button><MdUpload /><span style={{ marginLeft: 4 }}>Import</span></button>
+                        <div className="d-titlecontainer-small-downloadwrapper">
+                            <button onClick={handleTagManageOpen}>
+                                <FaTags />
+                                <span style={{ marginLeft: 4 }}>
+                                    Manage Tags
+                                </span>
+                            </button>
+                            <button>
+                                <MdDownload />
+                                <span style={{ marginLeft: 4 }}>JSON</span>
+                            </button>
+                            <button>
+                                <MdUpload />
+                                <span style={{ marginLeft: 4 }}>Import</span>
+                            </button>
                         </div>
                     </div>
 
                     <div className="d-partslistwrapper" id="partslistwrapper">
                         <div className="d-partslistheader">
-                            <div style={{ width: '15%' }}>
-                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('manufacturerId')}>
-                                    Id {getSortIcon('manufacturerId')}
+                            <div style={{ width: "15%" }}>
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        width: "100%",
+                                        textAlign: "center",
+                                    }}
+                                    onClick={() =>
+                                        reloadPartsList("manufacturerId")
+                                    }
+                                >
+                                    Id {getSortIcon("manufacturerId")}
                                 </span>
                             </div>
-                            <div style={{ width: '50%' }}>
-                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('name')}>
-                                    Name {getSortIcon('name')}
+                            <div style={{ width: "50%" }}>
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        width: "100%",
+                                        textAlign: "center",
+                                    }}
+                                    onClick={() => reloadPartsList("name")}
+                                >
+                                    Name {getSortIcon("name")}
                                 </span>
                             </div>
-                            <div style={{ width: '15%' }}>
-                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('quantity')}>
-                                    Quantity {getSortIcon('quantity')}
+                            <div style={{ width: "15%" }}>
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        width: "100%",
+                                        textAlign: "center",
+                                    }}
+                                    onClick={() => reloadPartsList("quantity")}
+                                >
+                                    Quantity {getSortIcon("quantity")}
                                 </span>
                             </div>
-                            <div style={{ width: '15%' }}>
-                                <span style={{ cursor: 'pointer', width: "100%", textAlign: "center" }} onClick={() => reloadPartsList('needed')}>
-                                    Needed {getSortIcon('needed')}
+                            <div style={{ width: "15%" }}>
+                                <span
+                                    style={{
+                                        cursor: "pointer",
+                                        width: "100%",
+                                        textAlign: "center",
+                                    }}
+                                    onClick={() => reloadPartsList("needed")}
+                                >
+                                    Needed {getSortIcon("needed")}
                                 </span>
                             </div>
-                            <div style={{ width: '10%', display: 'flex', justifyContent: 'center' }}>
-                                <div className="custom-tag-dropdown" ref={dropdownRef}>
-                                    <button 
+                            <div
+                                style={{
+                                    width: "10%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <div
+                                    className="custom-tag-dropdown"
+                                    ref={dropdownRef}
+                                >
+                                    <button
                                         type="button"
                                         className="d-dropdown-btn"
-                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        onClick={() =>
+                                            setIsDropdownOpen(!isDropdownOpen)
+                                        }
                                     >
                                         <span>
-                                            {selectedTags.length > 0 
-                                                ? `${selectedTags.length} Selected` 
+                                            {selectedTags.length > 0
+                                                ? `${selectedTags.length} Selected`
                                                 : "Tags"}
                                         </span>
-                                        {isDropdownOpen ? <RiArrowUpSFill /> : <RiArrowDownSFill />}
+                                        {isDropdownOpen ? (
+                                            <RiArrowUpSFill />
+                                        ) : (
+                                            <RiArrowDownSFill />
+                                        )}
                                     </button>
 
                                     {isDropdownOpen && (
                                         <div className="d-dropdown-menu">
                                             {/* Filter tags to only show those present in partData */}
-                                            {tags.filter(tag => 
+                                            {tags
+                                                .filter((tag) =>
                                                     // Checks if ANY part has this tag, ignoring capital letters
-                                                    listResults.some(part => 
-                                                        part.tags && part.tags.some(t => t.toLowerCase() === tag.name.toLowerCase())
-                                                    )
-                                                ).map(tag => (
-                                                    <label 
-                                                        key={tag.name} 
+                                                    listResults.some(
+                                                        (part) =>
+                                                            part.tags &&
+                                                            part.tags.some(
+                                                                (t) =>
+                                                                    t.toLowerCase() ===
+                                                                    tag.name.toLowerCase(),
+                                                            ),
+                                                    ),
+                                                )
+                                                .map((tag) => (
+                                                    <label
+                                                        key={tag.name}
                                                         className="d-tag-label"
-                                                        style={{ 
-                                                            backgroundColor: tag.color, 
-                                                            color: getContrastYIQ(tag.color) 
+                                                        style={{
+                                                            backgroundColor:
+                                                                tag.color,
+                                                            color: getContrastYIQ(
+                                                                tag.color,
+                                                            ),
                                                         }}
                                                     >
-                                                        <input 
-                                                            type="checkbox" 
+                                                        <input
+                                                            type="checkbox"
                                                             className="d-tag-checkbox"
-                                                            checked={selectedTags.includes(tag.name)}
-                                                            onChange={() => toggleTag(tag.name)}
+                                                            checked={selectedTags.includes(
+                                                                tag.name,
+                                                            )}
+                                                            onChange={() =>
+                                                                toggleTag(
+                                                                    tag.name,
+                                                                )
+                                                            }
                                                         />
                                                         {tag.name}
                                                     </label>
-                                                ))
-                                            }
-                                            
-                                            <div className="d-add-button d-tag-label" onClick={onTagOpenClick}>
-                                                <span style={{ marginRight: '12px', fontSize: '1rem', lineHeight: 0 }}>+</span>
+                                                ))}
+
+                                            <div
+                                                className="d-add-button d-tag-label"
+                                                onClick={onTagOpenClick}
+                                            >
+                                                <span
+                                                    style={{
+                                                        marginRight: "12px",
+                                                        fontSize: "1rem",
+                                                        lineHeight: 0,
+                                                    }}
+                                                >
+                                                    +
+                                                </span>
                                                 Add Tag
                                             </div>
                                         </div>
@@ -408,78 +517,147 @@ function PartsPageDesktop() {
                         </div>
 
                         {filteredResults.map((item) => (
-                            <PartItem key={item.id} part={item} onRowClick={onRowClick} onDelete={() => setListResults(JSON.parse(localStorage.getItem("partData")) || [])} />
+                            <PartItem
+                                key={item.id}
+                                part={item}
+                                onRowClick={onRowClick}
+                                onDelete={() =>
+                                    setListResults(
+                                        JSON.parse(
+                                            localStorage.getItem("partData"),
+                                        ) || [],
+                                    )
+                                }
+                            />
                         ))}
                     </div>
                 </div>
             </div>
 
             {isPartOverlayOpen && currentItem && (
-                <div id="d-partoverlay" className='d-partoverlay'>
-                    <div className='leftcontainer'>
-                        <div className='thirdcontainer'>
-                            <div className='d-titlecontainer' style={{paddingLeft:"5%", fontSize:"2rem"}}>
+                <div id="d-partoverlay" className="d-partoverlay">
+                    <div className="leftcontainer">
+                        <div className="thirdcontainer">
+                            <div
+                                className="d-titlecontainer"
+                                style={{ paddingLeft: "5%", fontSize: "2rem" }}
+                            >
                                 <p>{currentItem?.name}</p>
                             </div>
-                            <img src={currentItem?.icon} alt={currentItem?.name} />
-                            <div className='d-partoverlay-infodiv1'>
+                            <img
+                                src={currentItem?.icon}
+                                alt={currentItem?.name}
+                            />
+                            <div className="d-partoverlay-infodiv1">
                                 <p>Links:</p>
                                 <ul>
                                     {currentItem?.links &&
                                         Object.entries(currentItem.links)
-                                        .filter(([name, url]) => url)
-                                        .map(([name, url]) => (
-                                            <li key={name}>
-                                                <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
-                                            </li>
-                                        ))
-                                    }
+                                            .filter(([name, url]) => url)
+                                            .map(([name, url]) => (
+                                                <li key={name}>
+                                                    <a
+                                                        href={url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        {name}
+                                                    </a>
+                                                </li>
+                                            ))}
                                 </ul>
                             </div>
                         </div>
 
-                        <div className='thirdcontainer'>
-                            <div className='d-partoverlay-infodiv1'>
+                        <div className="thirdcontainer">
+                            <div className="d-partoverlay-infodiv1">
                                 <p>Stats:</p>
                                 {renderStatContent()}
                             </div>
-                            <div className='d-partoverlay-infodiv1'>
-                                <div className='leftcontainer'>
-                                    <div className='halfcontainer'>
-                                        <div className='d-partoverlay-editquant'>
-                                            <button onClick={() => handleNumChangeClick(0, 1)}>-</button>
+                            <div className="d-partoverlay-infodiv1">
+                                <div className="leftcontainer">
+                                    <div className="halfcontainer">
+                                        <div className="d-partoverlay-editquant">
+                                            <button
+                                                onClick={() =>
+                                                    handleNumChangeClick(0, 1)
+                                                }
+                                            >
+                                                -
+                                            </button>
                                             <p>Quantity: {currentQuant}</p>
-                                            <button onClick={() => handleNumChangeClick(0, 0)}>+</button>
+                                            <button
+                                                onClick={() =>
+                                                    handleNumChangeClick(0, 0)
+                                                }
+                                            >
+                                                +
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className='halfcontainer'>
-                                        <div className='d-partoverlay-editquant'>
-                                            <button onClick={() => handleNumChangeClick(1, 1)}>-</button>
+                                    <div className="halfcontainer">
+                                        <div className="d-partoverlay-editquant">
+                                            <button
+                                                onClick={() =>
+                                                    handleNumChangeClick(1, 1)
+                                                }
+                                            >
+                                                -
+                                            </button>
                                             <p>Needed: {currentNeeded}</p>
-                                            <button onClick={() => handleNumChangeClick(1, 0)}>+</button>
+                                            <button
+                                                onClick={() =>
+                                                    handleNumChangeClick(1, 0)
+                                                }
+                                            >
+                                                +
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className='thirdcontainer'>
-                            <div className='d-partoverlay-infodiv1'>
+                        <div className="thirdcontainer">
+                            <div className="d-partoverlay-infodiv1">
                                 <p>Tags:</p>
-                                <div style={{ 
-                                    display: 'grid', 
-                                    gridTemplateColumns: 'repeat(4, 1fr)', 
-                                    gap: '10px',
-                                    listStyle: 'none',
-                                    marginTop: '10px'
-                                }}>
-                                    {currentItem?.tags?.map(tagName => {
-                                        const tagData = tags.find(t => t.name === tagName);
-                                        const bgColor = tagData ? tagData.color : '#ccc'; 
-                                        const textColor = getContrastYIQ(bgColor);
+                                <div
+                                    style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(4, 1fr)",
+                                        gap: "10px",
+                                        listStyle: "none",
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    {currentItem?.tags?.map((tagName) => {
+                                        const tagData = tags.find(
+                                            (t) => t.name === tagName,
+                                        );
+                                        const bgColor = tagData
+                                            ? tagData.color
+                                            : "#ccc";
+                                        const textColor =
+                                            getContrastYIQ(bgColor);
 
                                         return (
-                                            <div key={tagName} style={{textTransform: "capitalize", backgroundColor: bgColor, color: textColor, padding: '6px 10px', borderRadius: '12px', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '30px'}}>
+                                            <div
+                                                key={tagName}
+                                                style={{
+                                                    textTransform: "capitalize",
+                                                    backgroundColor: bgColor,
+                                                    color: textColor,
+                                                    padding: "6px 10px",
+                                                    borderRadius: "12px",
+                                                    textAlign: "center",
+                                                    fontSize: "0.8rem",
+                                                    fontWeight: "bold",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    minHeight: "30px",
+                                                }}
+                                            >
                                                 {tagName}
                                             </div>
                                         );
@@ -488,15 +666,35 @@ function PartsPageDesktop() {
                             </div>
                         </div>
                     </div>
-                    <button className='d-partoverlay-exitbutton' onClick={onExitClick}>X</button>
+                    <button
+                        className="d-partoverlay-exitbutton"
+                        onClick={onExitClick}
+                    >
+                        X
+                    </button>
                 </div>
             )}
-            {isBlockerOpen && (<Blocker id="blocker1"></Blocker>)}
-            {isCreateTagOpen &&(
-                <div className='d-createtagoverlay'>
-                    <button className='d-partoverlay-exitbutton' onClick={onTagExitClick}>X</button>
+            {isBlockerOpen && <Blocker id="blocker1"></Blocker>}
+            {isCreateTagOpen && (
+                <div className="d-createtagoverlay">
+                    <button
+                        className="d-partoverlay-exitbutton"
+                        onClick={onTagExitClick}
+                    >
+                        X
+                    </button>
                     <p>Custom Tag</p>
-                    {tagError && <p style={{ color: 'red', margin: '0 0 5px 0', fontSize: '0.9rem' }}>{tagError}</p>}
+                    {tagError && (
+                        <p
+                            style={{
+                                color: "red",
+                                margin: "0 0 5px 0",
+                                fontSize: "0.9rem",
+                            }}
+                        >
+                            {tagError}
+                        </p>
+                    )}
                     <input
                         id="createtaginput"
                         placeholder="Tag Name..."
@@ -506,15 +704,17 @@ function PartsPageDesktop() {
                             setTagError("");
                         }}
                         style={{
-                            border: tagError ? '1px solid red' : '1px solid #ccc',
-                            padding: '6px 10px',
-                            borderRadius: '4px',
-                            width: '100%',
-                            boxSizing: 'border-box'
+                            border: tagError
+                                ? "1px solid red"
+                                : "1px solid #ccc",
+                            padding: "6px 10px",
+                            borderRadius: "4px",
+                            width: "100%",
+                            boxSizing: "border-box",
                         }}
                     />
                     <Sketch
-                        style={{ backgroundColor:"#ffffff", color:'white' }}
+                        style={{ backgroundColor: "#ffffff", color: "white" }}
                         color={hex}
                         disableAlpha={true}
                         onChange={(color) => {
@@ -524,7 +724,7 @@ function PartsPageDesktop() {
                     <button
                         onClick={() => {
                             const trimmedName = newTagName.trim();
-                            
+
                             // 1 Check for empty input
                             if (!trimmedName) {
                                 setTagError("Tag name cannot be empty");
@@ -532,7 +732,11 @@ function PartsPageDesktop() {
                             }
 
                             // 2 Check for duplicates
-                            const isDuplicate = tags.some(tag => tag.name.toLowerCase() === trimmedName.toLowerCase());
+                            const isDuplicate = tags.some(
+                                (tag) =>
+                                    tag.name.toLowerCase() ===
+                                    trimmedName.toLowerCase(),
+                            );
                             if (isDuplicate) {
                                 setTagError("Tag name already exists");
                                 return;
@@ -544,98 +748,116 @@ function PartsPageDesktop() {
                             setTagError(""); // clear any previous error
                         }}
                     >
-                    Create Tag
+                        Create Tag
                     </button>
                 </div>
             )}
 
-            {isManageTagPopupOpen &&(
-                <div className='d-createtagoverlay'>
-                    <button className='d-partoverlay-exitbutton' onClick={handleTagManageClose}>X</button>
+            {isManageTagPopupOpen && (
+                <div className="d-createtagoverlay">
+                    <button
+                        className="d-partoverlay-exitbutton"
+                        onClick={handleTagManageClose}
+                    >
+                        X
+                    </button>
                     <p>Manage Tags</p>
 
-                    <div style={{ 
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        alignItems: 'center', 
-                        width: '100%',
-                        marginTop: '10px'
-                    }}>
-                        <div style={{ 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            gap: '10px',
-                            width: '100%', 
-                            maxWidth: '400px' 
-                        }}>
-                            {JSON.parse(localStorage.getItem('taglist') || '[]')
-                                .filter(tag => tag.deletable === true)
-                                .map(tag => {
-                                    const bgColor = tag.color || '#ccc'; 
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            width: "100%",
+                            marginTop: "10px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "10px",
+                                width: "100%",
+                                maxWidth: "400px",
+                            }}
+                        >
+                            {JSON.parse(localStorage.getItem("taglist") || "[]")
+                                .filter((tag) => tag.deletable === true)
+                                .map((tag) => {
+                                    const bgColor = tag.color || "#ccc";
                                     const textColor = getContrastYIQ(bgColor);
 
                                     return (
-                                        <div key={tag.name} style={{ 
-                                            display: 'flex', 
-                                            alignItems: 'center', 
-                                            justifyContent: 'center',
-                                            gap: '10px' 
-                                        }}>
-                                            <div style={{
-                                                textTransform: "capitalize", 
-                                                backgroundColor: bgColor, 
-                                                color: textColor, 
-                                                padding: '4px 12px', 
-                                                borderRadius: '12px', 
-                                                fontSize: '0.8rem', 
-                                                fontWeight: 'bold', 
-                                                display: 'flex', 
-                                                alignItems: 'center', 
-                                                justifyContent: 'center', 
-                                                minHeight: '30px',
-                                                flexGrow: 1
-                                            }}>
+                                        <div
+                                            key={tag.name}
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                gap: "10px",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    textTransform: "capitalize",
+                                                    backgroundColor: bgColor,
+                                                    color: textColor,
+                                                    padding: "4px 12px",
+                                                    borderRadius: "12px",
+                                                    fontSize: "0.8rem",
+                                                    fontWeight: "bold",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    minHeight: "30px",
+                                                    flexGrow: 1,
+                                                }}
+                                            >
                                                 {tag.name}
                                             </div>
 
-                                            <div 
-                                                className="d-partitem-iconbutton2" 
-                                                onClick={() => setDeletingTagName(tag.name)}
-                                                style={{ 
-                                                    cursor: 'pointer', 
-                                                    width: '3rem', 
-                                                    height: '3rem', 
-                                                    display: 'flex', 
-                                                    alignItems: 'center', 
-                                                    justifyContent: 'center',
+                                            <div
+                                                className="d-partitem-iconbutton2"
+                                                onClick={() =>
+                                                    setDeletingTagName(tag.name)
+                                                }
+                                                style={{
+                                                    cursor: "pointer",
+                                                    width: "3rem",
+                                                    height: "3rem",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
                                                     flexShrink: 0,
-                                                    fontSize: '2.6rem',
-                                                    color: "white"
+                                                    fontSize: "2.6rem",
+                                                    color: "white",
                                                 }}
                                             >
                                                 <IoTrashSharp />
                                             </div>
                                             {deletingTagName === tag.name && (
-                                                <WarningPopup 
-                                                    message={`This will delete ${tag.name}`} 
+                                                <WarningPopup
+                                                    message={`This will delete ${tag.name}`}
                                                     complete={() => {
                                                         deleteTag(tag.name);
-                                                        setDeletingTagName(null);
-                                                    }} 
-                                                    close={() => setDeletingTagName(null)}
+                                                        setDeletingTagName(
+                                                            null,
+                                                        );
+                                                    }}
+                                                    close={() =>
+                                                        setDeletingTagName(null)
+                                                    }
                                                 />
                                             )}
                                         </div>
                                     );
-                                })
-                            }
+                                })}
                         </div>
                     </div>
-
                 </div>
             )}
         </>
-    )
+    );
 }
 
 export default PartsPageDesktop;
