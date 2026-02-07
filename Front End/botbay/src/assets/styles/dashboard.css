@@ -40,6 +40,10 @@
     gap: 15px;
 }
 
+.d-titlecontainer-centered {
+    justify-content: center;
+}
+
 .d-titlecontainer p {
     margin: 0px;
     color: white;

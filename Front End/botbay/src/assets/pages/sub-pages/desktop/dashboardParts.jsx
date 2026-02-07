@@ -20,6 +20,8 @@ import Blocker from "../../components/blocker";
 import Sketch from "@uiw/react-color-sketch";
 import WarningPopup from "../../components/warningpopup";
 
+import { AddItemMenuDesktop } from "../../components/addItem";
+
 function PartsPageDesktop() {
     const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
     const [deletingTagName, setDeletingTagName] = useState(null);
@@ -30,6 +32,8 @@ function PartsPageDesktop() {
     const [currentItem, setCurrentItem] = useState(null);
     const [currentQuant, setCurrentQuant] = useState(0);
     const [currentNeeded, setCurrentNeeded] = useState(0);
+
+    const [isAddItemOpen, setIsAddItemOpen] = useState(false);
 
     const [query, setQuery] = useState("");
     const [listResults, setListResults] = useState([]);
@@ -350,7 +354,9 @@ function PartsPageDesktop() {
 
                 <div className="d-partslistcontainer">
                     <div className="d-titlecontainer-small">
-                        <button>+ Add Item</button>
+                        <button onClick={() => setIsAddItemOpen(true)}>
+                            + Add Item
+                        </button>
                         <div className="d-titlecontainer-small-downloadwrapper">
                             <button onClick={handleTagManageOpen}>
                                 <FaTags />
@@ -751,6 +757,10 @@ function PartsPageDesktop() {
                         Create Tag
                     </button>
                 </div>
+            )}
+
+            {isAddItemOpen && (
+                <AddItemMenuDesktop onClose={() => setIsAddItemOpen(false)} />
             )}
 
             {isManageTagPopupOpen && (

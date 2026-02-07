@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function AddItemMenuDesktop() {
+export function AddItemMenuDesktop({ onClose }) {
     // Part type indexes:
     // null -> not open
     // 0 -> Motor
@@ -14,9 +14,18 @@ export function AddItemMenuDesktop() {
     // 8 -> Wheel
     const [partIndexOpen, setPartIndexOpen] = useState(null);
 
-    <>
-        <div className=""></div>
-    </>;
+    return (
+        <>
+            <div className="d-partoverlay">
+                <button className="d-partoverlay-exitbutton" onClick={onClose}>
+                    X
+                </button>
+                <div className={`d-titlecontainer d-titlecontainer-centered`}>
+                    <p>Add Item</p>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export function AddItemMenuPhone() {}
