@@ -194,11 +194,27 @@ function PartsPageDesktop() {
 
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
-        hexcolor = hexcolor.replace("#", "");
-        const r = parseInt(hexcolor.substr(0, 2), 16);
-        const g = parseInt(hexcolor.substr(2, 2), 16);
-        const b = parseInt(hexcolor.substr(4, 2), 16);
+
+        // Remove hash
+        let cleanHex = hexcolor.replace("#", "");
+
+        // Convert 3-digit hex (#fff) to 6-digit (#ffffff)
+        if (cleanHex.length === 3) {
+            cleanHex = cleanHex
+                .split("")
+                .map((char) => char + char)
+                .join("");
+        }
+
+        // If it's not a valid 6-digit hex now, just return black
+        if (cleanHex.length !== 6) return "black";
+
+        const r = parseInt(cleanHex.substring(0, 2), 16);
+        const g = parseInt(cleanHex.substring(2, 4), 16);
+        const b = parseInt(cleanHex.substring(4, 6), 16);
+
         const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+
         return yiq >= 128 ? "black" : "white";
     };
 
@@ -212,6 +228,12 @@ function PartsPageDesktop() {
     // 6 -> Machined
     // 7 -> Other
     // 8 -> Wheel
+
+    function onAddItemExitClick() {
+        setIsAddItemOpen(false);
+        const savedData = localStorage.getItem("partData");
+        setListResults(savedData ? JSON.parse(savedData) : []);
+    }
 
     const onRowClick = (item) => {
         const partTypeMap = {
@@ -760,7 +782,7 @@ function PartsPageDesktop() {
             )}
 
             {isAddItemOpen && (
-                <AddItemMenuDesktop onClose={() => setIsAddItemOpen(false)} />
+                <AddItemMenuDesktop onClose={onAddItemExitClick} />
             )}
 
             {isManageTagPopupOpen && (

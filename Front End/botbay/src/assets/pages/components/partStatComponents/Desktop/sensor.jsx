@@ -7,7 +7,12 @@ function SensorList({ part }) {
     const rows = [
         {
             label: "Size",
-            value: stats.size?.map((v) => `${v} mm`).join(" × ") ?? null,
+            value:
+                stats.size &&
+                stats.size.length === 3 &&
+                stats.size.every((v) => v != null && v !== 0)
+                    ? stats.size.map((v) => `${v} mm`).join(" × ")
+                    : null,
         },
         {
             label: "Sensor Type",
@@ -22,15 +27,19 @@ function SensorList({ part }) {
         },
         {
             label: "Proximity Range",
-            value: stats.proximity_sensor_range
-                ? `${stats.proximity_sensor_range[0]}–${stats.proximity_sensor_range[1]} mm`
-                : null,
+            value:
+                stats.proximity_sensor_range &&
+                stats.proximity_sensor_range.every((v) => v != null)
+                    ? `${stats.proximity_sensor_range[0]}–${stats.proximity_sensor_range[1]} mm`
+                    : null,
         },
         {
             label: "Distance Range",
-            value: stats.distance_sensor_range
-                ? `${stats.distance_sensor_range[0]}–${stats.distance_sensor_range[1]} mm`
-                : null,
+            value:
+                stats.distance_sensor_range &&
+                stats.distance_sensor_range.every((v) => v != null)
+                    ? `${stats.distance_sensor_range[0]}–${stats.distance_sensor_range[1]} mm`
+                    : null,
         },
         {
             label: "Field of View",

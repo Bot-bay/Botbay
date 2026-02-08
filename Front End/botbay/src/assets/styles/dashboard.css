@@ -25,6 +25,20 @@
     box-sizing: border-box;
 }
 
+.d-createitem-submit-button {
+    width: 95%;
+    font-size: 1.4rem;
+    font-weight: 600;
+    background-color: #44327a;
+    color: white;
+    transition: background-color 200ms ease;
+}
+
+.d-createitem-submit-button:hover {
+    background-color: #281a68;
+    transition: background-color 200ms ease;
+}
+
 .d-createitem-middlecontainer {
     display: flex;
     justify-content: center;
@@ -168,7 +182,7 @@
 .d-partoverlay-exitbutton {
     position: fixed;
     top: 16px;
-    right: 16px;
+    right: 32px;
     z-index: 1000;
     background-color: #d94a4a !important;
     transition: background-color 200ms ease;
@@ -187,9 +201,9 @@
 }
 
 .d-partoverlay-returnbutton {
-    position: absolute;
+    position: fixed;
     top: 16px;
-    left: 16px;
+    left: calc(13vw+32px);
     z-index: 1000;
     background-color: #44327a !important;
     transition: background-color 200ms ease;
@@ -205,6 +219,65 @@
     background-color: #281a68 !important;
     transition: background-color 200ms ease;
     border: none;
+}
+
+.d-createitem-centercontainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.d-createitem-form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 40%;
+    min-height: 100%;
+}
+
+.d-createitem-input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.d-createitem-input-group input {
+    width: 100%;
+    font-size: 1.1rem;
+}
+
+.d-createitem-form-subtitle {
+    color: white;
+    font-size: 1.2rem;
+    margin: 1px;
+}
+
+.d-createitem-form-subtitle2 {
+    color: white;
+    font-size: 1rem;
+    margin: 1px;
+}
+
+.d-createitem-form-divider {
+    color: white;
+    width: 100%;
+}
+
+.d-createitem-submit-button {
+    margin: 10px;
 }
 
 .d-partoverlay {
