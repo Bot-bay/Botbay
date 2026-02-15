@@ -23,6 +23,8 @@ import WarningPopup from "../../components/warningpopup";
 import { AddItemMenuDesktop } from "../../components/addItem";
 
 function PartsPageDesktop() {
+    const [isEditPartOpen, setIsEditPartOpen] = useState(false);
+
     const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
     const [deletingTagName, setDeletingTagName] = useState(null);
 
@@ -888,6 +890,8 @@ function PartsPageDesktop() {
                     </div>
                 </div>
             )}
+
+            {isEditPartOpen && <></>}
         </>
     );
 }
