@@ -20,12 +20,75 @@ import Blocker from "../../components/blocker";
 import Sketch from "@uiw/react-color-sketch";
 import WarningPopup from "../../components/warningpopup";
 
+import { MotorStatList } from "../editListUtils";
+import { ServoStatList } from "../editListUtils";
+import { StructuralStatList } from "../editListUtils";
+import { ElectricalStatList } from "../editListUtils";
+import { SensorStatList } from "../editListUtils";
+import { ThreeDPrintedStatList } from "../editListUtils";
+import { MachinedStatList } from "../editListUtils";
+import { OtherStatList } from "../editListUtils";
+
+import { assembleEditList } from "../editListUtils";
+
 import { AddItemMenuDesktop } from "../../components/addItem";
 
 function PartsPageDesktop() {
     const [isEditPartOpen, setIsEditPartOpen] = useState(false);
 
-    function handleEditOpen() {
+    const [availableTags, setAvailableTags] = useState([]);
+
+    useEffect(() => {
+        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        setAvailableTags(stored);
+    }, []);
+
+    const handleSubmit = (e) => {
+        console.log("Handled submit");
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const toggleEditTag = (tagName) => {
+        setFormData((prev) => {
+            const isSelected = prev.tags.includes(tagName);
+            const newTags = isSelected
+                ? prev.tags.filter((t) => t !== tagName)
+                : [...prev.tags, tagName];
+            return { ...prev, tags: newTags };
+        });
+    };
+
+    const [formData, setFormData] = useState({
+        manufacturerId: "",
+        name: "",
+        tags: [],
+        type: "",
+        manufacturer: "",
+    });
+
+    function renderSpecificEditStatContent() {
+        const partTypeMap = {
+            motor: 0,
+            servo: 1,
+            structural: 2,
+            electrical: 3,
+            sensor: 4,
+            "3d-printed": 5,
+            machined: 6,
+            other: 7,
+            wheel: 8,
+        };
+
+        switch (partTypeMap[currentItem.type]) {
+        }
+    }
+
+    function handleEditOpen(item) {
+        setFormData(assembleEditList(item.type));
         setIsEditPartOpen(true);
         onExitClick();
 
@@ -45,6 +108,13 @@ function PartsPageDesktop() {
     }
 
     function handleEditClose() {
+        setFormData({
+            manufacturerId: "",
+            name: "",
+            tags: [],
+            type: "",
+            manufacturer: "",
+        });
         setIsEditPartOpen(false);
         onExitClick();
     }
@@ -926,7 +996,97 @@ function PartsPageDesktop() {
                             X
                         </button>
                         <div className="centercontainer">
-                            <p>test</p>
+                            <form
+                                onSubmit={handleSubmit}
+                                className="d-createitem-form"
+                            >
+                                <h3 className="d-createitem-form-subtitle">
+                                    ({currentItem.manufacturerId}) -{" "}
+                                    {currentItem.name}
+                                </h3>
+
+                                <hr className="d-createitem-form-divider"></hr>
+                                <h4 className="d-createitem-form-subtitle2">
+                                    Basic Info:
+                                </h4>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Name:</label>
+                                    <input
+                                        name="name"
+                                        placeholder="e.g. NeveRest Orbital 20"
+                                        value={formData?.name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>ID:</label>
+                                    <input
+                                        name="manufacturerId"
+                                        placeholder="e.g. am-3637b"
+                                        value={formData?.manufacturerId}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Tags (Select all that apply):</label>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: "8px",
+                                            marginTop: "10px",
+                                        }}
+                                    >
+                                        {availableTags.map((tag) => {
+                                            const isSelected =
+                                                formData?.tags?.includes(
+                                                    tag.name,
+                                                );
+
+                                            const bgColor = isSelected
+                                                ? tag.color || "#ccc"
+                                                : "#333";
+
+                                            const textColor = isSelected
+                                                ? getContrastYIQ(bgColor)
+                                                : "#888";
+
+                                            return (
+                                                <div
+                                                    key={tag.name}
+                                                    onClick={() =>
+                                                        toggleEditTag(tag.name)
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        padding: "6px 12px",
+                                                        borderRadius: "15px",
+                                                        fontSize: "0.75rem",
+                                                        fontWeight: "bold",
+                                                        textTransform:
+                                                            "capitalize",
+                                                        transition: "all 0.2s",
+                                                        backgroundColor:
+                                                            isSelected
+                                                                ? tag.color
+                                                                : "#333",
+                                                        color: textColor,
+                                                        border: `1px solid ${isSelected ? tag.color : "#444"}`,
+                                                    }}
+                                                >
+                                                    {tag.name}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <hr className="d-createitem-form-divider"></hr>
+                                {renderSpecificEditStatContent()}
+                            </form>
                         </div>
                     </div>
                 </>

@@ -58,7 +58,7 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
                 <div style={{ width: "5%", height: "100%" }}>
                     {part.editable ? (
                         <div
-                            onClick={onEdit}
+                            onClick={() => onEdit(part)}
                             className={
                                 part.editable ? "d-partitem-iconbutton1" : ""
                             }
