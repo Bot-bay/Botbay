@@ -25,6 +25,30 @@ import { AddItemMenuDesktop } from "../../components/addItem";
 function PartsPageDesktop() {
     const [isEditPartOpen, setIsEditPartOpen] = useState(false);
 
+    function handleEditOpen() {
+        setIsEditPartOpen(true);
+        onExitClick();
+
+        const partTypeMap = {
+            motor: 0,
+            servo: 1,
+            structural: 2,
+            electrical: 3,
+            sensor: 4,
+            "3d-printed": 5,
+            machined: 6,
+            other: 7,
+            wheel: 8,
+        };
+        setPartType(partTypeMap[item.stats.type]);
+        setCurrentItem(item);
+    }
+
+    function handleEditClose() {
+        setIsEditPartOpen(false);
+        onExitClick();
+    }
+
     const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
     const [deletingTagName, setDeletingTagName] = useState(null);
 
@@ -551,6 +575,7 @@ function PartsPageDesktop() {
                                 key={item.id}
                                 part={item}
                                 onRowClick={onRowClick}
+                                onEdit={handleEditOpen}
                                 onDelete={() =>
                                     setListResults(
                                         JSON.parse(
@@ -891,7 +916,21 @@ function PartsPageDesktop() {
                 </div>
             )}
 
-            {isEditPartOpen && <></>}
+            {isEditPartOpen && (
+                <>
+                    <div id="d-partoverlay" className="d-partoverlay">
+                        <button
+                            className="d-partoverlay-exitbutton"
+                            onClick={handleEditClose}
+                        >
+                            X
+                        </button>
+                        <div className="centercontainer">
+                            <p>test</p>
+                        </div>
+                    </div>
+                </>
+            )}
         </>
     );
 }

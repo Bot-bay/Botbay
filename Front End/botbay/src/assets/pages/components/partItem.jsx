@@ -4,7 +4,7 @@ import { PiPencilSimple } from "react-icons/pi";
 import { PiPencilSimpleSlash } from "react-icons/pi";
 import WarningPopup from "./warningpopup";
 
-function PartItem({ part, onRowClick, onDelete }) {
+function PartItem({ part, onRowClick, onDelete, onEdit }) {
     const [imgLoaded, setImgLoaded] = useState(true);
     const [warningOn, setWarningOn] = useState(false);
     const [visible, setVisible] = useState(true);
@@ -56,17 +56,24 @@ function PartItem({ part, onRowClick, onDelete }) {
                 <div style={{ width: "15%" }}>{part.quantity}</div>
                 <div style={{ width: "15%" }}>{part.needed || 0}</div>
                 <div style={{ width: "5%", height: "100%" }}>
-                    <div
-                        className={
-                            part.editable ? "d-partitem-iconbutton1" : ""
-                        }
-                    >
-                        {part.editable ? (
+                    {part.editable ? (
+                        <div
+                            onClick={onEdit}
+                            className={
+                                part.editable ? "d-partitem-iconbutton1" : ""
+                            }
+                        >
                             <PiPencilSimple />
-                        ) : (
+                        </div>
+                    ) : (
+                        <div
+                            className={
+                                part.editable ? "d-partitem-iconbutton1" : ""
+                            }
+                        >
                             <PiPencilSimpleSlash />
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
                 <div style={{ width: "5%", height: "100%" }}>
                     <div
