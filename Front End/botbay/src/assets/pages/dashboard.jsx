@@ -45,12 +45,10 @@ function Dashboard() {
                 case 1:
                     return <PartsPageDesktop />;
                 case 2:
-                    return <PlanPageDesktop />;
-                case 3:
                     return <PackPageDesktop />;
-                case 4:
+                case 3:
                     return <BatteryPageDesktop />;
-                case 5:
+                case 4:
                     return <SettingsPageDesktop />;
                 default:
                     return <HomePageDesktop />;
@@ -62,12 +60,10 @@ function Dashboard() {
                 case 1:
                     return <PartsPagePhone />;
                 case 2:
-                    return <PlanPagePhone />;
-                case 3:
                     return <PackPagePhone />;
-                case 4:
+                case 3:
                     return <BatteryPagePhone />;
-                case 5:
+                case 4:
                     return <SettingsPagePhone />;
                 default:
                     return <HomePagePhone />;
@@ -107,20 +103,8 @@ function Dashboard() {
                             </div>
 
                             <div
-                                className={`sidebaritem ${pageIndex === 2 ? "sidebaritemhighlighted" : ""}`}
-                                onClick={() => setPageIndex(2)}
-                            >
-                                <p>
-                                    <PiBlueprint
-                                        style={{ marginRight: "6px" }}
-                                    />
-                                    Plan
-                                </p>
-                            </div>
-
-                            <div
                                 className={`sidebaritem ${pageIndex === 3 ? "sidebaritemhighlighted" : ""}`}
-                                onClick={() => setPageIndex(3)}
+                                onClick={() => setPageIndex(2)}
                             >
                                 <p>
                                     <FaBox style={{ marginRight: "6px" }} />
@@ -130,7 +114,7 @@ function Dashboard() {
 
                             <div
                                 className={`sidebaritem ${pageIndex === 4 ? "sidebaritemhighlighted" : ""}`}
-                                onClick={() => setPageIndex(4)}
+                                onClick={() => setPageIndex(3)}
                             >
                                 <p>
                                     <FaBatteryFull
@@ -142,7 +126,7 @@ function Dashboard() {
 
                             <div
                                 className={`sidebaritem ${pageIndex === 5 ? "sidebaritemhighlighted" : ""}`}
-                                onClick={() => setPageIndex(5)}
+                                onClick={() => setPageIndex(4)}
                             >
                                 <p>
                                     <IoMdSettings
