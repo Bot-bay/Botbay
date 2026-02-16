@@ -16,9 +16,6 @@ import HomePagePhone from "./sub-pages/phone/dashboardHome";
 import PartsPageDesktop from "./sub-pages/desktop/dashboardParts";
 import PartsPagePhone from "./sub-pages/phone/dashboardParts";
 
-import PlanPageDesktop from "./sub-pages/desktop/dashboardPlan";
-import PlanPagePhone from "./sub-pages/phone/dashboardPlan";
-
 import PackPageDesktop from "./sub-pages/desktop/dashboardPack";
 import PackPagePhone from "./sub-pages/phone/dashboardPack";
 
