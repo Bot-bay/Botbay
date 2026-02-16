@@ -30,7 +30,9 @@ function PrintedList({ part }) {
         {
             label: "Print Time",
             value:
-                Array.isArray(stats.time) && stats.time.length === 2
+                Array.isArray(stats.time) &&
+                stats.time.length === 2 &&
+                stats.time.some((t) => Number(t) > 0)
                     ? `${stats.time[0]}h ${stats.time[1]}m`
                     : null,
         },
@@ -38,7 +40,7 @@ function PrintedList({ part }) {
             label: "Infill",
             value:
                 stats.infill != null
-                    ? `${stats.infill}% (${stats.infill_pattern})`
+                    ? `${stats.infill}%${stats.infill_pattern ? ` (${stats.infill_pattern} pattern)` : ""}`
                     : null,
         },
         {
@@ -55,10 +57,21 @@ function PrintedList({ part }) {
                     : null,
         },
         {
-            label: "Brim",
+            label: "On Buildplate Only",
             value:
-                stats.brim_type !== "none" && stats.brim_type != null
-                    ? `${stats.brim_type}`
+                stats.on_buildplate_only != null
+                    ? stats.on_buildplate_only
+                        ? "Yes"
+                        : "No"
+                    : null,
+        },
+        {
+            label: "Remove Small Overhangs",
+            value:
+                stats.remove_small_overhangs != null
+                    ? stats.remove_small_overhangs
+                        ? "Yes"
+                        : "No"
                     : null,
         },
         {
@@ -66,6 +79,22 @@ function PrintedList({ part }) {
             value:
                 stats.threshold_angle != null
                     ? `${stats.threshold_angle}°`
+                    : null,
+        },
+        {
+            label: "Brim",
+            value:
+                stats.brim_type !== "none" &&
+                stats.brim_type != null &&
+                stats.brim_type !== ""
+                    ? `${stats.brim_type}${stats.brim_width ? ` (${stats.brim_width}mm)` : ""}`
+                    : null,
+        },
+        {
+            label: "Brim Object Gap",
+            value:
+                stats.brim_object_gap != null && stats.brim_object_gap !== ""
+                    ? `${stats.brim_object_gap} mm`
                     : null,
         },
     ];

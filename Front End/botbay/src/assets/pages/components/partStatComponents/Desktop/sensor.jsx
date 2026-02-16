@@ -47,7 +47,7 @@ function SensorList({ part }) {
         },
         {
             label: "IMU",
-            value: stats.imu != null ? "Yes" : null,
+            value: stats.imu != null || stats.imu != "" ? stats.imu : null,
         },
         {
             label: "Counts Per Revolution",

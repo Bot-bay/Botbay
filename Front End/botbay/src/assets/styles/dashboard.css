@@ -66,6 +66,15 @@
     transition: background-color 200ms ease;
 }
 
+.d-partoverlay-subtitle {
+    width: 100%;
+    padding-left: 5%;
+    box-sizing: border-box;
+    margin: 0;
+    margin-bottom: 11px;
+    color: white;
+}
+
 .d-titlecontainer {
     display: flex;
     align-items: center;
