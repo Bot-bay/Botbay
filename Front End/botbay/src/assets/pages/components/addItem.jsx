@@ -306,11 +306,41 @@ function AddMotor({ onReturn }) {
                     </div>
 
                     <div className="d-createitem-input-group">
+                        <label>Max Power (V):</label>
+                        <input
+                            type="number"
+                            name="maxPower"
+                            value={formData.maxPower}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
+                        <label>Stall Current (A):</label>
+                        <input
+                            type="number"
+                            name="stallCurrent"
+                            value={formData.stallCurrent}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
                         <label>Voltage (V):</label>
                         <input
                             type="number"
                             name="voltage"
                             value={formData.voltage}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
+                        <label>Output Shaft Length (mm):</label>
+                        <input
+                            type="number"
+                            name="outputShaftLength"
+                            value={formData.outputShaftLength}
                             onChange={handleChange}
                         />
                     </div>
@@ -326,11 +356,40 @@ function AddMotor({ onReturn }) {
                     </div>
 
                     <div className="d-createitem-input-group">
+                        <label>Counts per Revolution:</label>
+                        <input
+                            type="number"
+                            name="cpr"
+                            value={formData.cpr}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
+                        <label>Pulses per Revolution:</label>
+                        <input
+                            type="number"
+                            name="ppr"
+                            value={formData.ppr}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
                         <label>Stall Torque (Nm):</label>
                         <input
                             type="number"
                             name="stallTorque"
                             value={formData.stallTorque}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
+                        <label>Shaft Type:</label>
+                        <input
+                            name="shaftType"
+                            value={formData.shaftType}
                             onChange={handleChange}
                         />
                     </div>
@@ -1787,7 +1846,7 @@ function Add3dPrinted({ onReturn }) {
         sizeW: "",
         sizeH: "",
         infill: "",
-        filament: "PLA",
+        filament: "",
         wallLoops: "",
         infillPattern: "grid",
         support: "false",
@@ -1795,12 +1854,12 @@ function Add3dPrinted({ onReturn }) {
         onBuildplateOnly: "false",
         removeSmallOverhangs: "false",
         thresholdAngle: "",
-        brimType: "auto",
+        brimType: "",
         brimWidth: "",
         brimObjectGap: "",
         filamentAmount: "",
         cost: "",
-        timeH: "0",
+        timeH: "",
         timeM: "",
         // Links
         iconLink: "",
@@ -1897,7 +1956,7 @@ function Add3dPrinted({ onReturn }) {
                     <h3 className="d-createitem-form-subtitle">
                         3D Print Specifications
                     </h3>
-                    <hr className="d-createitem-form-divider"></hr>
+                    <hr className="d-createitem-form-divider" />
 
                     <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
                     <div className="d-createitem-input-group">
@@ -1966,7 +2025,7 @@ function Add3dPrinted({ onReturn }) {
                         </div>
                     </div>
 
-                    <hr className="d-createitem-form-divider"></hr>
+                    <hr className="d-createitem-form-divider" />
                     <h4 className="d-createitem-form-subtitle2">
                         Slicing Stats:
                     </h4>
@@ -2000,6 +2059,7 @@ function Add3dPrinted({ onReturn }) {
                         <label>Filament Type:</label>
                         <input
                             name="filament"
+                            placeholder="e.g. PLA, PETG"
                             value={formData.filament}
                             onChange={handleChange}
                         />
@@ -2017,6 +2077,7 @@ function Add3dPrinted({ onReturn }) {
                         <label>Infill Pattern:</label>
                         <input
                             name="infillPattern"
+                            placeholder="e.g. grid, gyroid"
                             value={formData.infillPattern}
                             onChange={handleChange}
                         />
@@ -2031,7 +2092,7 @@ function Add3dPrinted({ onReturn }) {
                         />
                     </div>
 
-                    <hr className="d-createitem-form-divider"></hr>
+                    <hr className="d-createitem-form-divider" />
                     <h4 className="d-createitem-form-subtitle2">
                         Supports & Brim:
                     </h4>
@@ -2050,6 +2111,7 @@ function Add3dPrinted({ onReturn }) {
                         <label>Support Type:</label>
                         <input
                             name="supportType"
+                            placeholder="e.g. Tree, Snug"
                             value={formData.supportType}
                             onChange={handleChange}
                         />
@@ -2059,6 +2121,17 @@ function Add3dPrinted({ onReturn }) {
                         <select
                             name="onBuildplateOnly"
                             value={formData.onBuildplateOnly}
+                            onChange={handleChange}
+                        >
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                    </div>
+                    <div className="d-createitem-input-group">
+                        <label>Remove Small Overhangs:</label>
+                        <select
+                            name="removeSmallOverhangs"
+                            value={formData.removeSmallOverhangs}
                             onChange={handleChange}
                         >
                             <option value="false">No</option>
@@ -2078,6 +2151,7 @@ function Add3dPrinted({ onReturn }) {
                         <label>Brim Type:</label>
                         <input
                             name="brimType"
+                            placeholder="e.g. Outer only"
                             value={formData.brimType}
                             onChange={handleChange}
                         />
@@ -2091,8 +2165,18 @@ function Add3dPrinted({ onReturn }) {
                             onChange={handleChange}
                         />
                     </div>
+                    <div className="d-createitem-input-group">
+                        <label>Brim Object Gap (mm):</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="brimObjectGap"
+                            value={formData.brimObjectGap}
+                            onChange={handleChange}
+                        />
+                    </div>
 
-                    <hr className="d-createitem-form-divider"></hr>
+                    <hr className="d-createitem-form-divider" />
                     <h4 className="d-createitem-form-subtitle2">
                         Print Details:
                     </h4>
@@ -2136,7 +2220,7 @@ function Add3dPrinted({ onReturn }) {
                         </div>
                     </div>
 
-                    <hr className="d-createitem-form-divider"></hr>
+                    <hr className="d-createitem-form-divider" />
                     <h4 className="d-createitem-form-subtitle2">Links:</h4>
                     <div className="d-createitem-input-group">
                         <label>Icon URL:</label>

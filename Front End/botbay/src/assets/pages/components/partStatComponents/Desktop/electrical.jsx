@@ -50,10 +50,14 @@ function ElectricalList({ part }) {
         },
         {
             label: "Size",
-            // Handles both string sizes and array-based dimensions if applicable
-            value: Array.isArray(stats.size)
-                ? stats.size.join(" x ")
-                : stats.size,
+            value:
+                stats.size &&
+                stats.size.length === 3 &&
+                stats.size.every(
+                    (v) => v !== null && v !== undefined && v !== "",
+                )
+                    ? stats.size.map((v) => `${v}mm`).join(", ")
+                    : "",
         },
     ];
 

@@ -14,15 +14,424 @@ import ServoList from "../../components/partStatComponents/Desktop/servo";
 import StructuralList from "../../components/partStatComponents/Desktop/structural";
 import ElectricalList from "../../components/partStatComponents/Desktop/electrical";
 import SensorList from "../../components/partStatComponents/Desktop/sensor";
-import PrintedList from "../../components/partStatComponents/Desktop/3dprint";
+import ThreeDPrintedList from "../../components/partStatComponents/Desktop/3dprint";
 import MachinedList from "../../components/partStatComponents/Desktop/machined";
+import OtherList from "../../components/partStatComponents/Desktop/other";
 import Blocker from "../../components/blocker";
 import Sketch from "@uiw/react-color-sketch";
 import WarningPopup from "../../components/warningpopup";
 
+import { MotorStatList } from "../editListUtils";
+import { ServoStatList } from "../editListUtils";
+import { StructuralStatList } from "../editListUtils";
+import { ElectricalStatList } from "../editListUtils";
+import { SensorStatList } from "../editListUtils";
+import { ThreeDPrintedStatList } from "../editListUtils";
+import { MachinedStatList } from "../editListUtils";
+import { OtherStatList } from "../editListUtils";
+
+import { megaSchema } from "../editListUtils";
+
 import { AddItemMenuDesktop } from "../../components/addItem";
 
 function PartsPageDesktop() {
+    const [isEditPartOpen, setIsEditPartOpen] = useState(false);
+
+    const [availableTags, setAvailableTags] = useState([]);
+
+    useEffect(() => {
+        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        setAvailableTags(stored);
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const existingParts = JSON.parse(
+            localStorage.getItem("partData") || "[]",
+        );
+
+        // 1. Initialize the base stats object with the type
+        let statsObj = { type: formData.type };
+
+        // 2. The Giant Switch Case to pack only relevant data
+        switch (formData.type) {
+            case "motor":
+                statsObj = {
+                    ...statsObj,
+                    voltage: Number(formData.voltage) || null,
+                    max_power: Number(formData.maxPower) || null,
+                    stall_current: Number(formData.stallCurrent) || null,
+                    stall_torque: Number(formData.stallTorque) || null,
+                    no_load_speed: Number(formData.noLoadSpeed) || null,
+                    output_shaft_length:
+                        Number(formData.outputShaftLength) || null,
+                    cpr: Number(formData.cpr) || null,
+                    ppr: Number(formData.ppr) || null,
+                    shaft_type: formData.shaftType || "",
+                    connector_types: formatConnectors(formData.connectorTypes),
+                };
+                break;
+
+            case "servo":
+                statsObj = {
+                    ...statsObj,
+                    size: [
+                        Number(formData.sizeL) || 0,
+                        Number(formData.sizeW) || 0,
+                        Number(formData.sizeH) || 0,
+                    ],
+                    weight: Number(formData.weight) || null,
+                    speed: formData.speed || "",
+                    angular_range: formData.angularRange || "",
+                    gear_material: formData.gearMaterial || "",
+                    spline_type: formData.splineType || "",
+                    spline_thread_type: formData.splineThreadType || "",
+                    spline_internal_depth: formData.splineInternalDepth || "",
+                    stall_current: Number(formData.stallCurrent) || null,
+                    stall_torque: Number(formData.stallTorque) || null,
+                };
+                break;
+
+            case "electrical":
+                statsObj = {
+                    ...statsObj,
+                    capacity: formData.capacity || "",
+                    voltage: Number(formData.voltage) || null,
+                    weight: Number(formData.weight) || null,
+                    wire_gauge: formData.wireGauge || "",
+                    size: [
+                        Number(formData.sizeL) || 0,
+                        Number(formData.sizeW) || 0,
+                        Number(formData.sizeH) || 0,
+                    ],
+                    connector_types: formatConnectors(formData.connectorTypes),
+                    replaceable_fuse: formData.replaceableFuse || "",
+                    max_discharge: formData.maxDischarge || "",
+                    wire_length: formData.wireLength || "",
+                    charge_rates: formData.chargeRates || "",
+                };
+                break;
+
+            case "sensor":
+                statsObj = {
+                    ...statsObj,
+                    sensor_type: formData.sensorType || "",
+                    max_voltage: Number(formData.maxVoltage) || null,
+                    size: [
+                        Number(formData.sizeL) || 0,
+                        Number(formData.sizeW) || 0,
+                        Number(formData.sizeH) || 0,
+                    ],
+                    prox_min: formData.proxMin || "",
+                    prox_max: formData.proxMax || "",
+                    dist_min: formData.distMin || "",
+                    dist_max: formData.distMax || "",
+                    fov: formData.fov || "",
+                    imu: formData.imu || "",
+                    cpr: Number(formData.cpr) || null,
+                };
+                break;
+
+            case "3d-printed":
+                statsObj = {
+                    ...statsObj,
+                    size: [
+                        Number(formData.sizeL) || 0,
+                        Number(formData.sizeW) || 0,
+                        Number(formData.sizeH) || 0,
+                    ],
+                    infill: formData.infill || "",
+                    filament: formData.filament || "",
+                    wall_loops: formData.wallLoops || "",
+                    infill_pattern: formData.infillPattern || "",
+                    support: formData.support || "",
+                    support_type: formData.supportType || "",
+                    on_buildplate_only: formData.onBuildplateOnly || "",
+                    remove_small_overhangs: formData.removeSmallOverhangs || "",
+                    threshold_angle: formData.thresholdAngle || "",
+                    brim_type: formData.brimType || "",
+                    brim_width: formData.brimWidth || "",
+                    brim_object_gap: formData.brimObjectGap || "",
+                    filament_amount: formData.filamentAmount || "",
+                    cost: formData.cost || "",
+                    time_h: formData.timeH || "0",
+                    time_m: formData.timeM || "",
+                };
+                break;
+
+            case "other":
+                statsObj = {
+                    ...statsObj,
+                    description: formData.description || "",
+                };
+                break;
+
+            default:
+                // Structural, Machined, etc.
+                statsObj = {
+                    ...statsObj,
+                    size: [
+                        Number(formData.sizeL) || 0,
+                        Number(formData.sizeW) || 0,
+                        Number(formData.sizeH) || 0,
+                    ],
+                };
+        }
+
+        // 3. Construct the Final Object
+        const updatedPart = {
+            id: formData.id,
+            name: formData.name,
+            manufacturer: formData.manufacturer,
+            manufacturerId: formData.manufacturerId,
+            type: formData.type,
+            tags: formData.tags,
+            icon: formData.iconLink,
+            stats: statsObj,
+            links: {
+                CAD: formData.cadLink || "",
+                Store: formData.storeLink || "",
+            },
+
+            quantity: currentItem.quantity ?? 0,
+            needed: currentItem.needed ?? 0,
+            editable: true,
+        };
+
+        // 4. Update and Save
+        const updatedPartsList = existingParts.map((part) =>
+            part.id === formData.id ? updatedPart : part,
+        );
+
+        localStorage.setItem("partData", JSON.stringify(updatedPartsList));
+        handleEditClose();
+    };
+
+    // Helper to keep logic clean
+    const formatConnectors = (data) => {
+        return typeof data === "string"
+            ? data
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter((s) => s !== "")
+            : data || [];
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const toggleEditTag = (tagName) => {
+        setFormData((prev) => {
+            const currentTags = prev.tags ?? [];
+
+            const isSelected = currentTags.includes(tagName);
+            const newTags = isSelected
+                ? currentTags.filter((t) => t !== tagName)
+                : [...currentTags, tagName];
+
+            return { ...prev, tags: newTags };
+        });
+    };
+
+    const [formData, setFormData] = useState(megaSchema);
+
+    function renderSpecificEditStatContent() {
+        // motor: 0,
+        // servo: 1,
+        // structural: 2,
+        // electrical: 3,
+        // sensor: 4,
+        // "3d-printed": 5,
+        // machined: 6,
+        // other: 7,
+        // wheel: 8,
+
+        switch (currentItem.stats.type) {
+            case "motor":
+                return (
+                    <MotorStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "servo":
+                return (
+                    <ServoStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "structural":
+                return (
+                    <StructuralStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "electrical":
+                return (
+                    <ElectricalStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "sensor":
+                return (
+                    <SensorStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "3d-print":
+                return (
+                    <ThreeDPrintedStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "machined":
+                return (
+                    <MachinedStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+
+            case "other":
+                return (
+                    <OtherStatList
+                        handleChange={handleChange}
+                        formData={formData}
+                    />
+                );
+        }
+    }
+
+    function handleEditOpen(item) {
+        setIsEditPartOpen(true);
+        onExitClick();
+
+        const partTypeMap = {
+            motor: 0,
+            servo: 1,
+            structural: 2,
+            electrical: 3,
+            sensor: 4,
+            "3d-printed": 5,
+            machined: 6,
+            other: 7,
+            wheel: 8,
+        };
+
+        // 1. Set the index for your UI tabs/selection
+        const type = item.type || item.stats?.type || "other";
+        setPartType(partTypeMap[type]);
+
+        // 2. Flatten the nested 'item' into the Mega Schema structure
+        const flattenedData = {
+            ...megaSchema, // Start with the empty template
+            id: item.id,
+            type: type,
+            name: item.name || "",
+            manufacturer: item.manufacturer || "",
+            manufacturerId: item.manufacturerId || "",
+            tags: item.tags || [],
+
+            // Links & Icon
+            iconLink: item.icon || "",
+            cadLink: item.links?.CAD || "",
+            storeLink: item.links?.Store || "",
+
+            // Stats: Motor & Servo
+            voltage: item.stats?.voltage ?? "",
+            maxPower: item.stats?.max_power ?? "",
+            stallCurrent: item.stats?.stall_current ?? "",
+            stallTorque: item.stats?.stall_torque ?? "",
+            noLoadSpeed: item.stats?.no_load_speed ?? "",
+            outputShaftLength: item.stats?.output_shaft_length ?? "",
+            cpr: item.stats?.cpr ?? "",
+            ppr: item.stats?.ppr ?? "",
+            shaftType: item.stats?.shaft_type ?? "",
+            speed: item.stats?.speed ?? "",
+            angularRange: item.stats?.angular_range ?? "",
+            gearMaterial: item.stats?.gear_material ?? "",
+            splineType: item.stats?.spline_type ?? "",
+            splineThreadType: item.stats?.spline_thread_type ?? "",
+            splineInternalDepth: item.stats?.spline_internal_depth ?? "",
+
+            // Stats: Physical & Dimensions
+            sizeL: item.stats?.size?.[0] ?? item.stats?.size_l ?? "",
+            sizeW: item.stats?.size?.[1] ?? item.stats?.size_w ?? "",
+            sizeH: item.stats?.size?.[2] ?? item.stats?.size_h ?? "",
+            weight: item.stats?.weight ?? "",
+
+            // Stats: Electrical
+            capacity: item.stats?.capacity ?? "",
+            wireGauge: item.stats?.wire_gauge ?? "",
+            wireLength: item.stats?.wire_length ?? "",
+            maxDischarge: item.stats?.max_discharge ?? "",
+            chargeRates: item.stats?.charge_rates ?? "",
+            replaceableFuse: item.stats?.replaceable_fuse ?? "",
+
+            // Stats: Sensor
+            sensorType: item.stats?.sensor_type ?? "",
+            maxVoltage: item.stats?.max_voltage ?? "",
+            proxMin: item.stats?.prox_min ?? "",
+            proxMax: item.stats?.prox_max ?? "",
+            distMin: item.stats?.dist_min ?? "",
+            distMax: item.stats?.dist_max ?? "",
+            fov: item.stats?.fov ?? "",
+            imu: item.stats?.imu ?? "",
+
+            // Stats: 3D Printed
+            infill: item.stats?.infill ?? "",
+            filament: item.stats?.filament ?? "",
+            wallLoops: item.stats?.wall_loops ?? "",
+            infillPattern: item.stats?.infill_pattern ?? "",
+            support: item.stats?.support ?? "",
+            supportType: item.stats?.support_type ?? "",
+            onBuildplateOnly: item.stats?.on_buildplate_only ?? "",
+            removeSmallOverhangs: item.stats?.remove_small_overhangs ?? "",
+            thresholdAngle: item.stats?.threshold_angle ?? "",
+            brimType: item.stats?.brim_type ?? "",
+            brimWidth: item.stats?.brim_width ?? "",
+            brimObjectGap: item.stats?.brim_object_gap ?? "",
+            filamentAmount: item.stats?.filament_amount ?? "",
+            cost: item.stats?.cost ?? "",
+            timeH: item.stats?.time_h ?? "0",
+            timeM: item.stats?.time_m ?? "",
+
+            // Stats: Other
+            description: item.stats?.description || "",
+
+            // Special Case: Convert Array to Comma String for input
+            connectorTypes: Array.isArray(item.stats?.connector_types)
+                ? item.stats.connector_types.join(", ")
+                : (item.stats?.connector_types ?? ""),
+        };
+
+        // 3. Set the WORKING state (the one the inputs use)
+        setFormData(flattenedData);
+
+        // 4. Set the REFERENCE state (if you still need it for comparison)
+        setCurrentItem(item);
+    }
+
+    function handleEditClose() {
+        setFormData(megaSchema);
+        setIsEditPartOpen(false);
+        onExitClick();
+    }
+
     const [isManageTagPopupOpen, setIsManageTagPopupOpen] = useState(false);
     const [deletingTagName, setDeletingTagName] = useState(null);
 
@@ -158,25 +567,23 @@ function PartsPageDesktop() {
     const [partType, setPartType] = React.useState(0);
 
     const renderStatContent = () => {
-        switch (partType) {
-            case 0:
+        switch (currentItem.stats.type) {
+            case "motor":
                 return <MotorList part={currentItem} />;
-            case 1:
+            case "servo":
                 return <ServoList part={currentItem} />;
-            case 2:
+            case "structural":
                 return <StructuralList part={currentItem} />;
-            case 3:
+            case "electrical":
                 return <ElectricalList part={currentItem} />;
-            case 4:
+            case "sensor":
                 return <SensorList part={currentItem} />;
-            case 5:
-                return <PrintedList part={currentItem} />;
-            case 6:
+            case "3d-printed":
+                return <ThreeDPrintedList part={currentItem} />;
+            case "machined":
                 return <MachinedList part={currentItem} />;
-            case 7:
-                return null;
-            case 8:
-                return null;
+            case "other":
+                return <OtherList part={currentItem} />;
             default:
                 return <MotorList part={currentItem} />;
         }
@@ -549,6 +956,7 @@ function PartsPageDesktop() {
                                 key={item.id}
                                 part={item}
                                 onRowClick={onRowClick}
+                                onEdit={handleEditOpen}
                                 onDelete={() =>
                                     setListResults(
                                         JSON.parse(
@@ -572,6 +980,12 @@ function PartsPageDesktop() {
                             >
                                 <p>{currentItem?.name}</p>
                             </div>
+                            <p className="d-partoverlay-subtitle">
+                                ID: {currentItem.manufacturerId}
+                            </p>
+                            <p className="d-partoverlay-subtitle">
+                                Manufacturer: {currentItem.manufacturer}
+                            </p>
                             <img
                                 src={currentItem?.icon}
                                 alt={currentItem?.name}
@@ -887,6 +1301,168 @@ function PartsPageDesktop() {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {isEditPartOpen && (
+                <>
+                    <div id="d-partoverlay" className="d-partoverlay">
+                        <button
+                            className="d-partoverlay-exitbutton"
+                            onClick={handleEditClose}
+                        >
+                            X
+                        </button>
+                        <div className="d-createitem-centercontainer">
+                            <form
+                                onSubmit={handleSubmit}
+                                className="d-createitem-form"
+                            >
+                                <h3 className="d-createitem-form-subtitle">
+                                    ({currentItem.manufacturerId}) -{" "}
+                                    {currentItem.name}
+                                </h3>
+
+                                <hr className="d-createitem-form-divider"></hr>
+                                <h4 className="d-createitem-form-subtitle2">
+                                    Basic Info:
+                                </h4>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Name:</label>
+                                    <input
+                                        name="name"
+                                        placeholder="e.g. NeveRest Orbital 20"
+                                        value={formData?.name}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Manufacturer ID:</label>
+                                    <input
+                                        name="manufacturerId"
+                                        placeholder="e.g. am-3637b"
+                                        value={formData?.manufacturerId}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Manufacturer:</label>
+                                    <input
+                                        name="manufacturer"
+                                        placeholder="e.g. Andymark"
+                                        value={formData?.manufacturer}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Tags (Select all that apply):</label>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexWrap: "wrap",
+                                            gap: "8px",
+                                            marginTop: "10px",
+                                        }}
+                                    >
+                                        {availableTags.map((tag) => {
+                                            const isSelected =
+                                                formData?.tags?.includes(
+                                                    tag.name,
+                                                );
+
+                                            const bgColor = isSelected
+                                                ? tag.color || "#ccc"
+                                                : "#333";
+
+                                            const textColor = isSelected
+                                                ? getContrastYIQ(bgColor)
+                                                : "#888";
+
+                                            return (
+                                                <div
+                                                    key={tag.name}
+                                                    onClick={() =>
+                                                        toggleEditTag(tag.name)
+                                                    }
+                                                    style={{
+                                                        cursor: "pointer",
+                                                        padding: "6px 12px",
+                                                        borderRadius: "15px",
+                                                        fontSize: "0.75rem",
+                                                        fontWeight: "bold",
+                                                        textTransform:
+                                                            "capitalize",
+                                                        transition: "all 0.2s",
+                                                        backgroundColor:
+                                                            isSelected
+                                                                ? tag.color
+                                                                : "#333",
+                                                        color: textColor,
+                                                        border: `1px solid ${isSelected ? tag.color : "#444"}`,
+                                                    }}
+                                                >
+                                                    {tag.name}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <hr className="d-createitem-form-divider"></hr>
+                                {renderSpecificEditStatContent()}
+
+                                <h4 className="d-createitem-form-subtitle2">
+                                    Links:
+                                </h4>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Icon URL:</label>
+                                    <input
+                                        name="iconLink"
+                                        value={formData.iconLink}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>CAD Link:</label>
+                                    <input
+                                        name="cadLink"
+                                        value={formData.cadLink}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="d-createitem-input-group">
+                                    <label>Store Link:</label>
+                                    <input
+                                        name="storeLink"
+                                        value={formData.storeLink}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+
+                                <div className="rowcontainer">
+                                    <button
+                                        type="submit"
+                                        className="d-createitem-submit-button"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="d-createitem-submit-button"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </>
             )}
         </>
     );
