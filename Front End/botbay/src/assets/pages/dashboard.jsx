@@ -100,7 +100,7 @@ function Dashboard() {
                             </div>
 
                             <div
-                                className={`sidebaritem ${pageIndex === 3 ? "sidebaritemhighlighted" : ""}`}
+                                className={`sidebaritem ${pageIndex === 2 ? "sidebaritemhighlighted" : ""}`}
                                 onClick={() => setPageIndex(2)}
                             >
                                 <p>
@@ -110,7 +110,7 @@ function Dashboard() {
                             </div>
 
                             <div
-                                className={`sidebaritem ${pageIndex === 4 ? "sidebaritemhighlighted" : ""}`}
+                                className={`sidebaritem ${pageIndex === 3 ? "sidebaritemhighlighted" : ""}`}
                                 onClick={() => setPageIndex(3)}
                             >
                                 <p>
@@ -122,7 +122,7 @@ function Dashboard() {
                             </div>
 
                             <div
-                                className={`sidebaritem ${pageIndex === 5 ? "sidebaritemhighlighted" : ""}`}
+                                className={`sidebaritem ${pageIndex === 4 ? "sidebaritemhighlighted" : ""}`}
                                 onClick={() => setPageIndex(4)}
                             >
                                 <p>

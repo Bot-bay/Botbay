@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function PlanPageDesktop() {
+    const [compSet, setComp] = useState(null);
+
     return <></>;
 }
 
