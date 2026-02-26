@@ -9,6 +9,9 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
     const [warningOn, setWarningOn] = useState(false);
     const [visible, setVisible] = useState(true);
 
+    const statusColor =
+        (part.needed || 0) > part.quantity ? "#d94a4a" : "inherit";
+
     if (!visible) {
         return null;
     }
@@ -52,9 +55,15 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
                     )}
                     {part.manufacturerId}
                 </div>
-                <div style={{ width: "50%" }}>{part.name}</div>
-                <div style={{ width: "15%" }}>{part.quantity}</div>
-                <div style={{ width: "15%" }}>{part.needed || 0}</div>
+                <div style={{ width: "50%", color: statusColor }}>
+                    {part.name}
+                </div>
+                <div style={{ width: "15%", color: statusColor }}>
+                    {part.quantity}
+                </div>
+                <div style={{ width: "15%", color: statusColor }}>
+                    {part.needed || 0}
+                </div>
                 <div style={{ width: "5%", height: "100%" }}>
                     {part.editable ? (
                         <div

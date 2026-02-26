@@ -53,17 +53,11 @@ function HomePageDesktop() {
                             </button>
                         </div>
                     </div>
-                    <div className="d-griditem-reg">
+                    <div className="d-griditem-2r" style={{ gridColumn: 2 }}>
                         <p id="d-griditem-title">Parts</p>
                     </div>
-                    <div className="d-griditem-reg">
-                        <p id="d-griditem-title">Upcoming</p>
-                    </div>
-                    <div className="d-griditem-reg">
+                    <div className="d-griditem-2r" style={{ gridColumn: 3 }}>
                         <p id="d-griditem-title">Batteries</p>
-                    </div>
-                    <div className="d-griditem-reg">
-                        <p id="d-griditem-title">Packing List</p>
                     </div>
                 </div>
             </div>
