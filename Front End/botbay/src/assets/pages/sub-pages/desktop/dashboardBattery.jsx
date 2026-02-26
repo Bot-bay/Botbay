@@ -1,7 +1,13 @@
 import React from "react";
 
-function BatterPageDesktop() {
-    return <></>;
+function BatteryPageDesktop() {
+    return (
+        <>
+            <div className="centercontainer">
+                <p>test</p>
+            </div>
+        </>
+    );
 }
 
-export default BatterPageDesktop;
+export default BatteryPageDesktop;
