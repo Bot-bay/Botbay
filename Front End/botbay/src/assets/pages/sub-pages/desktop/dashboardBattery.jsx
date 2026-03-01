@@ -5,6 +5,9 @@ function BatteryPageDesktop() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newType, setNewType] = useState("b");
+    // New states for the popup inputs
+    const [newCapacity, setNewCapacity] = useState("3.0"); // Default Ah
+    const [newSpeed, setNewSpeed] = useState("2.0"); // Default Amps
 
     const [savedBatteries, setSavedBatteries] = useState(() => {
         const localData = localStorage.getItem("batteryList");
@@ -18,7 +21,11 @@ function BatteryPageDesktop() {
         const newBattery = {
             name: newName,
             type: newType,
+            capacity: parseFloat(newCapacity) || 3.0,
+            chargerSpeed: parseFloat(newSpeed) || 2.0,
             toc: Date.now(),
+            startTime: null,
+            startLevel: 0,
             mcStatus: false,
         };
 
@@ -26,7 +33,10 @@ function BatteryPageDesktop() {
         setSavedBatteries(updatedList);
         localStorage.setItem("batteryList", JSON.stringify(updatedList));
 
+        // Reset fields
         setNewName("");
+        setNewCapacity("3.0");
+        setNewSpeed("2.0");
         setIsPopupOpen(false);
     };
 
@@ -34,9 +44,25 @@ function BatteryPageDesktop() {
         const updatedList = savedBatteries.filter(
             (battery) => battery.name !== nameToDelete,
         );
+        setSavedBatteries(updatedList);
+        localStorage.setItem("batteryList", JSON.stringify(updatedList));
+    };
+
+    const updateBatteryStatus = (name, isCharging, startLevel = 0) => {
+        const updatedList = savedBatteries.map((item) => {
+            if (item.name === name) {
+                return {
+                    ...item,
+                    mcStatus: isCharging,
+                    startLevel: startLevel, // Save the % it was at when put on charger
+                    startTime: isCharging ? Date.now() : null, // The anchor for % calculation
+                    toc: Date.now(), // For the duration timer
+                };
+            }
+            return item;
+        });
 
         setSavedBatteries(updatedList);
-
         localStorage.setItem("batteryList", JSON.stringify(updatedList));
     };
 
@@ -48,22 +74,6 @@ function BatteryPageDesktop() {
         setIsPopupOpen(false);
     }
 
-    const updateBatteryStatus = (name, isCharging) => {
-        const updatedList = savedBatteries.map((item) => {
-            if (item.name === name) {
-                return {
-                    ...item,
-                    mcStatus: isCharging,
-                    toc: Date.now(),
-                };
-            }
-            return item;
-        });
-
-        setSavedBatteries(updatedList);
-        localStorage.setItem("batteryList", JSON.stringify(updatedList));
-    };
-
     const hasBatteries = savedBatteries && savedBatteries.length > 0;
 
     return (
@@ -72,7 +82,7 @@ function BatteryPageDesktop() {
                 <p>Batteries</p>
                 <button
                     className="d-battery-add-trigger"
-                    onClick={() => handlePopUpOpen(true)}
+                    onClick={handlePopUpOpen}
                 >
                     + Add New Battery
                 </button>
@@ -95,6 +105,14 @@ function BatteryPageDesktop() {
                         <div className="d-battery-popup">
                             <h3>Track New Battery</h3>
                             <form onSubmit={addBattery}>
+                                <label
+                                    style={{
+                                        color: "#94a3b8",
+                                        fontSize: "0.8rem",
+                                    }}
+                                >
+                                    Name
+                                </label>
                                 <input
                                     type="text"
                                     placeholder="Battery Name (e.g. Unit 1)"
@@ -102,6 +120,15 @@ function BatteryPageDesktop() {
                                     onChange={(e) => setNewName(e.target.value)}
                                     required
                                 />
+
+                                <label
+                                    style={{
+                                        color: "#94a3b8",
+                                        fontSize: "0.8rem",
+                                    }}
+                                >
+                                    Device Type
+                                </label>
                                 <select
                                     value={newType}
                                     onChange={(e) => setNewType(e.target.value)}
@@ -109,6 +136,48 @@ function BatteryPageDesktop() {
                                     <option value="b">Standard Battery</option>
                                     <option value="dh">Driver Hub</option>
                                 </select>
+
+                                <div style={{ display: "flex", gap: "10px" }}>
+                                    <div style={{ flex: 1 }}>
+                                        <label
+                                            style={{
+                                                color: "#94a3b8",
+                                                fontSize: "0.8rem",
+                                            }}
+                                        >
+                                            Capacity (Ah)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            value={newCapacity}
+                                            onChange={(e) =>
+                                                setNewCapacity(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <label
+                                            style={{
+                                                color: "#94a3b8",
+                                                fontSize: "0.8rem",
+                                            }}
+                                        >
+                                            Charger (A)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            step="0.1"
+                                            value={newSpeed}
+                                            onChange={(e) =>
+                                                setNewSpeed(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="d-battery-popup-buttons">
                                     <button
                                         type="submit"
@@ -118,7 +187,11 @@ function BatteryPageDesktop() {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => handlePopUpClose(false)}
+                                        onClick={handlePopUpClose}
+                                        style={{
+                                            backgroundColor: "#334155",
+                                            color: "white",
+                                        }}
                                     >
                                         Cancel
                                     </button>
