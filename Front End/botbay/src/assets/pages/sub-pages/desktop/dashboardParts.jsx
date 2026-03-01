@@ -797,22 +797,24 @@ function PartsPageDesktop() {
                                 <MdDownload />
                                 <span style={{ marginLeft: 4 }}>JSON</span>
                             </button>
-                            <button>
+                            {/* <button>
                                 <MdUpload />
                                 <span style={{ marginLeft: 4 }}>Import</span>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
 
                     <div className="d-partslistwrapper" id="partslistwrapper">
                         <div className="d-partslistheader">
-                            <div style={{ width: "15%" }}>
+                            <div
+                                style={{
+                                    width: "15%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <span
-                                    style={{
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        textAlign: "center",
-                                    }}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() =>
                                         reloadPartsList("manufacturerId")
                                     }
@@ -820,37 +822,46 @@ function PartsPageDesktop() {
                                     Id {getSortIcon("manufacturerId")}
                                 </span>
                             </div>
-                            <div style={{ width: "50%" }}>
+
+                            <div
+                                style={{
+                                    width: "50%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <span
-                                    style={{
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        textAlign: "center",
-                                    }}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() => reloadPartsList("name")}
                                 >
                                     Name {getSortIcon("name")}
                                 </span>
                             </div>
-                            <div style={{ width: "15%" }}>
+
+                            <div
+                                style={{
+                                    width: "15%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <span
-                                    style={{
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        textAlign: "center",
-                                    }}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() => reloadPartsList("quantity")}
                                 >
                                     Quantity {getSortIcon("quantity")}
                                 </span>
                             </div>
-                            <div style={{ width: "15%" }}>
+
+                            <div
+                                style={{
+                                    width: "15%",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
                                 <span
-                                    style={{
-                                        cursor: "pointer",
-                                        width: "100%",
-                                        textAlign: "center",
-                                    }}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() => reloadPartsList("needed")}
                                 >
                                     Needed {getSortIcon("needed")}

@@ -135,21 +135,7 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-    width: 38%;
-}
-
-.d-partslistwrapper {
-    border-radius: 10px;
-    width: 95%;
-    overflow: hidden;
-}
-
-.d-partslistwrapper > :nth-child(odd) {
-    background-color: #1d1e2c;
-}
-
-.d-partslistwrapper > :nth-child(even) {
-    background-color: #161616;
+    width: 28%;
 }
 
 .d-partitem {
@@ -454,12 +440,6 @@
     position: fixed;
 }
 
-.d-partslistheader,
-.d-partslistwrapper,
-.d-partslistcontainer {
-    overflow: visible !important;
-}
-
 .custom-tag-dropdown {
     position: relative;
     width: 100%;
@@ -538,16 +518,32 @@
     border-radius: 10px;
 }
 
+.d-partslistcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.d-partslistwrapper {
+    border-radius: 12px;
+    width: 95%;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+}
+
 .d-partslistheader {
     box-sizing: border-box;
-    padding: 10px;
-    background-color: #1d1e2c;
+    padding: 20px 16px;
+    background-color: rgba(0, 0, 0, 0.3);
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    border-bottom: 1px solid white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .d-partslistheader div {
@@ -555,21 +551,32 @@
     text-align: center;
     justify-content: flex-start;
     align-items: center;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
     user-select: none;
+}
+
+.d-partslistwrapper > :nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.01);
+    padding: 18px 16px;
+}
+
+.d-partslistwrapper > :nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 18px 16px;
+}
+
+.d-partslistwrapper > div:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transition: background 0.2s ease;
 }
 
 .d-partslistheader div span:hover {
     cursor: pointer;
-}
-
-.d-partslistcontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    color: #ffffff;
 }
 
 .sidebarlogo {
@@ -825,4 +832,236 @@
     border: 1px solid #ccc;
     max-height: 500px;
     overflow-y: auto;
+}
+
+.d-battery-listitem {
+    width: 95%;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.d-battery-listitem table {
+    width: 95%;
+    max-width: 1100px;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #e2e8f0;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.d-battery-listitem th {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #94a3b8;
+    padding: 16px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.d-battery-listitem td {
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+}
+
+.d-battery-listitem tr:last-child td {
+    border-bottom: none;
+}
+
+.d-battery-listitem tr:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    transition: background 0.2s ease-in-out;
+}
+
+.d-battery-listitem button {
+    padding: 8px 16px;
+    margin: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.d-battery-pocbutton {
+    background-color: #47d5a6;
+    color: white;
+}
+.d-battery-pocbutton:hover:not(:disabled) {
+    background-color: #63f3c3;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.d-battery-tocbutton {
+    background-color: #d94a4a;
+    color: white;
+}
+.d-battery-tocbutton:hover:not(:disabled) {
+    background-color: #ff5c5c;
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
+}
+
+.d-battery-listitem button:disabled {
+    background-color: #334155;
+    color: #64748b;
+    border-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.d-battery-centercontainer {
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+}
+
+.d-battery-add-trigger {
+    background-color: #47d5a6;
+    color: #1a2e3e;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: all 0.2s ease-in-out;
+}
+
+.d-battery-add-trigger:hover {
+    background-color: #63f3c3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(71, 213, 166, 0.3);
+}
+
+.d-battery-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.d-battery-modal {
+    background: #1d2e3d;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 380px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.d-battery-modal h3 {
+    margin: 0 0 20px 0;
+    color: white;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.d-battery-modal input,
+.d-battery-modal select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #2c3e50;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.d-battery-modal input:focus {
+    outline: none;
+    border-color: #47d5a6;
+}
+
+.d-battery-popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.d-battery-popup-buttons button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.d-battery-popup-buttons button[type="button"] {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.d-battery-popup-buttons button[type="button"]:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.d-battery-titlecontainer {
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    font-family: "Interbold";
+}
+
+.d-battery-titlecontainer p {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.d-battery-add-trigger {
+    background-color: #47d5a6;
+    color: #1a2e3e;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    height: auto;
+    white-space: nowrap;
+}
+
+.d-battery-add-trigger:hover {
+    background-color: #63f3c3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(71, 213, 166, 0.2);
+}
+
+.d-battery-trash {
+    cursor: pointer;
+    height: 100%;
+    transition: color 200ms ease;
+}
+
+.d-battery-trash:hover {
+    color: #d94a4a !important;
+    transition: color 200ms ease;
 }

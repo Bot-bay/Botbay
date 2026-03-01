@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Battery 01",
+        "type": "b",
+        "toc": 1740786415000,
+        "mcStatus": false
+    },
+    { "name": "DH 01", "type": "dh", "toc": 1740780000000, "mcStatus": true }
+]
