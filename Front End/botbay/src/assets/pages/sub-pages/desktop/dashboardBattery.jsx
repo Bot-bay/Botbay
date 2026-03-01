@@ -92,7 +92,7 @@ function BatteryPageDesktop() {
 
                 {isPopupOpen && (
                     <div className="d-battery-popup-overlay">
-                        <div className="d-battery-modal">
+                        <div className="d-battery-popup">
                             <h3>Track New Battery</h3>
                             <form onSubmit={addBattery}>
                                 <input

@@ -93,31 +93,3 @@ function formatDuration(toc) {
 
     return `${hours}:${paddedMinutes}`;
 }
-
-function BatteryListRow(name, type, toc, mcStatus) {
-    return (
-        <tr>
-            <td>{name}</td>
-            <td>
-                {type === "dh" ? "Driver Hub" : type === "b" ? "Battery" : type}
-            </td>
-            <td>{formatDuration(toc)}</td>
-            <td>{mcStatus ? "Charging..." : "Not charging"}</td>
-            <td>
-                <button
-                    className="d-battery-pocbutton"
-                    disabled={mcStatus === true}
-                >
-                    Put on Charger
-                </button>
-
-                <button
-                    className="d-battery-tocbutton"
-                    disabled={mcStatus === false}
-                >
-                    Take off Charger
-                </button>
-            </td>
-        </tr>
-    );
-}

@@ -86,6 +86,115 @@
     font-weight: 700;
 }
 
+.d-partoverlay {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    overflow-y: auto;
+    position: absolute;
+    height: 100vh;
+    left: 13%;
+    width: 87%;
+    background-color: #000017;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 10000;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.d-partoverlay-subtitle {
+    width: 100%;
+    padding-left: 5%;
+    box-sizing: border-box;
+    margin: 0;
+    margin-bottom: 20px;
+    color: white;
+    font-family: "Inter";
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.d-partoverlay-infodiv1 {
+    background-color: #1d1e2c;
+    width: 80%;
+    border-radius: 8px;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.d-partoverlay-infodiv1 p {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: white;
+    margin: 0 0 10px 0;
+}
+
+.d-partoverlay-infodiv1 ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.d-partoverlay-infodiv1 ul li {
+    font-size: 1rem;
+    color: white;
+    margin: 8px 0;
+}
+
+.d-partoverlay-infodiv1 ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 200ms ease;
+}
+
+.d-partoverlay-infodiv1 ul li a:hover {
+    cursor: pointer;
+    color: #94a3b8;
+    text-decoration: underline;
+}
+
+.d-partoverlay-editquant {
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    height: 98%;
+    color: white;
+    border: 1px solid #94a3b8;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.d-partoverlay-editquant p {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.d-partoverlay-editquant button {
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    transition: all 200ms ease;
+    border-radius: 4px;
+}
+
+.d-partoverlay-editquant button:hover {
+    background-color: #44327a;
+    transition: all 200ms ease;
+}
+
 .dashboardcontainer {
     display: flex;
     flex-direction: column;
@@ -148,15 +257,6 @@
 .d-createitem-middlecontainer button:active {
     transform: translateY(0);
     background-color: #1a1245;
-}
-
-.d-partoverlay-subtitle {
-    width: 100%;
-    padding-left: 5%;
-    box-sizing: border-box;
-    margin: 0;
-    margin-bottom: 11px;
-    color: white;
 }
 
 .d-titlecontainer {
@@ -355,6 +455,37 @@
     background-color: #1a1245 !important;
 }
 
+.d-partoverlay-editquant button {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #44327a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 200ms ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    overflow: hidden;
+}
+
+.d-partoverlay-editquant button:hover {
+    background-color: #3a288a !important;
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.d-partoverlay-editquant button:active {
+    background-color: #1d1245;
+}
+
 .d-createitem-centercontainer {
     display: flex;
     align-items: flex-start;
@@ -414,23 +545,6 @@
     margin: 10px;
 }
 
-.d-partoverlay {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    overflow-y: auto;
-    position: absolute;
-    height: 100vh;
-    left: 13%;
-    width: 87%;
-    background-color: #000017;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    z-index: 10000;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-
 /* Scrollbar styling */
 .d-partoverlay::-webkit-scrollbar {
     width: 5px;
@@ -445,72 +559,6 @@
 
 .thirdcontainer img {
     max-width: 90%;
-}
-
-.d-partoverlay-infodiv1 {
-    background-color: #1d1e2c;
-    width: 80%;
-    border-radius: 10px;
-    padding: 10px;
-    box-sizing: border-box;
-    margin-top: 20px;
-}
-
-.d-partoverlay-infodiv1 p {
-    font-weight: 600;
-    font-size: 1.4rem;
-    color: white;
-}
-
-.d-partoverlay-infodiv1 ul li {
-    font-size: 1rem;
-    color: white;
-}
-
-.d-partoverlay-infodiv1 ul li a {
-    color: white;
-}
-
-.d-partoverlay-infodiv1 ul li a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.d-partoverlay-editquant {
-    gap: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 98%;
-    height: 98%;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-}
-
-.d-partoverlay-editquant p {
-    font-size: 1.2rem;
-}
-
-.d-partoverlay-editquant button {
-    font-size: 1.5rem;
-    width: 2rem;
-    height: 2rem;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 0px;
-    background-color: transparent;
-    border: none;
-    transition: background-color 200ms ease;
-}
-
-.d-partoverlay-editquant button:hover {
-    background-color: #44327a;
-    transition: background-color 200ms ease;
 }
 
 .d-createtagoverlay {
@@ -1094,62 +1142,84 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
 }
 
-.d-battery-modal {
-    background: #1d2e3d;
+.d-battery-popup {
+    background: #1d1e2c;
     padding: 30px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     width: 380px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-.d-battery-modal h3 {
-    margin: 0 0 20px 0;
-    color: white;
-    font-size: 1.4rem;
+.d-battery-popup h3 {
+    margin: 0 0 24px 0;
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 600;
     text-align: center;
+    letter-spacing: -0.02em;
 }
 
-.d-battery-modal input,
-.d-battery-modal select {
+.d-battery-popup input,
+.d-battery-popup select {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
-    background: #2c3e50;
+    background: #282a3a;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    border-radius: 6px;
+    color: #ececec;
+    border-radius: 8px;
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
 }
 
-.d-battery-modal input:focus {
+.d-battery-popup input:focus,
+.d-battery-popup select:focus {
     outline: none;
-    border-color: #47d5a6;
+    background: #2f3142;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .d-battery-popup-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .d-battery-popup-buttons button {
     padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     border: none;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 }
 
 .d-battery-popup-buttons button[type="button"] {
+    background: rgba(255, 255, 255, 0.05);
+    color: #a1a1aa;
+}
+
+.d-battery-popup-buttons button[type="button"]:hover {
     background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.d-battery-popup-buttons button:not([type="button"]) {
+    background: #6366f1;
     color: white;
+}
+
+.d-battery-popup-buttons button:not([type="button"]):hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
 }
 
 .d-battery-popup-buttons button[type="button"]:hover {
