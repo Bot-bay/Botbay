@@ -76,9 +76,7 @@ function HomePageDesktop() {
     }, [chartData]);
 
     const criticalStock = useMemo(() => {
-        return partData.filter(
-            (part) => part.quantity - part.needed < 0 || part.quantity === 0,
-        );
+        return partData.filter((part) => part.quantity - part.needed < 0);
     }, [partData]);
 
     const [currentTime, setCurrentTime] = React.useState(Date.now());
@@ -169,12 +167,12 @@ function HomePageDesktop() {
                     </div>
 
                     <div className="d-griditem-2r" style={{ gridColumn: 2 }}>
-                        <p id="d-griditem-title">Parts Distribution</p>
+                        <p id="d-griditem-title">Parts</p>
 
                         <div
                             style={{
                                 width: "100%",
-                                height: "220px",
+                                height: "30vh",
                                 marginTop: "10px",
                             }}
                         >
