@@ -45,9 +45,10 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
                         <img
                             src={part.icon}
                             style={{
-                                width: "40px",
-                                height: "40px",
-                                marginRight: "15px",
+                                width: "2.5rem",
+                                height: "2.5rem",
+                                marginRight: "0.9375rem",
+                                borderRadius: "5px",
                             }}
                             alt={`${part.name} icon`}
                             onError={() => setImgLoaded(false)}

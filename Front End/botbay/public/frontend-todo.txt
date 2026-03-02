@@ -10,16 +10,12 @@ make pinging flash smaller (change the css from px to rem 1rem = 16px, 1.125rem 
 
 home:
 
-Fix 0 bug for critical stock
 Fix order of critical stock
 Link critical stock to part
-Round image corners 5px for icons, 15px for main
 
 
 parts table:
 
-Equal tag width
-Remove last divider for table
 Align search bar and top buttons with table
 
 

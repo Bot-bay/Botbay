@@ -376,7 +376,6 @@
     align-items: center;
     text-align: center;
     padding: 8px;
-    border-bottom: 1px solid white;
     transition: background-color 200ms ease;
 }
 
@@ -402,6 +401,10 @@
 .d-partitem-iconbutton2:hover {
     color: #d94a4a !important;
     transition: color 200ms ease;
+}
+
+.d-partitem:not(:last-child) {
+    border-bottom: 1px solid white;
 }
 
 .d-partoverlay-exitbutton {
@@ -576,6 +579,7 @@
 
 .thirdcontainer img {
     max-width: 90%;
+    border-radius: 15px;
 }
 
 .d-createtagoverlay {
@@ -708,6 +712,7 @@
     flex-direction: column;
     padding: 8px;
     gap: 4px;
+    overflow-x: hidden;
 }
 
 .d-tag-label {
@@ -720,6 +725,8 @@
     cursor: pointer;
     transition: opacity 0.2s ease;
     gap: 8px;
+    width: 10.0541875rem;
+    max-width: 90%;
 }
 
 .d-tag-label:hover {
@@ -816,11 +823,6 @@
 .d-partslistwrapper > div:hover {
     background-color: rgba(255, 255, 255, 0.08);
     transition: background 0.2s ease;
-}
-
-.d-partslistheader div span:hover {
-    cursor: pointer;
-    color: #ffffff;
 }
 
 .d-gridcontainer-3c2r {
