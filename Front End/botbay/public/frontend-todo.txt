@@ -5,6 +5,7 @@ batteries:
 Center batteries
 Add innacurate timer notice
 Fix title for batteries
+make pinging flash smaller (change the css from px to rem 1rem = 16px, 1.125rem = 18px)
 
 
 home:
