@@ -1,0 +1,30 @@
+NOW:
+
+batteries:
+
+Center batteries
+Add innacurate timer notice
+Fix title for batteries
+
+
+home:
+
+Fix 0 bug for critical stock
+Fix order of critical stock
+Link critical stock to part
+Round image corners 5px for icons, 15px for main
+
+
+parts table:
+
+Equal tag width
+Remove last divider for table
+Align search bar and top buttons with table
+
+
+
+
+NEXT UPDATE:
+Add battery history
+Add priority for critical stock
+Add ready batteries
