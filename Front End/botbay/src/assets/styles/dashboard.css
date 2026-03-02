@@ -1216,7 +1216,6 @@
 }
 
 .d-slider-box input[type="range"] {
-    -webkit-appearance: none;
     width: 100px;
     height: 6px;
     background: #334155;

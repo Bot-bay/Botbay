@@ -5,21 +5,37 @@ function BatteryPageDesktop() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newType, setNewType] = useState("b");
-    // New states for the popup inputs
-    const [newCapacity, setNewCapacity] = useState("3.0"); // Default Ah
-    const [newSpeed, setNewSpeed] = useState("2.0"); // Default Amps
+    const [newCapacity, setNewCapacity] = useState("3.0");
+    const [newSpeed, setNewSpeed] = useState("2.0");
+
+    // 1. New state to track if the name already exists
+    const [isDuplicate, setIsDuplicate] = useState(false);
 
     const [savedBatteries, setSavedBatteries] = useState(() => {
         const localData = localStorage.getItem("batteryList");
         return localData ? JSON.parse(localData) : [];
     });
 
+    // 2. Updated change handler to check for duplicates in real-time
+    const handleNameChange = (e) => {
+        const value = e.target.value;
+        setNewName(value);
+
+        // Check if name exists (case-insensitive)
+        const exists = savedBatteries.some(
+            (b) => b.name.toLowerCase() === value.trim().toLowerCase(),
+        );
+        setIsDuplicate(exists);
+    };
+
     const addBattery = (e) => {
         e.preventDefault();
-        if (!newName.trim()) return;
+
+        // 3. Final safety check: block submission if duplicate or empty
+        if (!newName.trim() || isDuplicate) return;
 
         const newBattery = {
-            name: newName,
+            name: newName.trim(),
             type: newType,
             capacity: parseFloat(newCapacity) || 3.0,
             chargerSpeed: parseFloat(newSpeed) || 2.0,
@@ -37,8 +53,11 @@ function BatteryPageDesktop() {
         setNewName("");
         setNewCapacity("3.0");
         setNewSpeed("2.0");
+        setIsDuplicate(false); // Reset duplicate state
         setIsPopupOpen(false);
     };
+
+    // ... (deleteBattery and updateBatteryStatus remain the same)
 
     const deleteBattery = (nameToDelete) => {
         const updatedList = savedBatteries.filter(
@@ -54,9 +73,9 @@ function BatteryPageDesktop() {
                 return {
                     ...item,
                     mcStatus: isCharging,
-                    startLevel: startLevel, // Save the % it was at when put on charger
-                    startTime: isCharging ? Date.now() : null, // The anchor for % calculation
-                    toc: Date.now(), // For the duration timer
+                    startLevel: startLevel,
+                    startTime: isCharging ? Date.now() : null,
+                    toc: Date.now(),
                 };
             }
             return item;
@@ -72,6 +91,8 @@ function BatteryPageDesktop() {
 
     function handlePopUpClose() {
         setIsPopupOpen(false);
+        setIsDuplicate(false); // Reset on close
+        setNewName("");
     }
 
     const hasBatteries = savedBatteries && savedBatteries.length > 0;
@@ -117,9 +138,29 @@ function BatteryPageDesktop() {
                                     type="text"
                                     placeholder="Battery Name (e.g. Unit 1)"
                                     value={newName}
-                                    onChange={(e) => setNewName(e.target.value)}
+                                    onChange={handleNameChange}
                                     required
+                                    // 4. Conditional styling for the red border
+                                    style={{
+                                        border: isDuplicate
+                                            ? "2px solid #ef4444"
+                                            : "1px solid #ccc",
+                                        outline: "none",
+                                    }}
                                 />
+                                {/* 5. Optional: Error message */}
+                                {isDuplicate && (
+                                    <p
+                                        style={{
+                                            color: "#ef4444",
+                                            fontSize: "0.7rem",
+                                            marginTop: "-10px",
+                                            marginBottom: "10px",
+                                        }}
+                                    >
+                                        This name is already in use.
+                                    </p>
+                                )}
 
                                 <label
                                     style={{
@@ -182,6 +223,10 @@ function BatteryPageDesktop() {
                                     <button
                                         type="submit"
                                         className="d-battery-pocbutton"
+                                        disabled={isDuplicate} // 6. Disable button if duplicate
+                                        style={{
+                                            opacity: isDuplicate ? 0.5 : 1,
+                                        }}
                                     >
                                         Add
                                     </button>
