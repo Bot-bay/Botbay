@@ -408,7 +408,8 @@ function HomePageDesktop({ handleLowStockClick }) {
                                             backgroundColor: "#1d1e2c",
                                             border: "1px solid #44327a",
                                             borderRadius: "8px",
-                                            fontSize: "12px",
+                                            fontSize: "16px",
+                                            color: "#fff",
                                         }}
                                         itemStyle={{ color: "#fff" }}
                                     />
@@ -434,11 +435,11 @@ function HomePageDesktop({ handleLowStockClick }) {
                             className="d-homedash-part-critical-container"
                             style={{
                                 marginTop: "10px",
-                                height: "100%", // Take up all available parent space
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
-                                overflow: "hidden", // Keep the container itself tidy
-                                position: "relative", // Anchor for the scrollable area
+                                overflow: "hidden",
+                                position: "relative",
                             }}
                         >
                             <p
@@ -461,9 +462,9 @@ function HomePageDesktop({ handleLowStockClick }) {
                             {/* SCROLLABLE WRAPPER */}
                             <div
                                 style={{
-                                    flex: 1, // Grow to fill the container
-                                    overflowY: "auto", // THE SCROLLBAR LIVES HERE
-                                    paddingRight: "4px", // Space for the scrollbar so it doesn't overlap cards,
+                                    flex: 1,
+                                    overflowY: "auto",
+                                    paddingRight: "4px",
                                     overflowX: "hidden",
                                 }}
                             >
