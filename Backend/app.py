@@ -66,8 +66,9 @@ def AddProduct(Request):
         
     
 
+DataBaseService.InitalizeDB()
 
-
+print(DataBaseService.GetData(1,1,1))
 
 Websocket.run(App,debug=True)
 
