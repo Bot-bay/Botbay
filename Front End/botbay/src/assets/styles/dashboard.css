@@ -549,6 +549,21 @@
 .d-createitem-input-group input {
     width: 100%;
     font-size: 1.1rem;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #282a3a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ececec;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.d-createitem-input-group input:focus {
+    outline: none;
+    background: #2f3142;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .d-createitem-form-subtitle {
@@ -570,6 +585,40 @@
 
 .d-createitem-submit-button {
     margin: 10px;
+}
+
+/* Container to match the border-radius and spacing of your inputs */
+.d-custom-sketch-container .w-color-sketch {
+    background-color: #282a3a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.d-custom-sketch-container .w-color-sketch-input input {
+    background: #2f3142 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #ececec !important;
+    border-radius: 4px !important;
+    font-size: 0.9rem !important;
+    padding: 4px 8px !important;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.d-custom-sketch-container .w-color-sketch-input input:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2) !important;
+}
+
+.d-custom-sketch-container .w-color-sketch-label {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase;
+    margin-top: 4px;
 }
 
 /* Scrollbar styling */

@@ -1193,14 +1193,13 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                             boxSizing: "border-box",
                         }}
                     />
-                    <Sketch
-                        style={{ backgroundColor: "#ffffff", color: "white" }}
-                        color={hex}
-                        disableAlpha={true}
-                        onChange={(color) => {
-                            setHex(color.hex);
-                        }}
-                    />
+                    <div className="d-custom-sketch-container">
+                        <Sketch
+                            color={hex}
+                            disableAlpha={true}
+                            onChange={(color) => setHex(color.hex)}
+                        />
+                    </div>
                     <button
                         onClick={() => {
                             const trimmedName = newTagName.trim();
