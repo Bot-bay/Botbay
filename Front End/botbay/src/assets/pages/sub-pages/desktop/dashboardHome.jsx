@@ -16,7 +16,7 @@ import {
 
 import "../../../styles/dashboard.css";
 
-function HomePageDesktop() {
+function HomePageDesktop({ handleLowStockClick }) {
     const partDataRaw = localStorage.getItem("partData");
     const tagListRaw = localStorage.getItem("taglist");
     const batteryListRaw = localStorage.getItem("batteryList");
@@ -76,7 +76,9 @@ function HomePageDesktop() {
     }, [chartData]);
 
     const criticalStock = useMemo(() => {
-        return partData.filter((part) => part.quantity - part.needed < 0);
+        return partData
+            .filter((part) => part.quantity - part.needed < 0)
+            .sort((a, b) => a.quantity - a.needed - (b.quantity - b.needed));
     }, [partData]);
 
     const [currentTime, setCurrentTime] = React.useState(Date.now());
@@ -300,6 +302,9 @@ function HomePageDesktop() {
                                         <div
                                             key={i}
                                             className="d-homedash-part-critical-item"
+                                            onClick={() =>
+                                                handleLowStockClick(part)
+                                            }
                                         >
                                             <div
                                                 style={{

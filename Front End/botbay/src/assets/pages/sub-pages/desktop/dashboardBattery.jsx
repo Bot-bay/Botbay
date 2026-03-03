@@ -98,17 +98,17 @@ function BatteryPageDesktop() {
     const hasBatteries = savedBatteries && savedBatteries.length > 0;
 
     return (
-        <>
-            <div className="d-battery-titlecontainer">
-                <p>Batteries</p>
-                <button
-                    className="d-battery-add-trigger"
-                    onClick={handlePopUpOpen}
-                >
-                    + Add New Battery
-                </button>
-            </div>
+        <div className="d-homepagecontainer">
             <div className="d-battery-centercontainer">
+                <div className="d-battery-titlecontainer">
+                    <p>Batteries</p>
+                    <button
+                        className="d-battery-add-trigger"
+                        onClick={handlePopUpOpen}
+                    >
+                        + Add New Battery
+                    </button>
+                </div>
                 {hasBatteries ? (
                     <BatteryList
                         table={savedBatteries}
@@ -116,9 +116,11 @@ function BatteryPageDesktop() {
                         onDelete={deleteBattery}
                     />
                 ) : (
-                    <p style={{ color: "white" }}>
-                        You are not tracking any batteries...
-                    </p>
+                    <div className="centercontainer">
+                        <p style={{ color: "white" }}>
+                            You are not tracking any batteries...
+                        </p>
+                    </div>
                 )}
 
                 {isPopupOpen && (
@@ -246,7 +248,7 @@ function BatteryPageDesktop() {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 

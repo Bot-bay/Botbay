@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/sharedstyles.css";
 import "../styles/dashboard.css";
 import { useMediaQuery } from "react-responsive";
@@ -25,19 +25,56 @@ import SettingsPagePhone from "./sub-pages/phone/dashboardSettings";
 import sidebarLogo from "../images/LogoTrans.png";
 
 function Dashboard() {
-    const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
-
+    const [partToRun, setPartToRun] = React.useState(null);
+    const [usePartToRun, setUsePartToRun] = React.useState(false);
     // There are 6 pages, home, parts, plan, pack, batteries, and settings, index tells which page we are currently on
     const [pageIndex, setPageIndex] = React.useState(0);
+
+    const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
+
+    function handleLowStockClick(part) {
+        if (
+            part.links.Store !== "" &&
+            part.links.Store !== null &&
+            part.links.Store !== undefined
+        ) {
+            window.open(part.links.Store, "_blank", "noopener,noreferrer");
+            console.log(part.links.Store);
+        } else {
+            setUsePartToRun(true);
+            setPartToRun(part);
+            setPageIndex(1);
+        }
+    }
+
+    function handleReturnToDashboard() {
+        setPageIndex(0);
+    }
+
+    function handleResetOfPart() {
+        setUsePartToRun(false);
+        setPartToRun(null);
+    }
 
     // Returns the correct page element to display, depending on whether user is on phone or desktop
     const renderPageContent = () => {
         if (isDesktop) {
             switch (pageIndex) {
                 case 0:
-                    return <HomePageDesktop />;
+                    return (
+                        <HomePageDesktop
+                            handleLowStockClick={handleLowStockClick}
+                        />
+                    );
                 case 1:
-                    return <PartsPageDesktop />;
+                    return (
+                        <PartsPageDesktop
+                            partToRun={partToRun}
+                            usePartToRun={usePartToRun}
+                            onReturn={handleReturnToDashboard}
+                            onReset={handleResetOfPart}
+                        />
+                    );
                 case 2:
                     return <BatteryPageDesktop />;
                 case 3:

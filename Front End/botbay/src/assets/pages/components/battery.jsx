@@ -50,7 +50,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                         opacity: var(--glow-opacity-min);
                     }
                     50% {
-                        box-shadow: 0 0 18px 4px var(--glow-active-color);
+                        box-shadow: 0 0 1.125rem 4px var(--glow-active-color);
                         opacity: var(--glow-opacity-max);
                     }
                 }
@@ -62,10 +62,8 @@ function BatteryList({ table, onUpdate, onDelete }) {
                 }
 
                 .indicator-light {
-                    width: 18px;
-                    height: 18px;
-                    min-width: 18px;
-                    min-height: 18px;
+                    width: 1.125rem;
+                    height: 1.125rem;
                     border-radius: 50%;
                     display: block;
                     aspect-ratio: 1 / 1;
@@ -73,6 +71,11 @@ function BatteryList({ table, onUpdate, onDelete }) {
                     animation: battery-sync-glow 2s infinite ease-in-out;
                 }
             `}</style>
+
+            <p>
+                This battery charge tracker is to only be used as a reference,
+                it is NOT 100% accurate
+            </p>
 
             <table>
                 <thead>

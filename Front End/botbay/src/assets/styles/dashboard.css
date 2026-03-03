@@ -65,6 +65,10 @@
     transition: color 200ms ease;
     user-select: none;
     text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .sidebaritem:hover {
@@ -306,7 +310,6 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    box-sizing: border-box;
     width: 95%;
     height: 4%;
     margin: 0px;
@@ -314,6 +317,10 @@
     font-family: "Interbold";
     font-size: 1.2rem;
     gap: 15px;
+}
+
+.d-titlecontainer-small:not(#d-partslistcontainertopbuttoncontainer) {
+    box-sizing: border-box;
 }
 
 .d-titlecontainer-small p {
@@ -363,7 +370,7 @@
 .d-titlecontainer-small-downloadwrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 30px;
     width: 28%;
 }
@@ -1059,10 +1066,12 @@
 }
 
 .d-battery-listitem {
+    flex-direction: column;
     width: 95%;
     padding: 2rem;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .d-battery-listitem table {
@@ -1397,6 +1406,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     width: 100%;
 }
 

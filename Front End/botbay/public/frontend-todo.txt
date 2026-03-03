@@ -1,27 +1,5 @@
-NOW:
-
-batteries:
-
-Center batteries
-Add innacurate timer notice
-Fix title for batteries
-make pinging flash smaller (change the css from px to rem 1rem = 16px, 1.125rem = 18px)
-
-
-home:
-
-Fix order of critical stock
-Link critical stock to part
-
-
-parts table:
-
-Align search bar and top buttons with table
-
-
-
-
 NEXT UPDATE:
 Add battery history
 Add priority for critical stock
 Add ready batteries
+Align search bar with table

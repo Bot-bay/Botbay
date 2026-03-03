@@ -33,8 +33,11 @@ import { OtherStatList } from "../editListUtils";
 import { megaSchema } from "../editListUtils";
 
 import { AddItemMenuDesktop } from "../../components/addItem";
+import { useMargin } from "recharts";
 
-function PartsPageDesktop() {
+function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
+    const [usePartToRunLocal, setUsePartToRun] = useState(usePartToRun);
+
     const [isEditPartOpen, setIsEditPartOpen] = useState(false);
 
     const [availableTags, setAvailableTags] = useState([]);
@@ -669,6 +672,8 @@ function PartsPageDesktop() {
 
         const savedData = localStorage.getItem("partData");
         setListResults(savedData ? JSON.parse(savedData) : []);
+
+        setUsePartToRun(false);
     };
 
     const onTagExitClick = () => {
@@ -766,6 +771,16 @@ function PartsPageDesktop() {
         return matchesQuery;
     });
 
+    useEffect(() => {
+        onReset();
+    }, []);
+
+    useEffect(() => {
+        if (usePartToRun) {
+            onRowClick(partToRun);
+        }
+    }, []);
+
     return (
         <>
             <div className="d-homepagecontainer">
@@ -782,7 +797,10 @@ function PartsPageDesktop() {
                 </div>
 
                 <div className="d-partslistcontainer">
-                    <div className="d-titlecontainer-small">
+                    <div
+                        className="d-titlecontainer-small"
+                        id="d-partslistcontainertopbuttoncontainer"
+                    >
                         <button onClick={() => setIsAddItemOpen(true)}>
                             + Add Item
                         </button>
@@ -983,6 +1001,15 @@ function PartsPageDesktop() {
 
             {isPartOverlayOpen && currentItem && (
                 <div id="d-partoverlay" className="d-partoverlay">
+                    {console.log(usePartToRunLocal)}
+                    {usePartToRunLocal && (
+                        <button
+                            className="d-partoverlay-returnbutton"
+                            onClick={onReturn}
+                        >
+                            &lt;
+                        </button>
+                    )}
                     <div className="leftcontainer">
                         <div className="thirdcontainer">
                             <div
