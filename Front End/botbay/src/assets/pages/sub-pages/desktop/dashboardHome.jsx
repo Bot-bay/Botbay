@@ -15,8 +15,11 @@ import {
 } from "recharts";
 
 import "../../../styles/dashboard.css";
+import { useMediaQuery } from "react-responsive";
 
 function HomePageDesktop({ handleLowStockClick }) {
+    const isPhone = useMediaQuery({ query: "(max-width: 1199px)" });
+
     const partDataRaw = localStorage.getItem("partData");
     const tagListRaw = localStorage.getItem("taglist");
     const batteryListRaw = localStorage.getItem("batteryList");
@@ -184,16 +187,16 @@ function HomePageDesktop({ handleLowStockClick }) {
                                         data={chartData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={40}
-                                        outerRadius={80}
+                                        innerRadius={isPhone ? 90 : 40}
+                                        outerRadius={isPhone ? 200 : 80}
                                         dataKey="value"
                                         stroke="#1d1e2c"
-                                        strokeWidth={2}
+                                        strokeWidth={isPhone ? 5 : 2}
                                         isAnimationActive={true}
                                         activeShape={{
-                                            outerRadius: 80,
+                                            outerRadius: isPhone ? "85%" : 80,
                                             stroke: "#fff",
-                                            strokeWidth: 2,
+                                            strokeWidth: isPhone ? 4 : 2,
                                         }}
                                         activeIndex={chartData.findIndex(
                                             (d) => d.name === mostUsedTag,
@@ -213,9 +216,12 @@ function HomePageDesktop({ handleLowStockClick }) {
                                     <Tooltip
                                         contentStyle={{
                                             backgroundColor: "#1d1e2c",
-                                            border: "1px solid #44327a",
+                                            border: isPhone
+                                                ? "2px solid #44327a"
+                                                : "1px solid #44327a",
                                             borderRadius: "8px",
-                                            fontSize: "12px",
+                                            fontSize: isPhone ? "3rem" : "12px",
+                                            padding: isPhone ? "20px" : "10px",
                                         }}
                                         itemStyle={{ color: "#fff" }}
                                     />

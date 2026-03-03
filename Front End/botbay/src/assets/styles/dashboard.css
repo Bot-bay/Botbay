@@ -1618,3 +1618,116 @@
     transition: background-color 0.5s ease;
     animation: battery-ping 2s infinite ease-in-out;
 }
+
+@media (max-width: 1199px) {
+    .d-gridcontainer-3c2r {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        gap: 4rem;
+        padding-bottom: 50px;
+    }
+
+    .d-griditem-reg,
+    .d-griditem-2r {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 90% !important;
+        min-height: 500px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #1d1e2c;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+    }
+
+    .d-titlecontainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .d-titlecontainer p,
+    .d-griditem-reg p,
+    .d-griditem-2r p,
+    .d-griditem-reg span,
+    .d-griditem-2r span {
+        font-size: 4rem !important;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+    }
+
+    .d-griditem-reg svg,
+    .d-griditem-reg i,
+    .d-griditem-2r i {
+        font-size: 4rem !important;
+        width: 4rem !important;
+        height: 4rem !important;
+        margin-bottom: 20px;
+    }
+
+    .d-homepagecontainer {
+        width: 100%;
+        overflow-x: hidden;
+        background-color: #000017;
+    }
+
+    .d-griditem-2r > div[style*="height: 30vh"] {
+        height: 60vh !important;
+        margin-top: 4rem !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .d-griditem-2r div[style*="justify-content: space-between"] {
+        padding: 3rem 0 !important;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .d-griditem-2r span,
+    .d-griditem-2r #d-griditem-title {
+        font-size: 4rem !important;
+        font-weight: 700 !important;
+    }
+
+    .d-griditem-2r p[style*="font-size: 0.85rem"] {
+        font-size: 3.5rem !important;
+        line-height: 1.4 !important;
+        margin-top: 4rem !important;
+    }
+
+    .d-homedash-part-critical-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: 8px solid rgb(239, 68, 68);
+        border-radius: 4px 8px 8px 4px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .d-partitem {
+        color: white;
+        font-size: 1.7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8px;
+        transition: background-color 200ms ease;
+    }
+}
