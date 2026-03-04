@@ -1618,3 +1618,357 @@
     transition: background-color 0.5s ease;
     animation: battery-ping 2s infinite ease-in-out;
 }
+
+.d-parts-directinput {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    color: #f8fafc;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    text-align: center;
+    background: rgba(15, 17, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.d-parts-directinput:focus {
+    background: rgba(30, 32, 48, 0.8);
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 3px rgba(139, 92, 246, 0.15),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+.d-parts-directinput::-webkit-outer-spin-button,
+.d-parts-directinput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.d-parts-directinput[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.d-parts-directinput::selection {
+    background: rgba(139, 92, 246, 0.4);
+    color: white;
+}
+
+@media (max-width: 1199px) {
+    .d-gridcontainer-3c2r {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        gap: 4rem;
+        padding-bottom: 50px;
+    }
+
+    .d-griditem-reg,
+    .d-griditem-2r {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        width: 90% !important;
+        min-height: 500px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #1d1e2c;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+    }
+
+    .d-titlecontainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+    }
+
+    .d-titlecontainer p,
+    .d-griditem-reg p,
+    .d-griditem-2r p,
+    .d-griditem-reg span,
+    .d-griditem-2r span {
+        font-size: 4rem !important;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+    }
+
+    .d-griditem-reg svg,
+    .d-griditem-reg i,
+    .d-griditem-2r i {
+        font-size: 4rem !important;
+        width: 4rem !important;
+        height: 4rem !important;
+        margin-bottom: 20px;
+    }
+
+    .d-homepagecontainer {
+        width: 100%;
+        overflow-x: hidden;
+        background-color: #000017;
+    }
+
+    .d-griditem-2r > div[style*="height: 30vh"] {
+        height: 60vh !important;
+        margin-top: 4rem !important;
+        margin-bottom: 4rem !important;
+    }
+
+    .d-griditem-2r div[style*="justify-content: space-between"] {
+        padding: 3rem 0 !important;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .d-griditem-2r span,
+    .d-griditem-2r #d-griditem-title {
+        font-size: 4rem !important;
+        font-weight: 700 !important;
+    }
+
+    .d-griditem-2r p[style*="font-size: 0.85rem"] {
+        font-size: 3.5rem !important;
+        line-height: 1.4 !important;
+        margin-top: 4rem !important;
+    }
+
+    .d-homedash-part-critical-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: 8px solid rgb(239, 68, 68);
+        border-radius: 4px 8px 8px 4px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .d-partitem {
+        color: white;
+        font-size: 1.7rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8px;
+        transition: background-color 200ms ease;
+    }
+
+    .d-searchbar {
+        width: 100%;
+        background-color: #1d1e2c;
+        border-radius: 30px;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 3rem;
+        padding: 12px 25px;
+        box-sizing: border-box;
+        outline: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .d-createitem-input-group {
+        font-size: 2.5rem;
+    }
+
+    .d-createitem-input-group input {
+        width: 100%;
+        font-size: 2.7rem;
+        padding: 12px;
+        margin-bottom: 15px;
+        background: #282a3a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ececec;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+    }
+
+    .d-createitem-submit-button {
+        width: 95%;
+        height: 55px;
+        font-size: 3rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: linear-gradient(135deg, #44327a 0%, #2a1f4d 100%);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .d-createitem-form {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        width: 80%;
+        min-height: 100%;
+    }
+
+    .d-createitem-form-subtitle {
+        color: white;
+        font-size: 3rem;
+        margin: 1px;
+    }
+
+    .d-createitem-form-subtitle2 {
+        color: white;
+        font-size: 2.7rem;
+        margin: 1px;
+    }
+
+    .d-partoverlay-exitbutton {
+        position: fixed;
+        top: 16px;
+        right: 32px;
+        z-index: 1000;
+        background-color: #d94a4a !important;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 2.3rem;
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 200ms ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .d-partoverlay-returnbutton {
+        position: fixed;
+        top: 16px;
+        left: calc(13vw + 32px);
+        z-index: 1000;
+        background-color: #44327a !important;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 2.3rem;
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 200ms ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .d-createitem-middlecontainer {
+        width: 90%;
+        justify-content: flex-start;
+    }
+
+    .d-createitem-middlecontainer button {
+        font-size: 3rem;
+    }
+
+    .centercontainer {
+        align-items: flex-start;
+    }
+
+    .leftcontainer {
+        flex-direction: column;
+    }
+
+    .thirdcontainer {
+        width: 100%;
+        min-height: 0;
+    }
+
+    .d-partoverlay-infodiv1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .d-partoverlay-infodiv1 .leftcontainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .d-partoverlay-infodiv1 p {
+        font-size: 4rem;
+    }
+
+    .d-partoverlay-infodiv1 ul li {
+        font-size: 4rem;
+    }
+
+    .d-partoverlay-infodiv1 button {
+        font-size: 3rem;
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .d-partoverlay-subtitle {
+        font-size: 3rem;
+    }
+
+    .d-createtagoverlay {
+        width: 70%;
+    }
+
+    .d-createtagoverlay input {
+        font-size: 2.7rem;
+    }
+
+    .d-createtagoverlay p {
+        font-size: 3rem;
+    }
+
+    .d-createtagoverlay button:not(.d-partoverlay-exitbutton) {
+        font-size: 3rem;
+    }
+
+    .d-selector-container button {
+        font-size: 3rem !important;
+    }
+
+    .d-battery-pocbutton,
+    .d-battery-tocbutton {
+        padding: 5px Im !important;
+    }
+
+    .d-parts-directinput {
+        font-size: 3rem;
+    }
+}

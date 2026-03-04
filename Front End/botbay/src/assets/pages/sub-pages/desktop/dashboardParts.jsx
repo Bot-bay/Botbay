@@ -36,6 +36,17 @@ import { AddItemMenuDesktop } from "../../components/addItem";
 import { useMargin } from "recharts";
 
 function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
+    const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsPhone(window.innerWidth < 1200);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const [usePartToRunLocal, setUsePartToRun] = useState(usePartToRun);
 
     const [isEditPartOpen, setIsEditPartOpen] = useState(false);
@@ -686,24 +697,40 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         setIsCreateTagOpen(true);
     };
 
+    const [isEditingQuant, setIsEditingQuant] = useState(false);
+    const [isEditingNeeded, setIsEditingNeeded] = useState(false);
+
+    const handleDirectInputChange = (target, value) => {
+        if (value > -1) {
+            if (target === 0) {
+                setCurrentQuant(value);
+                updatePartData(currentItem.id, value, currentNeeded);
+            } else {
+                setCurrentNeeded(value);
+                updatePartData(currentItem.id, currentQuant, value);
+            }
+        }
+    };
+
     const handleNumChangeClick = (target, operation) => {
         if (target === 0) {
             const newQuant =
                 operation === 0
-                    ? currentQuant + 1
+                    ? Number(currentQuant) + 1
                     : Math.max(currentQuant - 1, 0);
+
             setCurrentQuant(newQuant);
             updatePartData(currentItem.id, newQuant, currentNeeded);
         } else {
             const newNeeded =
                 operation === 0
-                    ? currentNeeded + 1
+                    ? Number(currentNeeded) + 1
                     : Math.max(currentNeeded - 1, 0);
+
             setCurrentNeeded(newNeeded);
             updatePartData(currentItem.id, currentQuant, newNeeded);
         }
     };
-
     const updatePartData = (id, newQuant, newNeeded) => {
         setListResults((prevList) => {
             const updatedList = prevList.map((part) => {
@@ -801,104 +828,59 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                         className="d-titlecontainer-small"
                         id="d-partslistcontainertopbuttoncontainer"
                     >
-                        <button onClick={() => setIsAddItemOpen(true)}>
-                            + Add Item
-                        </button>
-                        <div className="d-titlecontainer-small-downloadwrapper">
-                            <button onClick={handleTagManageOpen}>
-                                <FaTags />
-                                <span style={{ marginLeft: 4 }}>
-                                    Manage Tags
-                                </span>
-                            </button>
-                            <button>
-                                <MdDownload />
-                                <span style={{ marginLeft: 4 }}>JSON</span>
-                            </button>
-                            {/* <button>
-                                <MdUpload />
-                                <span style={{ marginLeft: 4 }}>Import</span>
-                            </button> */}
-                        </div>
-                    </div>
-
-                    <div className="d-partslistwrapper" id="partslistwrapper">
-                        <div className="d-partslistheader">
-                            <div
-                                style={{
-                                    width: "15%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <span
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() =>
-                                        reloadPartsList("manufacturerId")
-                                    }
+                        {!isPhone ? (
+                            <>
+                                <button onClick={() => setIsAddItemOpen(true)}>
+                                    + Add Item
+                                </button>
+                                <div className="d-titlecontainer-small-downloadwrapper">
+                                    <button onClick={handleTagManageOpen}>
+                                        <FaTags />
+                                        <span style={{ marginLeft: 4 }}>
+                                            Manage Tags
+                                        </span>
+                                    </button>
+                                    <button>
+                                        <MdDownload />
+                                        <span style={{ marginLeft: 4 }}>
+                                            JSON
+                                        </span>
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <button
+                                    style={{ fontSize: "3rem" }}
+                                    onClick={() => setIsAddItemOpen(true)}
                                 >
-                                    Id {getSortIcon("manufacturerId")}
-                                </span>
-                            </div>
-
-                            <div
-                                style={{
-                                    width: "50%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <span
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => reloadPartsList("name")}
+                                    + Add Item
+                                </button>
+                                <button
+                                    style={{ fontSize: "3rem" }}
+                                    onClick={handleTagManageOpen}
                                 >
-                                    Name {getSortIcon("name")}
-                                </span>
-                            </div>
-
-                            <div
-                                style={{
-                                    width: "15%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <span
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => reloadPartsList("quantity")}
-                                >
-                                    Quantity {getSortIcon("quantity")}
-                                </span>
-                            </div>
-
-                            <div
-                                style={{
-                                    width: "15%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <span
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => reloadPartsList("needed")}
-                                >
-                                    Needed {getSortIcon("needed")}
-                                </span>
-                            </div>
-                            <div
-                                style={{
-                                    width: "10%",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                }}
-                            >
+                                    <FaTags />
+                                    <span style={{ marginLeft: 4 }}>
+                                        Manage Tags
+                                    </span>
+                                </button>
+                                <button style={{ fontSize: "3rem" }}>
+                                    <MdDownload />
+                                    <span style={{ marginLeft: 4 }}>JSON</span>
+                                </button>
                                 <div
                                     className="custom-tag-dropdown"
+                                    style={{ maxWidth: "25%" }}
                                     ref={dropdownRef}
                                 >
                                     <button
                                         type="button"
                                         className="d-dropdown-btn"
+                                        style={{
+                                            width: "100%",
+                                            fontSize: "3rem",
+                                        }}
                                         onClick={() =>
                                             setIsDropdownOpen(!isDropdownOpen)
                                         }
@@ -916,7 +898,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     </button>
 
                                     {isDropdownOpen && (
-                                        <div className="d-dropdown-menu">
+                                        <div
+                                            className="d-dropdown-menu"
+                                            style={{ width: "20vw" }}
+                                        >
                                             {/* Filter tags to only show those present in partData */}
                                             {tags
                                                 .filter((tag) =>
@@ -941,6 +926,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                             color: getContrastYIQ(
                                                                 tag.color,
                                                             ),
+                                                            width: "90%",
+                                                            fontSize: "2.5rem",
                                                         }}
                                                     >
                                                         <input
@@ -949,6 +936,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                             checked={selectedTags.includes(
                                                                 tag.name,
                                                             )}
+                                                            style={{
+                                                                height: "10px",
+                                                                width: "10px",
+                                                            }}
                                                             onChange={() =>
                                                                 toggleTag(
                                                                     tag.name,
@@ -962,11 +953,15 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             <div
                                                 className="d-add-button d-tag-label"
                                                 onClick={onTagOpenClick}
+                                                style={{
+                                                    width: "87%",
+                                                    boxSizing: "border-box",
+                                                    fontSize: "2.5rem",
+                                                }}
                                             >
                                                 <span
                                                     style={{
                                                         marginRight: "12px",
-                                                        fontSize: "1rem",
                                                         lineHeight: 0,
                                                     }}
                                                 >
@@ -977,8 +972,175 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                         </div>
                                     )}
                                 </div>
+                            </>
+                        )}
+                    </div>
+
+                    <div className="d-partslistwrapper" id="partslistwrapper">
+                        {!isPhone && (
+                            <div className="d-partslistheader">
+                                <div
+                                    style={{
+                                        width: "15%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <span
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                            reloadPartsList("manufacturerId")
+                                        }
+                                    >
+                                        Id {getSortIcon("manufacturerId")}
+                                    </span>
+                                </div>
+
+                                <div
+                                    style={{
+                                        width: "50%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <span
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => reloadPartsList("name")}
+                                    >
+                                        Name {getSortIcon("name")}
+                                    </span>
+                                </div>
+
+                                <div
+                                    style={{
+                                        width: "15%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <span
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                            reloadPartsList("quantity")
+                                        }
+                                    >
+                                        Quantity {getSortIcon("quantity")}
+                                    </span>
+                                </div>
+
+                                <div
+                                    style={{
+                                        width: "15%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <span
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                            reloadPartsList("needed")
+                                        }
+                                    >
+                                        Needed {getSortIcon("needed")}
+                                    </span>
+                                </div>
+                                <div
+                                    style={{
+                                        width: "10%",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <div
+                                        className="custom-tag-dropdown"
+                                        ref={dropdownRef}
+                                    >
+                                        <button
+                                            type="button"
+                                            className="d-dropdown-btn"
+                                            onClick={() =>
+                                                setIsDropdownOpen(
+                                                    !isDropdownOpen,
+                                                )
+                                            }
+                                        >
+                                            <span>
+                                                {selectedTags.length > 0
+                                                    ? `${selectedTags.length} Selected`
+                                                    : "Tags"}
+                                            </span>
+                                            {isDropdownOpen ? (
+                                                <RiArrowUpSFill />
+                                            ) : (
+                                                <RiArrowDownSFill />
+                                            )}
+                                        </button>
+
+                                        {isDropdownOpen && (
+                                            <div className="d-dropdown-menu">
+                                                {/* Filter tags to only show those present in partData */}
+                                                {tags
+                                                    .filter((tag) =>
+                                                        // Checks if ANY part has this tag, ignoring capital letters
+                                                        listResults.some(
+                                                            (part) =>
+                                                                part.tags &&
+                                                                part.tags.some(
+                                                                    (t) =>
+                                                                        t.toLowerCase() ===
+                                                                        tag.name.toLowerCase(),
+                                                                ),
+                                                        ),
+                                                    )
+                                                    .map((tag) => (
+                                                        <label
+                                                            key={tag.name}
+                                                            className="d-tag-label"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    tag.color,
+                                                                color: getContrastYIQ(
+                                                                    tag.color,
+                                                                ),
+                                                            }}
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                className="d-tag-checkbox"
+                                                                checked={selectedTags.includes(
+                                                                    tag.name,
+                                                                )}
+                                                                onChange={() =>
+                                                                    toggleTag(
+                                                                        tag.name,
+                                                                    )
+                                                                }
+                                                            />
+                                                            {tag.name}
+                                                        </label>
+                                                    ))}
+
+                                                <div
+                                                    className="d-add-button d-tag-label"
+                                                    onClick={onTagOpenClick}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            marginRight: "12px",
+                                                            fontSize: "1rem",
+                                                            lineHeight: 0,
+                                                        }}
+                                                    >
+                                                        +
+                                                    </span>
+                                                    Add Tag
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {filteredResults.map((item) => (
                             <PartItem
@@ -1063,9 +1225,39 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     handleNumChangeClick(0, 1)
                                                 }
                                             >
-                                                -
+                                                −
                                             </button>
-                                            <p>Quantity: {currentQuant}</p>
+                                            {isEditingQuant ? (
+                                                <input
+                                                    type="number"
+                                                    autoFocus
+                                                    className="d-parts-directinput"
+                                                    onBlur={() =>
+                                                        setIsEditingQuant(false)
+                                                    }
+                                                    /* Press Enter to submit */
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter")
+                                                            setIsEditingQuant(
+                                                                false,
+                                                            );
+                                                    }}
+                                                    onChange={(e) =>
+                                                        handleDirectInputChange(
+                                                            0,
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <p
+                                                    onClick={() =>
+                                                        setIsEditingQuant(true)
+                                                    }
+                                                >
+                                                    Quantity: {currentQuant}
+                                                </p>
+                                            )}
                                             <button
                                                 onClick={() =>
                                                     handleNumChangeClick(0, 0)
@@ -1075,6 +1267,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             </button>
                                         </div>
                                     </div>
+
                                     <div className="halfcontainer">
                                         <div className="d-partoverlay-editquant">
                                             <button
@@ -1082,9 +1275,41 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     handleNumChangeClick(1, 1)
                                                 }
                                             >
-                                                -
+                                                −
                                             </button>
-                                            <p>Needed: {currentNeeded}</p>
+                                            {isEditingNeeded ? (
+                                                <input
+                                                    type="number"
+                                                    autoFocus
+                                                    className="d-parts-directinput"
+                                                    onBlur={() =>
+                                                        setIsEditingNeeded(
+                                                            false,
+                                                        )
+                                                    }
+                                                    /* Press Enter to submit */
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter")
+                                                            setIsEditingNeeded(
+                                                                false,
+                                                            );
+                                                    }}
+                                                    onChange={(e) =>
+                                                        handleDirectInputChange(
+                                                            1,
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <p
+                                                    onClick={() =>
+                                                        setIsEditingNeeded(true)
+                                                    }
+                                                >
+                                                    Needed: {currentNeeded}
+                                                </p>
+                                            )}
                                             <button
                                                 onClick={() =>
                                                     handleNumChangeClick(1, 0)
@@ -1130,7 +1355,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     padding: "6px 10px",
                                                     borderRadius: "12px",
                                                     textAlign: "center",
-                                                    fontSize: "0.8rem",
+                                                    fontSize: isPhone
+                                                        ? "2.7rem"
+                                                        : "0.75rem",
                                                     fontWeight: "bold",
                                                     display: "flex",
                                                     alignItems: "center",
@@ -1287,7 +1514,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     color: textColor,
                                                     padding: "4px 12px",
                                                     borderRadius: "12px",
-                                                    fontSize: "0.8rem",
+                                                    fontSize: isPhone
+                                                        ? "3rem"
+                                                        : "0.8rem",
                                                     fontWeight: "bold",
                                                     display: "flex",
                                                     alignItems: "center",
@@ -1428,7 +1657,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                         cursor: "pointer",
                                                         padding: "6px 12px",
                                                         borderRadius: "15px",
-                                                        fontSize: "0.75rem",
+                                                        fontSize: isPhone
+                                                            ? "2.5rem"
+                                                            : "0.75rem",
                                                         fontWeight: "bold",
                                                         textTransform:
                                                             "capitalize",

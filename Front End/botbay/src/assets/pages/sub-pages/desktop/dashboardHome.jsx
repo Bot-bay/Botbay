@@ -15,8 +15,11 @@ import {
 } from "recharts";
 
 import "../../../styles/dashboard.css";
+import { useMediaQuery } from "react-responsive";
 
 function HomePageDesktop({ handleLowStockClick }) {
+    const isPhone = useMediaQuery({ query: "(max-width: 1199px)" });
+
     const partDataRaw = localStorage.getItem("partData");
     const tagListRaw = localStorage.getItem("taglist");
     const batteryListRaw = localStorage.getItem("batteryList");
@@ -184,20 +187,22 @@ function HomePageDesktop({ handleLowStockClick }) {
                                         data={chartData}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={40}
-                                        outerRadius={80}
+                                        innerRadius={isPhone ? 80 : 40}
+                                        outerRadius={isPhone ? 140 : 80}
+                                        paddingAngle={2}
                                         dataKey="value"
                                         stroke="#1d1e2c"
-                                        strokeWidth={2}
+                                        strokeWidth={isPhone ? 8 : 2}
                                         isAnimationActive={true}
-                                        activeShape={{
-                                            outerRadius: 80,
-                                            stroke: "#fff",
-                                            strokeWidth: 2,
-                                        }}
-                                        activeIndex={chartData.findIndex(
-                                            (d) => d.name === mostUsedTag,
-                                        )}
+                                        activeShape={
+                                            isPhone
+                                                ? false
+                                                : {
+                                                      outerRadius: 80,
+                                                      stroke: "#fff",
+                                                      strokeWidth: 2,
+                                                  }
+                                        }
                                     >
                                         {chartData.map((entry, index) => (
                                             <Cell
@@ -205,19 +210,29 @@ function HomePageDesktop({ handleLowStockClick }) {
                                                 fill={entry.fill}
                                                 style={{
                                                     outline: "none",
-                                                    cursor: "default",
+                                                    cursor: "pointer",
+                                                    pointerEvents: "auto",
                                                 }}
                                             />
                                         ))}
                                     </Pie>
                                     <Tooltip
+                                        trigger={isPhone ? "click" : "hover"}
+                                        wrapperStyle={{
+                                            color: "#fff",
+                                            zIndex: 1000,
+                                        }}
                                         contentStyle={{
+                                            color: "#fff",
                                             backgroundColor: "#1d1e2c",
-                                            border: "1px solid #44327a",
-                                            borderRadius: "8px",
-                                            fontSize: "12px",
+                                            border: "2px solid #44327a",
+                                            borderRadius: "15px",
+                                            fontSize: isPhone ? "3rem" : "12px",
+                                            padding: "20px",
                                         }}
                                         itemStyle={{ color: "#fff" }}
+                                        labelStyle={{ color: "#fff" }}
+                                        cursor={{ fill: "transparent" }}
                                     />
                                 </PieChart>
                             </ResponsiveContainer>
