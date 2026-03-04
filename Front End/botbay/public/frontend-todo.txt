@@ -18,6 +18,8 @@ Get out of add item menu
 
 Fix add new battery menu for phones
 
+Fix 
+
 Spread battery estimates apart for charging on phones
 
 Add option to type for battery driver hub slider as well
@@ -26,9 +28,15 @@ Switch battery capacity to mAh instead of Ah
 
 Pin thirdcontainer content to top to stop overflow upwards in part overlay
 
+Stop auto setting of tags with 3d-printed and potentially others
+
+Add character limits for all inputs
+
 
 NEXT UPDATE:
 Add battery history
 Add priority for critical stock
 Add ready batteries
 Align search bar with table
+Scale text too large to fit to smaller
+Add battery charger edit
