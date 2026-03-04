@@ -24,6 +24,8 @@ Add option to type for battery driver hub slider as well
 
 Switch battery capacity to mAh instead of Ah
 
+Pin thirdcontainer content to top to stop overflow upwards in part overlay
+
 
 NEXT UPDATE:
 Add battery history
