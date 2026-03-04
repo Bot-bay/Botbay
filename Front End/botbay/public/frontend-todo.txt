@@ -36,6 +36,8 @@ Dark red status for extreme low battery batteries is too dark, make it brighter
 
 FIX STOCK VOLUME COMBINING STRINGS AND NOT ADDING NUMBERS
 
+Change time on charger for home to be ETA instead
+
 
 NEXT UPDATE:
 Add battery history
