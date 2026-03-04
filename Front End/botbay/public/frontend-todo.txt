@@ -38,6 +38,7 @@ FIX STOCK VOLUME COMBINING STRINGS AND NOT ADDING NUMBERS
 
 Change time on charger for home to be ETA instead
 
+Change summary from "None" to just say you don't have any parts yet under pie chart unless there are items just no tags
 
 NEXT UPDATE:
 Add battery history
