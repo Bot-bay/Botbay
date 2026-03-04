@@ -697,24 +697,40 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         setIsCreateTagOpen(true);
     };
 
+    const [isEditingQuant, setIsEditingQuant] = useState(false);
+    const [isEditingNeeded, setIsEditingNeeded] = useState(false);
+
+    const handleDirectInputChange = (target, value) => {
+        if (value > -1) {
+            if (target === 0) {
+                setCurrentQuant(value);
+                updatePartData(currentItem.id, value, currentNeeded);
+            } else {
+                setCurrentNeeded(value);
+                updatePartData(currentItem.id, currentQuant, value);
+            }
+        }
+    };
+
     const handleNumChangeClick = (target, operation) => {
         if (target === 0) {
             const newQuant =
                 operation === 0
-                    ? currentQuant + 1
+                    ? Number(currentQuant) + 1
                     : Math.max(currentQuant - 1, 0);
+
             setCurrentQuant(newQuant);
             updatePartData(currentItem.id, newQuant, currentNeeded);
         } else {
             const newNeeded =
                 operation === 0
-                    ? currentNeeded + 1
+                    ? Number(currentNeeded) + 1
                     : Math.max(currentNeeded - 1, 0);
+
             setCurrentNeeded(newNeeded);
             updatePartData(currentItem.id, currentQuant, newNeeded);
         }
     };
-
     const updatePartData = (id, newQuant, newNeeded) => {
         setListResults((prevList) => {
             const updatedList = prevList.map((part) => {
@@ -1209,9 +1225,39 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     handleNumChangeClick(0, 1)
                                                 }
                                             >
-                                                -
+                                                −
                                             </button>
-                                            <p>Quantity: {currentQuant}</p>
+                                            {isEditingQuant ? (
+                                                <input
+                                                    type="number"
+                                                    autoFocus
+                                                    className="d-parts-directinput"
+                                                    onBlur={() =>
+                                                        setIsEditingQuant(false)
+                                                    }
+                                                    /* Press Enter to submit */
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter")
+                                                            setIsEditingQuant(
+                                                                false,
+                                                            );
+                                                    }}
+                                                    onChange={(e) =>
+                                                        handleDirectInputChange(
+                                                            0,
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <p
+                                                    onClick={() =>
+                                                        setIsEditingQuant(true)
+                                                    }
+                                                >
+                                                    Quantity: {currentQuant}
+                                                </p>
+                                            )}
                                             <button
                                                 onClick={() =>
                                                     handleNumChangeClick(0, 0)
@@ -1221,6 +1267,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             </button>
                                         </div>
                                     </div>
+
                                     <div className="halfcontainer">
                                         <div className="d-partoverlay-editquant">
                                             <button
@@ -1228,9 +1275,41 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     handleNumChangeClick(1, 1)
                                                 }
                                             >
-                                                -
+                                                −
                                             </button>
-                                            <p>Needed: {currentNeeded}</p>
+                                            {isEditingNeeded ? (
+                                                <input
+                                                    type="number"
+                                                    autoFocus
+                                                    className="d-parts-directinput"
+                                                    onBlur={() =>
+                                                        setIsEditingNeeded(
+                                                            false,
+                                                        )
+                                                    }
+                                                    /* Press Enter to submit */
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter")
+                                                            setIsEditingNeeded(
+                                                                false,
+                                                            );
+                                                    }}
+                                                    onChange={(e) =>
+                                                        handleDirectInputChange(
+                                                            1,
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
+                                            ) : (
+                                                <p
+                                                    onClick={() =>
+                                                        setIsEditingNeeded(true)
+                                                    }
+                                                >
+                                                    Needed: {currentNeeded}
+                                                </p>
+                                            )}
                                             <button
                                                 onClick={() =>
                                                     handleNumChangeClick(1, 0)
@@ -1276,7 +1355,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     padding: "6px 10px",
                                                     borderRadius: "12px",
                                                     textAlign: "center",
-                                                    fontSize: "2.7rem",
+                                                    fontSize: isPhone
+                                                        ? "2.7rem"
+                                                        : "0.75rem",
                                                     fontWeight: "bold",
                                                     display: "flex",
                                                     alignItems: "center",

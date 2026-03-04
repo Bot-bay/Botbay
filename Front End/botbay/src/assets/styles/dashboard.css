@@ -1619,6 +1619,47 @@
     animation: battery-ping 2s infinite ease-in-out;
 }
 
+.d-parts-directinput {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    color: #f8fafc;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    text-align: center;
+    background: rgba(15, 17, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.d-parts-directinput:focus {
+    background: rgba(30, 32, 48, 0.8);
+    border-color: #8b5cf6;
+    box-shadow:
+        0 0 0 3px rgba(139, 92, 246, 0.15),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+.d-parts-directinput::-webkit-outer-spin-button,
+.d-parts-directinput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.d-parts-directinput[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.d-parts-directinput::selection {
+    background: rgba(139, 92, 246, 0.4);
+    color: white;
+}
+
 @media (max-width: 1199px) {
     .d-gridcontainer-3c2r {
         display: flex;
@@ -1915,6 +1956,19 @@
     }
 
     .d-createtagoverlay button:not(.d-partoverlay-exitbutton) {
+        font-size: 3rem;
+    }
+
+    .d-selector-container button {
+        font-size: 3rem !important;
+    }
+
+    .d-battery-pocbutton,
+    .d-battery-tocbutton {
+        padding: 5px Im !important;
+    }
+
+    .d-parts-directinput {
         font-size: 3rem;
     }
 }

@@ -45,7 +45,6 @@ function BatteryList({ table, onUpdate, onDelete }) {
             <style>{`
                 @keyframes battery-sync-glow {
                     0%, 100% {
-                        /* When idle, this color is transparent, making the pulse invisible but RUNNING */
                         box-shadow: 0 0 2px var(--glow-active-color);
                         opacity: var(--glow-opacity-min);
                     }
@@ -67,16 +66,81 @@ function BatteryList({ table, onUpdate, onDelete }) {
                     border-radius: 50%;
                     display: block;
                     aspect-ratio: 1 / 1;
-                    /* ALWAYS RUNNING - DO NOT MOVE OR TOGGLE THIS */
                     animation: battery-sync-glow 2s infinite ease-in-out;
+                }
+
+                /* Mobile/Phone Card UI */
+                .phone-card-container {
+                    display: none;
+                    flex-direction: column;
+                    gap: 20px;
+                    width: 100%;
+                }
+
+                @media (max-width: 1199px) {
+                    table { display: none; }
+                    .phone-card-container { display: flex; }
+
+                    .battery-card {
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 20px;
+                        padding: 30px;
+                        width: 95%;
+                        margin: 0 auto;
+                        box-sizing: border-box;
+                        font-size: 4rem !important;
+                    }
+
+                    .card-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 15px;
+                    }
+
+                    .battery-card strong { color: #fff; font-size: 4rem; }
+                    .battery-card span, .battery-card div { font-size: 4rem; }
+
+                    .battery-card svg, .indicator-light {
+                        width: 4rem !important;
+                        height: 4rem !important;
+                        font-size: 4rem !important;
+                    }
+
+                    .d-slider-box input[type="range"] {
+                        width: 100% !important;
+                        height: 30px !important;
+                        background: #334155;
+                        border-radius: 15px;
+                    }
+
+                    .d-slider-box input[type="range"]::-webkit-slider-thumb {
+                        width: 50px !important;
+                        height: 50px !important;
+                    }
+
+                    /* Action Buttons matching desktop colors */
+                    .d-battery-pocbutton, .d-battery-tocbutton {
+                        font-size: 4rem !important;
+                        border-radius: 15px !important;
+                    }
+
+                    .d-selector-container {
+                        width: 100%;
+                        flex-direction: column;
+                        padding: 20px;
+                        gap: 25px;
+                    }
                 }
             `}</style>
 
-            <p>
+            <p style={{ color: "#94a3b8", marginBottom: "20px" }}>
                 This battery charge tracker is to only be used as a reference,
                 it is NOT 100% accurate
             </p>
 
+            {/* DESKTOP TABLE - UNCHANGED */}
             <table>
                 <thead>
                     <tr>
@@ -91,17 +155,14 @@ function BatteryList({ table, onUpdate, onDelete }) {
                 </thead>
                 <tbody>
                     {table &&
-                        table.map((item, index) => {
+                        table.map((item) => {
                             const currentLevel = calculatePercent(item);
                             const statusColor = getStatusColor(
                                 item,
                                 currentLevel,
                             );
-
                             return (
                                 <tr key={item.name}>
-                                    {" "}
-                                    {/* Use item.name as key to prevent React from re-mounting incorrectly */}
                                     <td className="status-col-cell">
                                         <div
                                             style={{
@@ -114,20 +175,15 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                 style={{
                                                     backgroundColor:
                                                         statusColor,
-                                                    /* If charging, use color. If idle, use transparent. */
                                                     "--glow-active-color":
                                                         item.mcStatus
                                                             ? statusColor
                                                             : "transparent",
-                                                    /* If charging, pulse opacity. If idle, keep solid 1. */
                                                     "--glow-opacity-min":
                                                         item.mcStatus
                                                             ? "0.4"
                                                             : "1",
-                                                    "--glow-opacity-max":
-                                                        item.mcStatus
-                                                            ? "1"
-                                                            : "1",
+                                                    "--glow-opacity-max": "1",
                                                 }}
                                             />
                                         </div>
@@ -148,23 +204,14 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                     <td>
                                         <div className="d-status-container">
                                             {item.mcStatus ? (
-                                                <>
-                                                    <IoFlash
-                                                        style={{
-                                                            color: "#fbbf24",
-                                                        }}
-                                                    />{" "}
-                                                    Charging {currentLevel}%
-                                                </>
+                                                <div className="d-battery-charging-text">
+                                                    <IoFlash /> Charging{" "}
+                                                    {currentLevel}%
+                                                </div>
                                             ) : (
-                                                <>
-                                                    <IoBatteryDead
-                                                        style={{
-                                                            color: "#64748b",
-                                                        }}
-                                                    />{" "}
-                                                    Idle
-                                                </>
+                                                <div className="d-battery-idle-text">
+                                                    <IoBatteryDead /> Idle
+                                                </div>
                                             )}
                                         </div>
                                     </td>
@@ -282,6 +329,207 @@ function BatteryList({ table, onUpdate, onDelete }) {
                         })}
                 </tbody>
             </table>
+
+            {/* PHONE CARD VIEW - MATCHED STYLE */}
+            <div className="phone-card-container">
+                {table &&
+                    table.map((item) => {
+                        const currentLevel = calculatePercent(item);
+                        const statusColor = getStatusColor(item, currentLevel);
+                        return (
+                            <div key={item.name} className="battery-card">
+                                <div className="card-row">
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: "20px",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <span
+                                            className="indicator-light"
+                                            style={{
+                                                backgroundColor: statusColor,
+                                                "--glow-active-color":
+                                                    item.mcStatus
+                                                        ? statusColor
+                                                        : "transparent",
+                                                "--glow-opacity-min":
+                                                    item.mcStatus ? "0.4" : "1",
+                                                "--glow-opacity-max": "1",
+                                            }}
+                                        />
+                                        <strong>{item.name}</strong>
+                                    </div>
+                                    <IoTrashSharp
+                                        className="d-battery-trash"
+                                        onClick={() => onDelete(item.name)}
+                                    />
+                                </div>
+
+                                <div
+                                    className="card-row"
+                                    style={{ color: "#94a3b8" }}
+                                >
+                                    <span>
+                                        {item.type === "dh"
+                                            ? "Driver Hub"
+                                            : "Battery"}
+                                    </span>
+                                    <span>
+                                        {item.mcStatus
+                                            ? formatDuration(item.toc)
+                                            : "--:--"}
+                                    </span>
+                                </div>
+
+                                <div className="card-row">
+                                    {item.mcStatus ? (
+                                        <div className="d-battery-charging-text">
+                                            <IoFlash /> {currentLevel}%
+                                        </div>
+                                    ) : (
+                                        <div className="d-battery-idle-text">
+                                            Idle
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div
+                                    className="d-manage-wrapper"
+                                    style={{ marginTop: "20px" }}
+                                >
+                                    {pendingBattery === item.name ? (
+                                        <div className="d-selector-container">
+                                            {item.type === "dh" ? (
+                                                <div
+                                                    className="d-slider-box"
+                                                    style={{ width: "100%" }}
+                                                >
+                                                    <input
+                                                        type="range"
+                                                        min="0"
+                                                        max="100"
+                                                        value={exactValue}
+                                                        onChange={(e) =>
+                                                            setExactValue(
+                                                                parseInt(
+                                                                    e.target
+                                                                        .value,
+                                                                ),
+                                                            )
+                                                        }
+                                                    />
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "space-between",
+                                                            width: "100%",
+                                                            alignItems:
+                                                                "center",
+                                                            marginTop: "10px",
+                                                        }}
+                                                    >
+                                                        <span className="d-exact-val">
+                                                            {exactValue}%
+                                                        </span>
+                                                        <IoCheckmarkCircle
+                                                            className="d-confirm-icon"
+                                                            style={{
+                                                                color: "#47d5a6",
+                                                            }}
+                                                            onClick={() =>
+                                                                handleConfirm(
+                                                                    item.name,
+                                                                    exactValue,
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className="d-preset-box"
+                                                    style={{
+                                                        flexWrap: "wrap",
+                                                        justifyContent:
+                                                            "center",
+                                                    }}
+                                                >
+                                                    {[0, 25, 50, 75].map(
+                                                        (lvl) => (
+                                                            <button
+                                                                key={lvl}
+                                                                onClick={() =>
+                                                                    handleConfirm(
+                                                                        item.name,
+                                                                        lvl,
+                                                                    )
+                                                                }
+                                                            >
+                                                                {lvl}%
+                                                            </button>
+                                                        ),
+                                                    )}
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={() =>
+                                                    setPendingBattery(null)
+                                                }
+                                                style={{
+                                                    background: "transparent",
+                                                    color: "#64748b",
+                                                    border: "none",
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className="d-action-buttons"
+                                            style={{
+                                                display: "flex",
+                                                gap: "15px",
+                                                width: "100%",
+                                            }}
+                                        >
+                                            <button
+                                                className="d-battery-pocbutton"
+                                                style={{ flex: 1 }}
+                                                disabled={item.mcStatus}
+                                                onClick={() => {
+                                                    setPendingBattery(
+                                                        item.name,
+                                                    );
+                                                    setExactValue(0);
+                                                }}
+                                            >
+                                                Charge
+                                            </button>
+                                            <button
+                                                className="d-battery-tocbutton"
+                                                style={{ flex: 1 }}
+                                                disabled={!item.mcStatus}
+                                                onClick={() =>
+                                                    onUpdate(
+                                                        item.name,
+                                                        false,
+                                                        0,
+                                                    )
+                                                }
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+            </div>
         </div>
     );
 }

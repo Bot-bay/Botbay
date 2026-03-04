@@ -107,7 +107,7 @@ function Dashboard() {
                         />
                     );
                 case 2:
-                    return <BatteryPagePhone />;
+                    return <BatteryPageDesktop />;
                 case 3:
                     return <SettingsPagePhone />;
                 default:
