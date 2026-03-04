@@ -32,6 +32,8 @@ Stop auto setting of tags with 3d-printed and potentially others
 
 Add character limits for all inputs
 
+Dark red status for extreme low battery batteries is too dark, make it brighter
+
 
 NEXT UPDATE:
 Add battery history
