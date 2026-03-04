@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+function useIsPhone() {
+    const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
+
+    useEffect(() => {
+        const handleResize = () => setIsPhone(window.innerWidth < 1200);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return isPhone;
+}
+
 export function AddItemMenuDesktop({ onClose }) {
     const [partIndexOpen, setPartIndexOpen] = useState(null);
     // Part type indexes:
@@ -86,6 +98,7 @@ export function AddItemMenuDesktop({ onClose }) {
 export function AddItemMenuPhone() {}
 
 function AddMotor({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -274,7 +287,9 @@ function AddMotor({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             textTransform: "capitalize",
                                             transition: "all 0.2s",
@@ -437,6 +452,7 @@ function AddMotor({ onReturn }) {
 }
 
 function AddServo({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -631,7 +647,9 @@ function AddServo({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             textTransform: "capitalize",
                                             transition: "all 0.2s",
@@ -817,6 +835,7 @@ function AddServo({ onReturn }) {
 }
 
 function AddStructural({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -991,7 +1010,9 @@ function AddStructural({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             textTransform: "capitalize",
                                             backgroundColor: bgColor,
@@ -1085,6 +1106,7 @@ function AddStructural({ onReturn }) {
 }
 
 function AddElectrical({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -1275,7 +1297,9 @@ function AddElectrical({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             backgroundColor: bgColor,
                                             color: isSelected
@@ -1444,6 +1468,7 @@ function AddElectrical({ onReturn }) {
 }
 
 function AddSensor({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -1640,7 +1665,9 @@ function AddSensor({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             backgroundColor: bgColor,
                                             color: isSelected
@@ -1810,6 +1837,7 @@ function AddSensor({ onReturn }) {
 }
 
 function Add3dPrinted({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -2009,7 +2037,9 @@ function Add3dPrinted({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             backgroundColor: bgColor,
                                             color: isSelected
@@ -2260,6 +2290,7 @@ function Add3dPrinted({ onReturn }) {
 }
 
 function AddMachined({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -2434,7 +2465,9 @@ function AddMachined({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             textTransform: "capitalize",
                                             backgroundColor: bgColor,
@@ -2528,6 +2561,7 @@ function AddMachined({ onReturn }) {
 }
 
 function AddOther({ onReturn }) {
+    const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
 
@@ -2696,7 +2730,9 @@ function AddOther({ onReturn }) {
                                             cursor: "pointer",
                                             padding: "6px 12px",
                                             borderRadius: "15px",
-                                            fontSize: "0.75rem",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.75rem",
                                             fontWeight: "bold",
                                             textTransform: "capitalize",
                                             backgroundColor: bgColor,

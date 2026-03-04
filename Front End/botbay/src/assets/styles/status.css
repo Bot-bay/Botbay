@@ -110,3 +110,26 @@
 .s-popup div div > button:active {
     transform: translateY(0) scale(0.98);
 }
+
+@media (max-width: 1199px) {
+    .s-popup {
+        min-height: 0;
+        width: 80%;
+    }
+
+    .s-popup p {
+        font-size: 3rem;
+    }
+
+    .s-popup div div > #s-popup-warning-button-no,
+    .s-popup div div > #s-popup-warning-button-yes {
+        font-size: 3rem;
+        height: 8rem;
+        margin: 20px;
+        width: 50%;
+    }
+
+    .s-popup > #s-popup-warning-title {
+        font-size: 4.3rem;
+    }
+}
