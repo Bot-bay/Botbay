@@ -34,6 +34,8 @@ Add character limits for all inputs
 
 Dark red status for extreme low battery batteries is too dark, make it brighter
 
+FIX STOCK VOLUME COMBINING STRINGS AND NOT ADDING NUMBERS
+
 
 NEXT UPDATE:
 Add battery history
