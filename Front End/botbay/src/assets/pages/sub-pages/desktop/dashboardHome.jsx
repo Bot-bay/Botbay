@@ -17,7 +17,7 @@ import {
 import "../../../styles/dashboard.css";
 import { useMediaQuery } from "react-responsive";
 
-function HomePageDesktop({ handleLowStockClick }) {
+function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
     const isPhone = useMediaQuery({ query: "(max-width: 1199px)" });
 
     const partDataRaw = localStorage.getItem("partData");
@@ -68,7 +68,7 @@ function HomePageDesktop({ handleLowStockClick }) {
 
     const totalParts = partData.length;
     const totalQuantity = partData.reduce(
-        (acc, part) => acc + (part.quantity || 0),
+        (acc, part) => acc + Number(part.quantity || 0),
         0,
     );
 
@@ -282,19 +282,25 @@ function HomePageDesktop({ handleLowStockClick }) {
                                     textAlign: "center",
                                 }}
                             >
-                                Inventory is weighted toward{" "}
-                                <span
-                                    style={{
-                                        color:
-                                            tagColorMap[mostUsedTag] ||
-                                            "#a78bfa",
-                                        fontWeight: "600",
-                                    }}
-                                >
-                                    {mostUsedTag}
-                                </span>{" "}
-                                components across {chartData.length} active
-                                categories.
+                                {totalQuantity !== 0 ? (
+                                    <>
+                                        Inventory is weighted toward{" "}
+                                        <span
+                                            style={{
+                                                color:
+                                                    tagColorMap[mostUsedTag] ||
+                                                    "#a78bfa",
+                                                fontWeight: "600",
+                                            }}
+                                        >
+                                            {mostUsedTag}
+                                        </span>{" "}
+                                        components across {chartData.length}{" "}
+                                        active tags.
+                                    </>
+                                ) : (
+                                    "You currently have 0 items."
+                                )}
                             </p>
                         </div>
 
@@ -317,6 +323,7 @@ function HomePageDesktop({ handleLowStockClick }) {
                                         <div
                                             key={i}
                                             className="d-homedash-part-critical-item"
+                                            style={{ cursor: "pointer" }}
                                             onClick={() =>
                                                 handleLowStockClick(part)
                                             }
@@ -486,16 +493,32 @@ function HomePageDesktop({ handleLowStockClick }) {
                                 {sortedBatteriesByChargingTime.length > 0 ? (
                                     sortedBatteriesByChargingTime.map(
                                         (battery, i) => {
-                                            const elapsedMs =
-                                                currentTime - battery.toc;
-                                            const elapsedMins = Math.max(
-                                                0,
-                                                Math.floor(elapsedMs / 60000),
-                                            );
-                                            const displayTime =
-                                                elapsedMins >= 60
-                                                    ? `${Math.floor(elapsedMins / 60)}h ${elapsedMins % 60}m`
-                                                    : `${elapsedMins}m`;
+                                            const ratePerHour =
+                                                ((battery.chargerSpeed || 2) /
+                                                    (battery.capacity || 3)) *
+                                                100;
+
+                                            let displayTime;
+
+                                            if (battery.currentLevel >= 100) {
+                                                displayTime = "Fully Charged";
+                                            } else if (!ratePerHour) {
+                                                displayTime = "—";
+                                            } else {
+                                                const remainingPercent =
+                                                    100 - battery.currentLevel;
+
+                                                const remainingMins = Math.ceil(
+                                                    (remainingPercent /
+                                                        ratePerHour) *
+                                                        60,
+                                                );
+
+                                                displayTime =
+                                                    remainingMins >= 60
+                                                        ? `${Math.floor(remainingMins / 60)}h ${remainingMins % 60}m`
+                                                        : `${remainingMins}m`;
+                                            }
 
                                             let statusColor = "#f97316";
                                             if (battery.currentLevel >= 90)
@@ -503,7 +526,8 @@ function HomePageDesktop({ handleLowStockClick }) {
                                             else if (battery.currentLevel >= 75)
                                                 statusColor = "#10b981";
                                             else if (battery.currentLevel <= 20)
-                                                statusColor = "#7c0000";
+                                                statusColor =
+                                                    "rgb(239, 68, 68)";
 
                                             return (
                                                 <div
@@ -521,6 +545,7 @@ function HomePageDesktop({ handleLowStockClick }) {
                                                             "all 0.3s ease",
                                                         cursor: "pointer",
                                                     }}
+                                                    onClick={handleBatteryClick}
                                                 >
                                                     {/* INDIVIDUAL SIDEBAR ACCENT */}
                                                     <div
@@ -628,7 +653,7 @@ function HomePageDesktop({ handleLowStockClick }) {
                                                                             "uppercase",
                                                                     }}
                                                                 >
-                                                                    Elapsed
+                                                                    ETA
                                                                 </span>
                                                             </div>
                                                         </div>

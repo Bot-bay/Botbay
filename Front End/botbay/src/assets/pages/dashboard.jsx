@@ -71,6 +71,7 @@ function Dashboard() {
                     return (
                         <HomePageDesktop
                             handleLowStockClick={handleLowStockClick}
+                            handleBatteryClick={() => setPageIndex(2)}
                         />
                     );
                 case 1:
@@ -95,6 +96,7 @@ function Dashboard() {
                     return (
                         <HomePageDesktop
                             handleLowStockClick={handleLowStockClick}
+                            handleBatteryClick={() => setPageIndex(2)}
                         />
                     );
                 case 1:

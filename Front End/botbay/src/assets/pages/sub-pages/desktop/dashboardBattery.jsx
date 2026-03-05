@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BatteryList from "../../components/battery";
 
 function BatteryPageDesktop() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newType, setNewType] = useState("b");
-    const [newCapacity, setNewCapacity] = useState("3.0");
-    const [newSpeed, setNewSpeed] = useState("2.0");
+    const [newCapacity, setNewCapacity] = useState("0");
+    const [newSpeed, setNewSpeed] = useState("0.0");
+
+    const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsPhone(window.innerWidth < 1200);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     // 1. New state to track if the name already exists
     const [isDuplicate, setIsDuplicate] = useState(false);
@@ -37,8 +48,8 @@ function BatteryPageDesktop() {
         const newBattery = {
             name: newName.trim(),
             type: newType,
-            capacity: parseFloat(newCapacity) || 3.0,
-            chargerSpeed: parseFloat(newSpeed) || 2.0,
+            capacity: parseFloat(newCapacity) / 1000 || 0,
+            chargerSpeed: parseFloat(newSpeed) || 0.0,
             toc: Date.now(),
             startTime: null,
             startLevel: 0,
@@ -136,27 +147,58 @@ function BatteryPageDesktop() {
                                 >
                                     Name
                                 </label>
-                                <input
-                                    type="text"
-                                    placeholder="Battery Name (e.g. Unit 1)"
-                                    value={newName}
-                                    onChange={handleNameChange}
-                                    required
-                                    // 4. Conditional styling for the red border
-                                    style={{
-                                        border: isDuplicate
-                                            ? "2px solid #ef4444"
-                                            : "1px solid #ccc",
-                                        outline: "none",
-                                    }}
-                                />
-                                {/* 5. Optional: Error message */}
+                                <div style={{ position: "relative" }}>
+                                    <input
+                                        maxlength="30"
+                                        type="text"
+                                        placeholder="Battery Name (e.g. Unit 1)"
+                                        value={newName}
+                                        onChange={(e) =>
+                                            handleNameChange({
+                                                target: {
+                                                    value: e.target.value.slice(
+                                                        0,
+                                                        30,
+                                                    ),
+                                                },
+                                            })
+                                        }
+                                        required
+                                        style={{
+                                            border: isDuplicate
+                                                ? "2px solid #ef4444"
+                                                : "1px solid #ccc",
+                                            outline: "none",
+                                        }}
+                                    />
+                                    {newName.length >= 25 && (
+                                        <p
+                                            const
+                                            style={{
+                                                position: "absolute",
+                                                right: "5px",
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                                margin: 0,
+                                                fontSize: isPhone
+                                                    ? "2.5rem"
+                                                    : "0.8rem",
+                                                color: "#ef4444",
+                                                pointerEvents: "none",
+                                            }}
+                                        >
+                                            {30 - newName.length}
+                                        </p>
+                                    )}
+                                </div>
                                 {isDuplicate && (
                                     <p
                                         style={{
                                             color: "#ef4444",
-                                            fontSize: "0.7rem",
-                                            marginTop: "-10px",
+                                            fontSize: isPhone
+                                                ? "2.5rem"
+                                                : "0.8rem",
+                                            marginTop: "0px",
                                             marginBottom: "10px",
                                         }}
                                     >
@@ -188,16 +230,18 @@ function BatteryPageDesktop() {
                                                 fontSize: "0.8rem",
                                             }}
                                         >
-                                            Capacity (Ah)
+                                            Capacity (mAh)
                                         </label>
                                         <input
                                             type="number"
-                                            step="0.1"
+                                            step="10"
+                                            max={20000}
                                             value={newCapacity}
                                             onChange={(e) =>
                                                 setNewCapacity(e.target.value)
                                             }
                                             required
+                                            min={0}
                                         />
                                     </div>
                                     <div style={{ flex: 1 }}>
@@ -217,6 +261,8 @@ function BatteryPageDesktop() {
                                                 setNewSpeed(e.target.value)
                                             }
                                             required
+                                            min={0}
+                                            max={1000}
                                         />
                                     </div>
                                 </div>

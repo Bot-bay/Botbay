@@ -14,6 +14,10 @@ function useIsPhone() {
 
 export function AddItemMenuDesktop({ onClose }) {
     const [partIndexOpen, setPartIndexOpen] = useState(null);
+    function handleReturn() {
+        setPartIndexOpen(null);
+        onClose();
+    }
     // Part type indexes:
     // null -> not open
     // 0 -> Motor
@@ -28,25 +32,21 @@ export function AddItemMenuDesktop({ onClose }) {
     function renderCorrectItemToAdd() {
         switch (partIndexOpen) {
             case 0:
-                return <AddMotor onReturn={() => setPartIndexOpen(null)} />;
+                return <AddMotor onReturn={handleReturn} />;
             case 1:
-                return <AddServo onReturn={() => setPartIndexOpen(null)} />;
+                return <AddServo onReturn={handleReturn} />;
             case 2:
-                return (
-                    <AddStructural onReturn={() => setPartIndexOpen(null)} />
-                );
+                return <AddStructural onReturn={handleReturn} />;
             case 3:
-                return (
-                    <AddElectrical onReturn={() => setPartIndexOpen(null)} />
-                );
+                return <AddElectrical onReturn={handleReturn} />;
             case 4:
-                return <AddSensor onReturn={() => setPartIndexOpen(null)} />;
+                return <AddSensor onReturn={handleReturn} />;
             case 5:
-                return <Add3dPrinted onReturn={() => setPartIndexOpen(null)} />;
+                return <Add3dPrinted onReturn={handleReturn} />;
             case 6:
-                return <AddMachined onReturn={() => setPartIndexOpen(null)} />;
+                return <AddMachined onReturn={handleReturn} />;
             case 7:
-                return <AddOther onReturn={() => setPartIndexOpen(null)} />;
+                return <AddOther onReturn={handleReturn} />;
         }
     }
 
@@ -185,7 +185,7 @@ function AddMotor({ onReturn }) {
             manufacturerId: formData.manufacturerId,
             id: nextId,
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "motor",
@@ -247,11 +247,21 @@ function AddMotor({ onReturn }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>ID:</label>
+                        <label>Manufacturer ID:</label>
                         <input
                             name="manufacturerId"
                             placeholder="e.g. am-3637b"
                             value={formData.manufacturerId}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className="d-createitem-input-group">
+                        <label>Manufacturer</label>
+                        <input
+                            name="manufacturer"
+                            placeholder="e.g. am-3637b"
+                            value={formData.manufacturer}
                             onChange={handleChange}
                         />
                     </div>
@@ -1867,8 +1877,8 @@ function Add3dPrinted({ onReturn }) {
     const [formData, setFormData] = useState({
         manufacturerId: "",
         name: "",
-        tags: ["3d-printed"],
-        manufacturer: "custom",
+        tags: [],
+        manufacturer: "",
         // Stats
         sizeL: "",
         sizeW: "",
@@ -2320,8 +2330,8 @@ function AddMachined({ onReturn }) {
     const [formData, setFormData] = useState({
         manufacturerId: "",
         name: "",
-        tags: ["machined"],
-        manufacturer: "custom",
+        tags: [],
+        manufacturer: "",
         type: "machined",
         // Stats fields
         sizeL: "",
@@ -2370,7 +2380,7 @@ function AddMachined({ onReturn }) {
             manufacturerId: formData.manufacturerId || null,
             id: nextId,
             name: formData.name,
-            manufacturer: formData.manufacturer || "custom",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "machined",

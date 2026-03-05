@@ -1,44 +1,6 @@
 NOW:
-Fix no manufacturer option for:
-- motor
-
-Remove set placeholders "custom" for:
-- machined
--3d printed
-
-Set Motor ID input to Manufacturer ID
-
-Add pointer for hover over critical stock
-
-Switch "categories" to "tags" in stock volume
-
-Make a tag reload on loading of every edit and creation
-
-Get out of add item menu 
-
-Fix add new battery menu for phones
-
-Fix 
-
-Spread battery estimates apart for charging on phones
-
-Add option to type for battery driver hub slider as well
-
-Switch battery capacity to mAh instead of Ah
-
-Pin thirdcontainer content to top to stop overflow upwards in part overlay
-
-Stop auto setting of tags with 3d-printed and potentially others
 
 Add character limits for all inputs
-
-Dark red status for extreme low battery batteries is too dark, make it brighter
-
-FIX STOCK VOLUME COMBINING STRINGS AND NOT ADDING NUMBERS
-
-Change time on charger for home to be ETA instead
-
-Change summary from "None" to just say you don't have any parts yet under pie chart unless there are items just no tags
 
 NEXT UPDATE:
 Add battery history

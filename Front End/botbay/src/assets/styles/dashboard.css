@@ -1701,11 +1701,16 @@
     .d-griditem-reg p,
     .d-griditem-2r p,
     .d-griditem-reg span,
-    .d-griditem-2r span {
-        font-size: 4rem !important;
+    .d-griditem-2r span,
+    .d-battery-titlecontainer p {
+        font-size: 6rem !important;
         font-weight: 700;
         color: white;
         text-align: center;
+    }
+
+    .d-battery-add-trigger {
+        font-size: 3rem;
     }
 
     .d-griditem-reg svg,
@@ -1970,5 +1975,66 @@
 
     .d-parts-directinput {
         font-size: 3rem;
+    }
+
+    .d-preset-box {
+        display: flex;
+        gap: 40px;
+        background: transparent; /* Overriding the old solid background */
+        padding: 0;
+    }
+
+    .d-battery-popup {
+        background: #1d1e2c;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        width: 80%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .d-battery-popup form label {
+        font-size: 2.7rem !important;
+    }
+
+    .d-battery-popup h3 {
+        margin: 0 0 24px 0;
+        color: #ffffff;
+        font-size: 4rem;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: -0.02em;
+    }
+
+    .d-battery-popup input,
+    .d-battery-popup select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        background: #282a3a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ececec;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 3rem;
+        transition: all 0.2s ease;
+    }
+
+    .d-battery-popup-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .d-battery-popup-buttons button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 500;
+        font-size: 3rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-radius: 30px;
     }
 }
