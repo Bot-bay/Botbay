@@ -269,6 +269,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <MotorStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -277,6 +278,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <ServoStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -285,6 +287,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <StructuralStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -293,6 +296,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <ElectricalStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -301,14 +305,16 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <SensorStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
-            case "3d-print":
+            case "3d-printed":
                 return (
                     <ThreeDPrintedStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -317,6 +323,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <MachinedStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
 
@@ -325,6 +332,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     <OtherStatList
                         handleChange={handleChange}
                         formData={formData}
+                        isPhone={isPhone}
                     />
                 );
         }
