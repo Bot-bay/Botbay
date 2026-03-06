@@ -137,8 +137,18 @@
 }
 
 .d-partoverlay-infodiv1 ul {
+    max-width: 100%;
     margin: 0;
     padding-left: 20px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.d-partoverlay-infodiv1 ul li {
+    max-width: 100%;
+    white-space: normal;
+    overflow: hidden;
 }
 
 .d-partoverlay-infodiv1 ul li {
@@ -546,7 +556,8 @@
     font-size: 1.1rem;
 }
 
-.d-createitem-input-group input {
+.d-createitem-input-group input,
+.d-createitem-input-group textarea {
     width: 100%;
     font-size: 1.1rem;
     padding: 12px;
@@ -559,7 +570,8 @@
     transition: all 0.2s ease;
 }
 
-.d-createitem-input-group input:focus {
+.d-createitem-input-group input:focus,
+.d-createitem-input-group textarea:focus {
     outline: none;
     background: #2f3142;
     border-color: #6366f1;
@@ -1795,7 +1807,8 @@
         font-size: 2.5rem;
     }
 
-    .d-createitem-input-group input {
+    .d-createitem-input-group input,
+    .d-createitem-input-group textarea {
         width: 100%;
         font-size: 2.7rem;
         padding: 12px;
