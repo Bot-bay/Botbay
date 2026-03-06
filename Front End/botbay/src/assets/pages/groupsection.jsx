@@ -1,11 +1,28 @@
-import React, { useState } from "react";
-import { Users, PlusCircle, Loader2 } from "lucide-react";
-import { joinGroup, createGroup } from "../scripts/auth.js";
+import React, { useState, useEffect } from "react";
+import { Users, PlusCircle, Loader2, Copy, Check } from "lucide-react";
+import { joinGroup, createGroup, getCurrentUser } from "../scripts/auth.js";
 
 function GroupSelection({ isPhone }) {
     const [groupId, setGroupId] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [localError, setLocalError] = useState("");
+    const [userUuid, setUserUuid] = useState("");
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const user = await getCurrentUser();
+            if (user) setUserUuid(user.id);
+        };
+        fetchUser();
+    }, []);
+
+    const handleCopy = () => {
+        if (!userUuid) return;
+        navigator.clipboard.writeText(userUuid);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const handleJoin = async () => {
         if (!groupId) return setLocalError("Enter a Group ID");
@@ -81,13 +98,14 @@ function GroupSelection({ isPhone }) {
                 >
                     Join a Group:
                 </p>
+
                 <input
                     className="signupinput"
                     style={{
                         fontSize: isPhone ? "3rem" : "",
-                        marginBottom: isPhone ? "40px" : "10px",
+                        marginBottom: isPhone ? "20px" : "10px", // Reduced margin to fit ID
                         width: "100%",
-                        height: isPhone ? "12rem" : "auto", // Increased height
+                        height: isPhone ? "12rem" : "auto",
                         textAlign: "center",
                         borderRadius: isPhone ? "15px" : "5px",
                     }}
@@ -95,6 +113,54 @@ function GroupSelection({ isPhone }) {
                     value={groupId}
                     onChange={(e) => setGroupId(e.target.value)}
                 />
+
+                {/* USER UUID DISPLAY */}
+                <div
+                    onClick={handleCopy}
+                    style={{
+                        width: "100%",
+                        background: "#111",
+                        padding: isPhone ? "25px" : "10px",
+                        borderRadius: "10px",
+                        marginBottom: isPhone ? "40px" : "20px",
+                        cursor: "pointer",
+                        border: "1px dashed #444",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "5px",
+                    }}
+                >
+                    <p
+                        style={{
+                            color: "#666",
+                            fontSize: isPhone ? "2.2rem" : "0.7rem",
+                            margin: 0,
+                        }}
+                    >
+                        YOUR INVITE ID (TAP TO COPY)
+                    </p>
+                    <div
+                        style={{
+                            color: copied ? "#4ade80" : "white",
+                            fontSize: isPhone ? "2.5rem" : "0.8rem",
+                            fontFamily: "monospace",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                        }}
+                    >
+                        {userUuid
+                            ? `${userUuid.slice(0, 8)}...${userUuid.slice(-8)}`
+                            : "Loading..."}
+                        {copied ? (
+                            <Check size={isPhone ? 40 : 14} />
+                        ) : (
+                            <Copy size={isPhone ? 40 : 14} />
+                        )}
+                    </div>
+                </div>
+
                 <button
                     className="signupbutton"
                     onClick={handleJoin}
@@ -103,7 +169,7 @@ function GroupSelection({ isPhone }) {
                         fontSize: isPhone ? "3rem" : "",
                         background: "#222",
                         width: "100%",
-                        minHeight: isPhone ? "12rem" : "auto", // Extra tall for big text
+                        minHeight: isPhone ? "12rem" : "auto",
                         padding: isPhone ? "2px 0" : "10px 20px",
                         display: "flex",
                         justifyContent: "center",
@@ -111,7 +177,7 @@ function GroupSelection({ isPhone }) {
                     }}
                 >
                     <Users
-                        size={isPhone ? 20 : 20}
+                        size={isPhone ? 40 : 20}
                         style={{ marginRight: "15px" }}
                     />
                     Join
@@ -136,10 +202,10 @@ function GroupSelection({ isPhone }) {
                 disabled={isLoading}
                 style={{
                     fontSize: isPhone ? "3rem" : "",
-                    background: "#4b5563", // Slightly different color to distinguish from Join, or keep same as Join if preferred
+                    background: "#4b5563",
                     width: "100%",
                     minHeight: isPhone ? "12rem" : "auto",
-                    padding: isPhone ? "2px 0" : "10px 20px", // Matched Join button padding logic
+                    padding: isPhone ? "2px 0" : "10px 20px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -154,7 +220,7 @@ function GroupSelection({ isPhone }) {
                 ) : (
                     <>
                         <PlusCircle
-                            size={isPhone ? 20 : 20} // Scaled icon for phone
+                            size={isPhone ? 40 : 20}
                             style={{ marginRight: "15px" }}
                         />
                         Create New Group

@@ -30,6 +30,8 @@ function SignInPage() {
 
     const handleSignIn = async (e) => {
         e.preventDefault();
+        console.log(">>> Login Button Clicked");
+
         if (isLoading) return;
 
         setErrorMessage("");
@@ -41,9 +43,11 @@ function SignInPage() {
             return;
         }
 
+        // 1. AUTHENTICATE
         const { data, error } = await signInUser(email, password);
 
         if (error) {
+            console.error(">>> Step 1 Failed: Login invalid", error.message);
             setErrorMessage(
                 error.message === "Invalid login credentials"
                     ? "Incorrect email or password."
@@ -51,23 +55,41 @@ function SignInPage() {
             );
             setIsLoading(false);
         } else {
-            // SUCCESSFUL LOGIN: Now check for group
+            // SUCCESSFUL LOGIN: Now check for group via the RPC in auth.js
+            console.log(">>> Step 1 Success: Logged in. Checking group...");
             try {
-                const { group } = await getUserGroup(data.user.id);
+                // We no longer pass data.user.id because the RPC uses auth.uid()
+                const { group, error: groupError } = await getUserGroup();
+
+                if (groupError) {
+                    console.error(
+                        ">>> Step 2 Failed: Database error",
+                        groupError,
+                    );
+                    throw groupError;
+                }
+
+                console.log(">>> Step 2 Result - Group ID:", group);
 
                 if (group) {
-                    // User has a group, navigation is usually handled by auth listener
-                    // or you can call it here:
-                    window.location.href = "/dashboard";
+                    console.log(
+                        ">>> Step 3: Group exists. Redirecting to Dashboard...",
+                    );
+                    // CRITICAL FIX: Use hash routing for React compatibility
+                    window.location.hash = "#/dashboard";
                 } else {
-                    // No group found, show the selection component
+                    console.warn(
+                        ">>> Step 3: No group found. Showing selection menu.",
+                    );
                     setView("group-menu");
                 }
             } catch (err) {
-                console.error("Group fetch error:", err);
-                setView("group-menu"); // Fallback to selection
+                console.error(">>> Critical Process Error:", err);
+                // Fallback: If we can't confirm a group, don't lock them out, let them join/create one
+                setView("group-menu");
             } finally {
                 setIsLoading(false);
+                console.log("--- AUTH PROCESS FINISHED ---");
             }
         }
     };

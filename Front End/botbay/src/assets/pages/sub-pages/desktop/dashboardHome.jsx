@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
     PieChart,
     Pie,
@@ -16,6 +16,19 @@ import {
 
 import "../../../styles/dashboard.css";
 import { useMediaQuery } from "react-responsive";
+
+import {
+    fetchGroupData,
+    saveAdminList,
+    inviteUserByUUID,
+    removeMember,
+    fetchInvitedUsers,
+    removeInvitedUser,
+} from "../../../scripts/auth.js";
+
+import WarningPopup from "../../components/warningpopup";
+
+import { MdContentCopy } from "react-icons/md";
 
 function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
     const isPhone = useMediaQuery({ query: "(max-width: 1199px)" });
@@ -132,43 +145,703 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
 
     const totalBatteries = batteryList.length;
 
+    const [groupMembers, setGroupMembers] = useState([]);
+    const [groupId, setGroupId] = useState(null);
+    const [isInvitePopupOpen, setIsInvitePopupOpen] = useState(false);
+    const [inviteEmail, setInviteEmail] = useState("");
+
+    const [invitedUsers, setInvitedUsers] = useState([]);
+
+    useEffect(() => {
+        const loadInvites = async () => {
+            if (groupId !== undefined && groupId !== null) {
+                const data = await fetchInvitedUsers(groupId);
+                setInvitedUsers(data);
+            }
+        };
+        loadInvites();
+    }, [groupId]);
+
+    useEffect(() => {
+        console.log("Dashboard mounted, fetching members...");
+        loadData();
+    }, []);
+
+    // 1. Fetching logic simplified
+    const loadData = async () => {
+        const result = await fetchGroupData();
+
+        if (result.success) {
+            setGroupMembers(result.members);
+            setIsUserAdmin(result.isAdmin);
+            setGroupId(result.groupId);
+        } else {
+            showNotice(result.error, true);
+        }
+    };
+    // 2. Local toggle remains same (UI only)
+    const handleAdminToggle = (userId) => {
+        setGroupMembers((prev) =>
+            prev.map((m) =>
+                m.id === userId ? { ...m, isAdmin: !m.isAdmin } : m,
+            ),
+        );
+    };
+
+    // 3. Save logic calling auth.js
+    const saveMemberUpdates = async () => {
+        if (!groupId) return;
+
+        // Filter the groupMembers state to get IDs of everyone checked as Admin
+        const newAdminList = groupMembers
+            .filter((m) => m.isAdmin)
+            .map((m) => m.id);
+
+        // Call the secure RPC
+        const { success, message } = await saveAdminList(groupId, newAdminList);
+
+        if (success) {
+            showNotice(message); // Green popup
+        } else {
+            showNotice(message, true); // Red popup (shows "Unauthorized" if they tried to hack it)
+            loadData(); // Revert the checkboxes to the real database state
+        }
+    };
+
+    // 4. Invite logic calling auth.js
+    const handleSendInvite = async () => {
+        // 1. Validation
+        if (!inviteEmail || !groupId) {
+            showNotice("Please enter a valid UUID", true);
+            return;
+        }
+
+        // 2. Call the RPC from auth.js
+        const { success, message } = await inviteUserByUUID(
+            inviteEmail,
+            groupId,
+        );
+
+        // 3. Handle UI Response
+        if (success) {
+            showNotice(message); // Uses the green popup
+            setIsInvitePopupOpen(false);
+            setInviteEmail("");
+
+            // Refresh the member list to show the new person
+            loadData();
+        } else {
+            showNotice(message, true); // Uses the red popup
+        }
+    };
+
+    const [statusPopup, setStatusPopup] = useState({
+        show: false,
+        message: "",
+        isError: false,
+    });
+
+    const showNotice = (msg, isErr = false) => {
+        setStatusPopup({ show: true, message: msg, isError: isErr });
+        setTimeout(() => setStatusPopup({ ...statusPopup, show: false }), 3000);
+    };
+
+    const handleRemoveMember = async (userId) => {
+        const { success, message } = await removeMember(userId, groupId);
+
+        if (success) {
+            setGroupMembers((prev) => prev.filter((m) => m.id !== userId));
+            showNotice(message); // Green popup
+        } else {
+            showNotice(message, true); // Red popup with 'Unauthorized' text
+        }
+    };
+
+    const [deletingUserId, setDeletingUserId] = useState(null);
+    const [isUpdatingAdmins, setIsUpdatingAdmins] = useState(false);
+    const [isUserAdmin, setIsUserAdmin] = useState(false);
+
+    const handleUninvite = async (uuidToRemove) => {
+        try {
+            const updatedList = await removeInvitedUser(groupId, uuidToRemove);
+
+            if (updatedList) {
+                setInvitedUsers(updatedList);
+            }
+        } catch (err) {
+            console.error("Failed to uninvite:", err);
+        }
+    };
+
     return (
         <>
+            {statusPopup.show && (
+                <div
+                    style={{
+                        position: "fixed",
+                        bottom: isPhone ? "10%" : "20px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        backgroundColor: statusPopup.isError
+                            ? "#ff4d4d"
+                            : "#4CAF50",
+                        color: "white",
+                        padding: isPhone ? "3rem 5rem" : "15px 30px",
+                        borderRadius: "15px",
+                        fontSize: isPhone ? "3.5rem" : "1.2rem",
+                        zIndex: 1000,
+                        boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+                        textAlign: "center",
+                        width: isPhone ? "80%" : "auto",
+                        transition: "all 0.3s ease",
+                    }}
+                >
+                    {statusPopup.message}
+                </div>
+            )}
+            {isInvitePopupOpen && (
+                <div
+                    className="d-createtagoverlay"
+                    style={{ padding: isPhone ? "40px" : "20px" }}
+                >
+                    <button
+                        className="d-partoverlay-exitbutton"
+                        onClick={() => setIsInvitePopupOpen(false)}
+                        style={{ fontSize: isPhone ? "5rem" : "2rem" }}
+                    >
+                        X
+                    </button>
+
+                    <h2
+                        style={{
+                            fontSize: isPhone ? "4.5rem" : "2rem",
+                            color: "white",
+                        }}
+                    >
+                        Invite User
+                    </h2>
+
+                    <input
+                        className="signupinput"
+                        placeholder="User UUID"
+                        value={inviteEmail}
+                        onChange={(e) => setInviteEmail(e.target.value)}
+                        style={{
+                            width: "90%",
+                            height: isPhone ? "10rem" : "50px",
+                            fontSize: isPhone ? "3.5rem" : "1rem",
+                            marginTop: "20px",
+                            paddingRight:
+                                (inviteEmail?.length || 0) >= 230
+                                    ? isPhone
+                                        ? "100px"
+                                        : "45px"
+                                    : "10px",
+                        }}
+                    />
+
+                    <button
+                        className="signupbutton"
+                        onClick={handleSendInvite}
+                        style={{
+                            width: "90%",
+                            height: isPhone ? "10rem" : "50px",
+                            fontSize: isPhone ? "3.5rem" : "1.2rem",
+                            marginTop: "30px",
+                        }}
+                    >
+                        Send Invite
+                    </button>
+                </div>
+            )}
             <div className="d-homepagecontainer">
                 <div className="d-titlecontainer">
                     <p>Home</p>
                 </div>
                 <div className="d-gridcontainer-3c2r">
-                    <div className="d-griditem-2r">
-                        <p id="d-griditem-title">Members</p>
-                        <table id="d-griditem-membertable">
-                            <tbody>
-                                <tr>
-                                    <th>Members</th>
-                                    <th>Admin</th>
-                                </tr>
-                                <tr>
-                                    <td>Test@email.com</td>
-                                    <td>
-                                        <input type="checkbox" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Test@email.com</td>
-                                    <td>
-                                        <input type="checkbox" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div className="d-griditem-membertable-bottombuttoncontainer">
-                            <button id="d-griditem-membertable-bottombuttoncontainer-1">
-                                Invite
-                            </button>
-                            <button id="d-griditem-membertable-bottombuttoncontainer-2">
-                                Update
-                            </button>
-                        </div>
+                    <div
+                        className="d-griditem-2r"
+                        style={{ overflowX: "hidden" }}
+                    >
+                        {isUserAdmin ? (
+                            <>
+                                {/* Scrollable Container for both tables */}
+                                <div
+                                    className="members-section-wrapper"
+                                    style={{
+                                        height: isPhone ? "auto" : "450px",
+                                        maxHeight: isPhone ? "none" : "75%",
+                                        overflowY: isPhone ? "visible" : "auto",
+                                        width: "100%",
+                                        paddingRight: "10px",
+                                    }}
+                                >
+                                    {/* --- MEMBERS TABLE --- */}
+                                    <p
+                                        style={{
+                                            fontSize: isPhone
+                                                ? "4rem"
+                                                : "1.5rem",
+                                            color: "white",
+                                            marginBottom: "15px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Members
+                                    </p>
+                                    <table
+                                        id="d-griditem-membertable"
+                                        style={{
+                                            width: "100%",
+                                            borderCollapse: "collapse",
+                                        }}
+                                    >
+                                        <thead>
+                                            <tr
+                                                style={{
+                                                    borderBottom:
+                                                        "1px solid #444",
+                                                }}
+                                            >
+                                                <th
+                                                    style={{
+                                                        fontSize: isPhone
+                                                            ? "3rem"
+                                                            : "1rem",
+                                                        textAlign: "left",
+                                                        padding: "10px",
+                                                    }}
+                                                >
+                                                    Member
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        fontSize: isPhone
+                                                            ? "3rem"
+                                                            : "1rem",
+                                                        textAlign: "center",
+                                                        padding: "10px",
+                                                    }}
+                                                >
+                                                    Admin
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        width: isPhone
+                                                            ? "80px"
+                                                            : "50px",
+                                                    }}
+                                                ></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {groupMembers.map((member) => (
+                                                <tr
+                                                    key={member.id}
+                                                    className="member-row-hover"
+                                                    style={{
+                                                        height: isPhone
+                                                            ? "12rem"
+                                                            : "auto",
+                                                        borderBottom:
+                                                            "1px solid #222",
+                                                    }}
+                                                >
+                                                    <td
+                                                        style={{
+                                                            fontSize: isPhone
+                                                                ? "2.5rem"
+                                                                : "1rem",
+                                                            color: "white",
+                                                            padding: "10px",
+                                                        }}
+                                                    >
+                                                        {member.id.substring(
+                                                            0,
+                                                            8,
+                                                        )}
+                                                        ...
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={
+                                                                member.isAdmin
+                                                            }
+                                                            onChange={() =>
+                                                                handleAdminToggle(
+                                                                    member.id,
+                                                                )
+                                                            }
+                                                            style={{
+                                                                width: isPhone
+                                                                    ? "4rem"
+                                                                    : "20px",
+                                                                height: isPhone
+                                                                    ? "4rem"
+                                                                    : "20px",
+                                                            }}
+                                                        />
+                                                    </td>
+                                                    <td
+                                                        style={{
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <button
+                                                            onClick={() =>
+                                                                setDeletingUserId(
+                                                                    member.id,
+                                                                )
+                                                            }
+                                                            style={{
+                                                                background:
+                                                                    "none",
+                                                                border: "none",
+                                                                color: "#ff4d4d",
+                                                                fontSize:
+                                                                    isPhone
+                                                                        ? "4rem"
+                                                                        : "1.5rem",
+                                                                cursor: "pointer",
+                                                            }}
+                                                            className="member-row-hover-button"
+                                                        >
+                                                            X
+                                                        </button>
+                                                        {deletingUserId ===
+                                                            member.id && (
+                                                            <WarningPopup
+                                                                message={`Remove ${member.id.substring(0, 8)}...?`}
+                                                                complete={() => {
+                                                                    handleRemoveMember(
+                                                                        member.id,
+                                                                    );
+                                                                    setDeletingUserId(
+                                                                        null,
+                                                                    );
+                                                                }}
+                                                                close={() =>
+                                                                    setDeletingUserId(
+                                                                        null,
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    {/* --- INVITED TABLE (Always Visible) --- */}
+                                    <p
+                                        style={{
+                                            fontSize: isPhone
+                                                ? "4rem"
+                                                : "1.5rem",
+                                            color: "white",
+                                            marginTop: "40px",
+                                            marginBottom: "15px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Invited
+                                    </p>
+                                    <table
+                                        id="d-griditem-membertable"
+                                        style={{
+                                            width: "100%",
+                                            borderCollapse: "collapse",
+                                        }}
+                                    >
+                                        <thead>
+                                            <tr
+                                                style={{
+                                                    borderBottom:
+                                                        "1px solid #444",
+                                                }}
+                                            >
+                                                <th
+                                                    style={{
+                                                        fontSize: isPhone
+                                                            ? "3rem"
+                                                            : "1rem",
+                                                        textAlign: "left",
+                                                        padding: "10px",
+                                                    }}
+                                                >
+                                                    UUID
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        fontSize: isPhone
+                                                            ? "3rem"
+                                                            : "1rem",
+                                                        textAlign: "center",
+                                                        padding: "10px",
+                                                    }}
+                                                >
+                                                    Status
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        width: isPhone
+                                                            ? "80px"
+                                                            : "50px",
+                                                    }}
+                                                ></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {invitedUsers.length > 0 ? (
+                                                invitedUsers.map(
+                                                    (invite, index) => {
+                                                        // Handle if the JSONB item is just a string or an object
+                                                        const displayId =
+                                                            typeof invite ===
+                                                            "string"
+                                                                ? invite
+                                                                : invite?.user_uuid ||
+                                                                  invite?.id ||
+                                                                  "Unknown";
+
+                                                        return (
+                                                            <tr
+                                                                key={index}
+                                                                style={{
+                                                                    height: isPhone
+                                                                        ? "12rem"
+                                                                        : "auto",
+                                                                    borderBottom:
+                                                                        "1px solid #222",
+                                                                }}
+                                                            >
+                                                                <td
+                                                                    style={{
+                                                                        fontSize:
+                                                                            isPhone
+                                                                                ? "2.5rem"
+                                                                                : "1rem",
+                                                                        color: "#aaa",
+                                                                        padding:
+                                                                            "10px",
+                                                                    }}
+                                                                >
+                                                                    {displayId !==
+                                                                    "Unknown"
+                                                                        ? `${displayId.substring(0, 8)}...`
+                                                                        : displayId}
+                                                                </td>
+                                                                <td
+                                                                    style={{
+                                                                        fontSize:
+                                                                            isPhone
+                                                                                ? "2.5rem"
+                                                                                : "1rem",
+                                                                        color: "#eab308",
+                                                                        textAlign:
+                                                                            "center",
+                                                                    }}
+                                                                >
+                                                                    Pending
+                                                                </td>
+                                                                <td
+                                                                    style={{
+                                                                        textAlign:
+                                                                            "center",
+                                                                    }}
+                                                                >
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            handleUninvite(
+                                                                                displayId,
+                                                                            )
+                                                                        }
+                                                                        style={{
+                                                                            background:
+                                                                                "none",
+                                                                            border: "none",
+                                                                            color: "#ff4d4d",
+                                                                            fontSize:
+                                                                                isPhone
+                                                                                    ? "4rem"
+                                                                                    : "1.5rem",
+                                                                            cursor: "pointer",
+                                                                        }}
+                                                                        className="member-row-hover-button"
+                                                                    >
+                                                                        X
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    },
+                                                )
+                                            ) : (
+                                                <tr>
+                                                    <td
+                                                        colSpan="3"
+                                                        style={{
+                                                            fontSize: isPhone
+                                                                ? "3rem"
+                                                                : "1rem",
+                                                            color: "#666",
+                                                            textAlign: "center",
+                                                            padding: "40px",
+                                                            fontStyle: "italic",
+                                                        }}
+                                                    >
+                                                        No pending invites
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* --- ACTION BUTTONS --- */}
+                                <div
+                                    className="d-griditem-membertable-bottombuttoncontainer"
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: isPhone
+                                            ? "column"
+                                            : "row",
+                                        gap: isPhone ? "30px" : "15px",
+                                        width: "100%",
+                                        padding: isPhone ? "20px 0" : "10px 0",
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    <button
+                                        className="signupbutton"
+                                        onClick={() =>
+                                            setIsInvitePopupOpen(true)
+                                        }
+                                        style={{
+                                            fontSize: isPhone ? "4rem" : "1rem",
+                                            height: isPhone ? "12rem" : "50px",
+                                            flex: 1,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        Invite
+                                    </button>
+                                    <button
+                                        className="signupbutton"
+                                        onClick={() =>
+                                            setIsUpdatingAdmins(true)
+                                        }
+                                        style={{
+                                            fontSize: isPhone ? "4rem" : "1rem",
+                                            height: isPhone ? "12rem" : "50px",
+                                            flex: 1,
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        Update
+                                    </button>
+                                </div>
+
+                                {isUpdatingAdmins && (
+                                    <WarningPopup
+                                        message="Update group permissions?"
+                                        complete={() => {
+                                            saveMemberUpdates();
+                                            setIsUpdatingAdmins(false);
+                                        }}
+                                        close={() => setIsUpdatingAdmins(false)}
+                                    />
+                                )}
+                                <div
+                                    className="d-memberlist-idcard-container"
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        padding: isPhone ? "30px" : "15px 20px",
+                                        backgroundColor:
+                                            "rgba(255, 255, 255, 0.03)",
+                                        borderRadius: "12px",
+                                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                                        marginTop: "20px",
+                                        width: "100%",
+                                        boxSizing: "border-box",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                        }}
+                                    >
+                                        <span
+                                            style={{
+                                                fontSize: isPhone
+                                                    ? "3rem"
+                                                    : "0.75rem",
+                                                color: "#666",
+                                                fontWeight: "bold",
+                                                textTransform: "uppercase",
+                                            }}
+                                        >
+                                            Group ID
+                                        </span>
+                                        <code
+                                            style={{
+                                                fontSize: isPhone
+                                                    ? "4rem"
+                                                    : "1.2rem",
+                                                color: "#00d4ff",
+                                                fontFamily: "monospace",
+                                            }}
+                                        >
+                                            {groupId || "—"}
+                                        </code>
+                                    </div>
+
+                                    <MdContentCopy
+                                        className="d-memberlist-idcard-copy-icon"
+                                        size={isPhone ? "4rem" : "1.5rem"}
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(
+                                                groupId,
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    height: "300px",
+                                    width: "100%",
+                                }}
+                            >
+                                <p
+                                    style={{
+                                        fontSize: isPhone ? "4rem" : "1.2rem",
+                                        color: "#888",
+                                        fontStyle: "italic",
+                                    }}
+                                >
+                                    Nothing to see here...
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="d-griditem-2r" style={{ gridColumn: 2 }}>
