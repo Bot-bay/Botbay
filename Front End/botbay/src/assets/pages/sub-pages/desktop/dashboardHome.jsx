@@ -31,7 +31,16 @@ import WarningPopup from "../../components/warningpopup";
 import { MdContentCopy } from "react-icons/md";
 
 function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
-    const isPhone = useMediaQuery({ query: "(max-width: 1199px)" });
+    const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsPhone(window.innerWidth < 1200);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const partDataRaw = localStorage.getItem("partData");
     const tagListRaw = localStorage.getItem("taglist");
@@ -410,6 +419,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                             : "1rem",
                                                         textAlign: "left",
                                                         padding: "10px",
+                                                        color: "white",
                                                     }}
                                                 >
                                                     Member
@@ -421,6 +431,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                             : "1rem",
                                                         textAlign: "center",
                                                         padding: "10px",
+                                                        color: "white",
                                                     }}
                                                 >
                                                     Admin
@@ -573,6 +584,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                             : "1rem",
                                                         textAlign: "left",
                                                         padding: "10px",
+                                                        color: "white",
                                                     }}
                                                 >
                                                     UUID
@@ -584,6 +596,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                             : "1rem",
                                                         textAlign: "center",
                                                         padding: "10px",
+                                                        color: "white",
                                                     }}
                                                 >
                                                     Status

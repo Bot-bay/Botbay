@@ -67,7 +67,7 @@ export function AddItemMenuDesktop({ onClose }) {
                     <p>Add Item</p>
                 </div>
                 {partIndexOpen === null && (
-                    <div className="centercontainer">
+                    <div className="d-createitem-centercontainer">
                         <div className="d-createitem-middlecontainer">
                             <button onClick={() => setPartIndexOpen(0)}>
                                 Motor

@@ -2083,3 +2083,159 @@
         border-radius: 30px;
     }
 }
+
+/* Container & Sections */
+.d-settings-wrapper {
+    padding: 30px;
+    color: white;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    font-family: "Inter", sans-serif;
+}
+
+.d-settings-section {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Typography & Inputs */
+.d-settings-label {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.d-settings-input {
+    background-color: #0f101a;
+    border: 1px solid #2d2e3e;
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 200ms ease;
+}
+
+.d-settings-input:focus {
+    border-color: #44327a;
+    background-color: #161725;
+}
+
+/* Primary Button (Matching your Create Item style) */
+.d-settings-btn-primary {
+    width: 100%;
+    height: 55px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #44327a 0%, #2a1f4d 100%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.d-settings-btn-primary:hover {
+    background: linear-gradient(135deg, #5b44a1 0%, #372864 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(68, 50, 122, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.d-settings-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.9);
+}
+
+/* Danger Section */
+.d-settings-danger-zone {
+    margin-top: 20px;
+    border: 1px solid rgba(255, 77, 77, 0.15);
+    border-radius: 12px;
+    padding: 24px;
+    background-color: rgba(255, 77, 77, 0.02);
+}
+
+.d-settings-btn-danger {
+    background: none;
+    border: 1px solid rgba(255, 77, 77, 0.5);
+    color: #ff4d4d;
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.d-settings-btn-danger:hover {
+    background-color: rgba(255, 77, 77, 0.1);
+    border-color: #ff4d4d;
+    transform: translateY(-1px);
+}
+
+/* ... existing d-settings styles ... */
+
+/* Identity Gate specific mobile tweaks */
+.d-settings-verify-icon {
+    margin-bottom: 20px;
+}
+
+/* 1199px Mobile Breakpoint */
+@media (max-width: 1199px) {
+    .d-settings-wrapper {
+        padding: 50px;
+        gap: 50px;
+    }
+
+    .d-settings-section {
+        padding: 60px 40px;
+        gap: 40px;
+    }
+
+    .d-settings-label {
+        font-size: 3rem !important;
+    }
+
+    .d-settings-input {
+        padding: 35px;
+        font-size: 4rem !important;
+        height: auto;
+        border-radius: 15px;
+    }
+
+    .d-settings-btn-primary {
+        height: 140px;
+        font-size: 4rem !important;
+        border-radius: 20px;
+    }
+
+    .d-settings-btn-danger {
+        padding: 40px;
+        font-size: 3.5rem !important;
+        border-radius: 20px;
+    }
+
+    .d-settings-verify-text {
+        font-size: 3rem !important;
+        line-height: 1.4;
+    }
+}

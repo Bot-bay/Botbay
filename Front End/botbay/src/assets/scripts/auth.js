@@ -1,9 +1,35 @@
 import { createClient } from "@supabase/supabase-js";
 
+const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 const SUPABASE_URL = "https://qskjhirfbfxoiclrdkfh.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_7O6fxNAuQqS6Hea4KjH3cw_acm8Euey";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function flaskRequest(endpoint, method = "GET", body = null) {
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+    const token = session?.access_token;
+
+    if (!token) {
+        console.error("User is not logged in");
+        return { error: "No session found" };
+    }
+
+    const options = {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: token, // Just the raw token string
+        },
+    };
+
+    if (body) options.body = JSON.stringify(body);
+
+    const response = await fetch(`${RENDER_URL}${endpoint}`, options);
+    return await response.json();
+}
 
 // --- AUTH & USER ---
 
@@ -153,4 +179,46 @@ export const removeInvitedUser = async (teamId, uuidToRemove) => {
         return null;
     }
     return data;
+};
+
+export const updateAccount = async (data) => {
+    // data can be { email: 'new@email.com' } or { password: 'newpassword' }
+    const { error } = await supabase.auth.updateUser(data);
+    if (error) throw error;
+    return { success: true };
+};
+
+export const deleteUserAccount = async () => {};
+
+export const groupAction = async (groupId, action) => {
+    // We pass the endpoint, the method, and the data body.
+    // flaskRequest handles the Token and the RENDER_URL automatically.
+    const result = await flaskRequest("/database/group-action", "POST", {
+        teamId: groupId,
+        action: action,
+    });
+
+    if (result.error || !result.success) {
+        throw new Error(result.error || "Group action failed");
+    }
+
+    return result.data;
+};
+
+/**
+ * Force a password check to verify identity for sensitive actions
+ */
+export const verifyCurrentPassword = async (password) => {
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("No user found");
+
+    const { error } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: password,
+    });
+
+    if (error) throw new Error("Verification failed: Incorrect password.");
+    return true;
 };
