@@ -188,7 +188,23 @@ export const updateAccount = async (data) => {
     return { success: true };
 };
 
-export const deleteUserAccount = async () => {};
+/**
+ * Triggers full account deletion via Python Flask service.
+ * This handles the database cleanup and Auth deletion.
+ */
+export const deleteUserAccount = async () => {
+    const result = await flaskRequest("/database/delete-account", "POST");
+
+    if (result.error || !result.success) {
+        throw new Error(result.error || "Account deletion failed");
+    }
+
+    // Clean up local state
+    await supabase.auth.signOut();
+    window.location.hash = "#/signup";
+
+    return result;
+};
 
 export const groupAction = async (groupId, action) => {
     // We pass the endpoint, the method, and the data body.

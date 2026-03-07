@@ -27,7 +27,7 @@ import {
 } from "../../../scripts/auth.js";
 
 import WarningPopup from "../../components/warningpopup";
-
+import Blocker from "../../components/blocker";
 import { MdContentCopy } from "react-icons/md";
 
 function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
@@ -305,6 +305,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                         transition: "all 0.3s ease",
                     }}
                 >
+                    <Blocker />
                     {statusPopup.message}
                 </div>
             )}
@@ -313,6 +314,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                     className="d-createtagoverlay"
                     style={{ padding: isPhone ? "40px" : "20px" }}
                 >
+                    <Blocker />
                     <button
                         className="d-partoverlay-exitbutton"
                         onClick={() => setIsInvitePopupOpen(false)}
