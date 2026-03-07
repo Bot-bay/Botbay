@@ -28,7 +28,7 @@ import {
 
 import WarningPopup from "../../components/warningpopup";
 import Blocker from "../../components/blocker";
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy, MdCheck } from "react-icons/md";
 
 function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
@@ -282,6 +282,15 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
         }
     };
 
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        if (!groupId) return;
+        navigator.clipboard.writeText(groupId);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
     return (
         <>
             {statusPopup.show && (
@@ -305,7 +314,6 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                         transition: "all 0.3s ease",
                     }}
                 >
-                    <Blocker />
                     {statusPopup.message}
                 </div>
             )}
@@ -817,7 +825,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                 fontSize: isPhone
                                                     ? "4rem"
                                                     : "1.2rem",
-                                                color: "#00d4ff",
+                                                color: "#ffffff", // Changed from teal to white
                                                 fontFamily: "monospace",
                                             }}
                                         >
@@ -825,15 +833,27 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                         </code>
                                     </div>
 
-                                    <MdContentCopy
-                                        className="d-memberlist-idcard-copy-icon"
-                                        size={isPhone ? "4rem" : "1.5rem"}
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(
-                                                groupId,
-                                            );
-                                        }}
-                                    />
+                                    {/* The copy icon now changes based on the 'copied' state */}
+                                    {copied ? (
+                                        <MdCheck
+                                            className="d-memberlist-idcard-copy-icon"
+                                            size={isPhone ? "4rem" : "1.5rem"}
+                                            style={{
+                                                color: "#4caf50",
+                                                cursor: "default",
+                                            }} // Green check for feedback
+                                        />
+                                    ) : (
+                                        <MdContentCopy
+                                            className="d-memberlist-idcard-copy-icon"
+                                            size={isPhone ? "4rem" : "1.5rem"}
+                                            style={{
+                                                color: "#ffffff",
+                                                cursor: "pointer",
+                                            }}
+                                            onClick={handleCopy}
+                                        />
+                                    )}
                                 </div>
                             </>
                         ) : (

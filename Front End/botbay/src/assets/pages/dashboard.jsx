@@ -26,6 +26,10 @@ import SettingsPagePhone from "./sub-pages/phone/dashboardSettings";
 
 import sidebarLogo from "../images/LogoTrans.png";
 
+import { getCloudData } from "../scripts/database.js";
+
+import { fetchGroupData } from "../scripts/auth.js";
+
 function Dashboard() {
     const [partToRun, setPartToRun] = React.useState(null);
     const [usePartToRun, setUsePartToRun] = React.useState(false);
@@ -33,6 +37,49 @@ function Dashboard() {
     const [isMobileExpanded, setIsMobileExpanded] = React.useState(false);
 
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
+
+    const [isHydrating, setIsHydrating] = React.useState(true);
+
+    useEffect(() => {
+        const hydrateDashboard = async () => {
+            try {
+                // 1. Check if data is already there (Hydration Guard)
+                if (localStorage.getItem("partData")) {
+                    setIsHydrating(false);
+                    return;
+                }
+
+                // 2. Fetch Group ID and User Context via auth.js
+                const groupData = await fetchGroupData();
+
+                if (groupData.success && groupData.groupId) {
+                    // 3. Pull the "Save Slot" from Python via database.js
+                    const cloudData = await getCloudData(groupData.groupId);
+
+                    if (cloudData && !cloudData.error) {
+                        localStorage.setItem(
+                            "partData",
+                            JSON.stringify(cloudData.parts || []),
+                        );
+                        localStorage.setItem(
+                            "tagslist",
+                            JSON.stringify(cloudData.tags || []),
+                        );
+                        localStorage.setItem(
+                            "batteryList",
+                            JSON.stringify(cloudData.batteries || []),
+                        );
+                    }
+                }
+            } catch (err) {
+                console.error("Hydration failed:", err);
+            } finally {
+                setIsHydrating(false);
+            }
+        };
+
+        hydrateDashboard();
+    }, []);
 
     function handleLowStockClick(part) {
         if (
@@ -117,6 +164,62 @@ function Dashboard() {
             }
         }
     };
+
+    if (isHydrating) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "#1a1a1a",
+                    color: "white",
+                    fontFamily: "sans-serif",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    zIndex: 9999,
+                }}
+            >
+                {/* The Spinner */}
+                <div
+                    style={{
+                        width: isDesktop ? "50px" : "40px",
+                        height: isDesktop ? "50px" : "40px",
+                        border: "5px solid rgba(255, 255, 255, 0.1)",
+                        borderTop: "5px solid #ffffff",
+                        borderRadius: "50%",
+                        marginBottom: "20px",
+                        animation: "spin 1s linear infinite",
+                    }}
+                />
+
+                {/* The Text */}
+                <p
+                    style={{
+                        fontSize: isDesktop ? "1.2rem" : "1rem",
+                        fontWeight: "500",
+                        margin: 0,
+                    }}
+                >
+                    Syncing with cloud...
+                </p>
+
+                {/* Inline Animation Definition */}
+                <style>
+                    {`
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `}
+                </style>
+            </div>
+        );
+    }
 
     return (
         <div className="dashboardscreencontainer">

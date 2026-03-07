@@ -1,9 +1,7 @@
 // --- CONFIGURATION ---
 const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
-const SUPABASE_URL = "URL HERE";
-const SUPABASE_KEY = "KEY HERE";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+import { supabase } from "./auth.js";
 
 /**
  * Helper function to handle the authenticated fetch to Flask
@@ -27,10 +25,15 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
         },
     };
 
-    if (body) options.body = JSON.stringify(body);
+    if (method !== "GET" && body) {
+        options.body = JSON.stringify(body);
+    }
 
     const response = await fetch(`${RENDER_URL}${endpoint}`, options);
-    return await response.json();
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.error || "Request failed");
+    return result;
 }
 
 /// ~~~ PARTS RELATED ~~~ ///
@@ -88,4 +91,22 @@ async function createTag(group, tag) {
 
 async function readAllTags(group) {
     return await flaskRequest(`/database/${group}/tags`, "GET");
+}
+
+/// ~~~ SYNC RELATED ~~~ ///
+
+/**
+ * Syncs all local storage data (Parts, Tags, Batteries) to the cloud group
+ * in a single request to the Python backend.
+ */
+export async function syncLocalData(groupId, parts, tags, batteries) {
+    return await flaskRequest(`/database/${groupId}/sync`, "POST", {
+        parts: parts || [],
+        tags: tags || [],
+        batteries: batteries || [],
+    });
+}
+
+export async function getCloudData(groupId) {
+    return await flaskRequest(`/database/${groupId}/all-data`, "GET");
 }

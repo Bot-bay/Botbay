@@ -4,7 +4,16 @@ const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 const SUPABASE_URL = "https://qskjhirfbfxoiclrdkfh.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_7O6fxNAuQqS6Hea4KjH3cw_acm8Euey";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+        storage: window.sessionStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+    },
+});
+
+import { syncLocalData } from "./database.js";
 
 async function flaskRequest(endpoint, method = "GET", body = null) {
     const {
@@ -12,20 +21,19 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
     } = await supabase.auth.getSession();
     const token = session?.access_token;
 
-    if (!token) {
-        console.error("User is not logged in");
-        return { error: "No session found" };
-    }
+    if (!token) return { error: "No session found" };
 
     const options = {
         method: method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: token, // Just the raw token string
+            Authorization: token,
         },
     };
 
-    if (body) options.body = JSON.stringify(body);
+    if (method !== "GET" && body) {
+        options.body = JSON.stringify(body);
+    }
 
     const response = await fetch(`${RENDER_URL}${endpoint}`, options);
     return await response.json();
@@ -81,11 +89,28 @@ export const fetchGroupData = async () => {
 // --- GROUP ACTIONS (RPC ONLY) ---
 
 export const createGroup = async () => {
+    // 1. Create the group in Supabase
     const { data: teamId, error } = await supabase.rpc(
         "create_new_team_and_assign_user",
     );
-    if (!error) window.location.hash = "#/dashboard";
-    return { teamId, error };
+
+    if (error) return { teamId: null, error };
+
+    // Inside createGroup in auth.js
+    try {
+        const localParts = JSON.parse(localStorage.getItem("partData") || "[]");
+        const localTags = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const localBatteries = JSON.parse(
+            localStorage.getItem("batteryList") || "[]",
+        );
+
+        // Single call to sync everything
+        await syncLocalData(teamId, localParts, localTags, localBatteries);
+
+        window.location.hash = "#/dashboard";
+    } catch (err) {
+        console.error("Migration failed", err);
+    }
 };
 
 export const joinGroup = async (groupId) => {
@@ -98,7 +123,7 @@ export const joinGroup = async (groupId) => {
 
 export const leaveGroup = async () => {
     const { error } = await supabase.rpc("leave_current_group");
-    if (!error) window.location.hash = "#/group-selection";
+    if (!error) window.location.hash = "#/";
     return { error };
 };
 
@@ -201,7 +226,7 @@ export const deleteUserAccount = async () => {
 
     // Clean up local state
     await supabase.auth.signOut();
-    window.location.hash = "#/signup";
+    window.location.hash = "#/";
 
     return result;
 };
@@ -237,4 +262,28 @@ export const verifyCurrentPassword = async (password) => {
 
     if (error) throw new Error("Verification failed: Incorrect password.");
     return true;
+};
+
+/**
+ * Sends a password reset email to the user.
+ * Redirects them to the update-password route upon clicking the link.
+ */
+export const sendPasswordResetEmail = async (email) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/#/updatepassword`,
+    });
+    if (error) throw error;
+    return { success: true };
+};
+
+/**
+ * Updates the password for the currently logged-in user
+ * (used after they click the email reset link).
+ */
+export const updatePassword = async (newPassword) => {
+    const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+    });
+    if (error) throw error;
+    return { success: true };
 };

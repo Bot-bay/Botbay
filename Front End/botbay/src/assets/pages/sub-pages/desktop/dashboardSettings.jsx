@@ -115,7 +115,7 @@ function SettingsPageDesktop() {
             onConfirm: async () => {
                 try {
                     await groupAction(groupState.groupId, action);
-                    window.location.hash = "#/group-selection";
+                    window.location.hash = "#/";
                 } catch (e) {
                     setPopup({ show: true, type: "info", message: e.message });
                 }
@@ -136,64 +136,75 @@ function SettingsPageDesktop() {
     // --- Identity Verification Screen (Phone Aware) ---
     if (!isVerified) {
         return (
-            <div
-                className="d-settings-wrapper"
-                style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minHeight: "60vh",
-                }}
-            >
+            <>
+                {popup.show && (
+                    <Popup
+                        isPhone={isPhone}
+                        popup={popup}
+                        setPopup={setPopup}
+                    />
+                )}
                 <div
-                    className="d-settings-section"
+                    className="d-settings-wrapper"
                     style={{
-                        width: "100%",
-                        maxWidth: isPhone ? "95%" : "500px",
-                        textAlign: "center",
-                        border: "1px solid #44327a",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minHeight: "60vh",
                     }}
                 >
-                    <MdLock
-                        size={isPhone ? "10rem" : "3.5rem"}
-                        color="#44327a"
-                        style={{ marginBottom: "20px" }}
-                    />
-                    <h2
+                    <div
+                        className="d-settings-section"
                         style={{
-                            fontSize: isPhone ? "6rem" : "2.2rem",
-                            marginBottom: "15px",
+                            width: "100%",
+                            maxWidth: isPhone ? "95%" : "500px",
+                            textAlign: "center",
+                            border: "1px solid #44327a",
                         }}
                     >
-                        Confirm Identity
-                    </h2>
-                    <p
-                        style={{
-                            fontSize: isPhone ? "3rem" : "1.1rem",
-                            color: "#94a3b8",
-                            marginBottom: "30px",
-                        }}
-                    >
-                        Enter your current password to unlock sensitive
-                        settings.
-                    </p>
-                    <input
-                        className="d-settings-input"
-                        type="password"
-                        placeholder="Current Password"
-                        value={verifyPass}
-                        onChange={(e) => setVerifyPass(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleVerify()}
-                    />
-                    <button
-                        className="d-settings-btn-primary"
-                        onClick={handleVerify}
-                        style={{ marginTop: isPhone ? "40px" : "20px" }}
-                        disabled={loading}
-                    >
-                        {loading ? "Verifying..." : "Unlock Settings"}
-                    </button>
+                        <MdLock
+                            size={isPhone ? "10rem" : "3.5rem"}
+                            color="#44327a"
+                            style={{ marginBottom: "20px" }}
+                        />
+                        <h2
+                            style={{
+                                fontSize: isPhone ? "6rem" : "2.2rem",
+                                marginBottom: "15px",
+                            }}
+                        >
+                            Confirm Identity
+                        </h2>
+                        <p
+                            style={{
+                                fontSize: isPhone ? "3rem" : "1.1rem",
+                                color: "#94a3b8",
+                                marginBottom: "30px",
+                            }}
+                        >
+                            Enter your current password to unlock sensitive
+                            settings.
+                        </p>
+                        <input
+                            className="d-settings-input"
+                            type="password"
+                            placeholder="Current Password"
+                            value={verifyPass}
+                            onChange={(e) => setVerifyPass(e.target.value)}
+                            onKeyDown={(e) =>
+                                e.key === "Enter" && handleVerify()
+                            }
+                        />
+                        <button
+                            className="d-settings-btn-primary"
+                            onClick={handleVerify}
+                            style={{ marginTop: isPhone ? "40px" : "20px" }}
+                            disabled={loading}
+                        >
+                            {loading ? "Verifying..." : "Unlock Settings"}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 
@@ -201,108 +212,7 @@ function SettingsPageDesktop() {
     return (
         <>
             {popup.show && (
-                <div
-                    className="d-createtagoverlay"
-                    style={{
-                        padding: isPhone ? "40px" : "40px",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Blocker />
-                    {/* Exit Button */}
-                    <button
-                        className="d-partoverlay-exitbutton"
-                        onClick={() => setPopup({ ...popup, show: false })}
-                        style={{ fontSize: isPhone ? "5rem" : "2rem" }}
-                    >
-                        X
-                    </button>
-
-                    <h2
-                        style={{
-                            fontSize: isPhone ? "4.5rem" : "2.5rem",
-                            color: "white",
-                            textAlign: "center",
-                            marginBottom: "20px",
-                        }}
-                    >
-                        {popup.type === "confirm" ? "Confirm Action" : "Notice"}
-                    </h2>
-
-                    <p
-                        style={{
-                            fontSize: isPhone ? "3.5rem" : "1.2rem",
-                            color: "#ccc",
-                            textAlign: "center",
-                            width: "90%",
-                            marginBottom: "30px",
-                        }}
-                    >
-                        {popup.message}
-                    </p>
-
-                    {/* Action Buttons */}
-                    <div
-                        style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                        }}
-                    >
-                        {popup.type === "confirm" ? (
-                            <>
-                                <button
-                                    className="signupbutton"
-                                    onClick={() => {
-                                        popup.onConfirm();
-                                        setPopup({ ...popup, show: false });
-                                    }}
-                                    style={{
-                                        width: "90%",
-                                        height: isPhone ? "10rem" : "60px",
-                                        fontSize: isPhone ? "3.5rem" : "1.2rem",
-                                        backgroundColor: "#ff4444", // Danger color for confirm
-                                    }}
-                                >
-                                    Confirm
-                                </button>
-                                <button
-                                    className="signupbutton"
-                                    onClick={() =>
-                                        setPopup({ ...popup, show: false })
-                                    }
-                                    style={{
-                                        width: "90%",
-                                        height: isPhone ? "10rem" : "60px",
-                                        fontSize: isPhone ? "3.5rem" : "1.2rem",
-                                        marginTop: "20px",
-                                        backgroundColor: "#444",
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                            </>
-                        ) : (
-                            <button
-                                className="signupbutton"
-                                onClick={() =>
-                                    setPopup({ ...popup, show: false })
-                                }
-                                style={{
-                                    width: "90%",
-                                    height: isPhone ? "10rem" : "60px",
-                                    fontSize: isPhone ? "3.5rem" : "1.2rem",
-                                }}
-                            >
-                                OK
-                            </button>
-                        )}
-                    </div>
-                </div>
+                <Popup isPhone={isPhone} popup={popup} setPopup={setPopup} />
             )}
             <div className="d-settings-wrapper">
                 <h2
@@ -386,7 +296,7 @@ function SettingsPageDesktop() {
                                 }}
                                 onClick={() => handleGroupAction("delete")}
                             >
-                                <MdDeleteForever /> Delete Group Entirely
+                                <MdDeleteForever /> Delete Group
                             </button>
                         )}
 
@@ -408,3 +318,106 @@ function SettingsPageDesktop() {
 }
 
 export default SettingsPageDesktop;
+
+function Popup({ isPhone, popup, setPopup }) {
+    return (
+        <div
+            className="d-createtagoverlay"
+            style={{
+                padding: isPhone ? "40px" : "40px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            <Blocker />
+            {/* Exit Button */}
+            <button
+                className="d-partoverlay-exitbutton"
+                onClick={() => setPopup({ ...popup, show: false })}
+                style={{ fontSize: isPhone ? "5rem" : "2rem" }}
+            >
+                X
+            </button>
+
+            <h2
+                style={{
+                    fontSize: isPhone ? "4.5rem" : "2.5rem",
+                    color: "white",
+                    textAlign: "center",
+                    marginBottom: "20px",
+                }}
+            >
+                {popup.type === "confirm" ? "Confirm Action" : "Notice"}
+            </h2>
+
+            <p
+                style={{
+                    fontSize: isPhone ? "3.5rem" : "1.2rem",
+                    color: "#ccc",
+                    textAlign: "center",
+                    width: "90%",
+                    marginBottom: "30px",
+                }}
+            >
+                {popup.message}
+            </p>
+
+            {/* Action Buttons */}
+            <div
+                style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                {popup.type === "confirm" ? (
+                    <>
+                        <button
+                            className="signupbutton"
+                            onClick={() => {
+                                popup.onConfirm();
+                                setPopup({ ...popup, show: false });
+                            }}
+                            style={{
+                                width: "90%",
+                                height: isPhone ? "10rem" : "60px",
+                                fontSize: isPhone ? "3.5rem" : "1.2rem",
+                                backgroundColor: "#ff4444", // Danger color for confirm
+                            }}
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            className="signupbutton"
+                            onClick={() => setPopup({ ...popup, show: false })}
+                            style={{
+                                width: "90%",
+                                height: isPhone ? "10rem" : "60px",
+                                fontSize: isPhone ? "3.5rem" : "1.2rem",
+                                marginTop: "20px",
+                                backgroundColor: "#444",
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </>
+                ) : (
+                    <button
+                        className="signupbutton"
+                        onClick={() => setPopup({ ...popup, show: false })}
+                        style={{
+                            width: "90%",
+                            height: isPhone ? "10rem" : "60px",
+                            fontSize: isPhone ? "3.5rem" : "1.2rem",
+                        }}
+                    >
+                        OK
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+}
