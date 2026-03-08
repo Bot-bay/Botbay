@@ -46,9 +46,25 @@ async function overwritePart(group, part) {
     );
 }
 
-async function createPart(group, part) {
-    return await flaskRequest(`/database/${group}/parts`, "POST", part);
-}
+export const cloudCreatePart = async (itemData, teamId) => {
+    try {
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase.rpc("create_new_part_cloud", {
+            item_data: itemData,
+            target_team_id: teamId,
+            requestor_id: user.id,
+        });
+
+        if (error) throw error;
+        return { success: true, item: data };
+    } catch (error) {
+        console.error("Cloud append failed:", error.message);
+        return { success: false, error: error.message };
+    }
+};
 
 async function deletePart(group, partId) {
     return await flaskRequest(`/database/${group}/parts/${partId}`, "DELETE");

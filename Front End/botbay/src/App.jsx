@@ -9,6 +9,21 @@ import Dashboard from "./assets/pages/dashboard.jsx";
 import UpdatePasswordPage from "./assets/pages/updatepassword.jsx";
 
 function App() {
+    (function () {
+        // 1. Check if this specific TAB has a session flag
+        const tabActive = sessionStorage.getItem("tab_session_active");
+
+        if (!tabActive) {
+            // 2. If no flag exists, this is a brand new tab/window instance.
+            // Wipe the specific data you want cleared.
+            localStorage.removeItem("partData");
+            localStorage.removeItem("tagslist");
+            localStorage.removeItem("batteryList");
+
+            // 3. Set the flag for this tab so it survives refreshes (F5)
+            sessionStorage.setItem("tab_session_active", "true");
+        }
+    })();
     useEffect(() => {
         const handleReloadAuth = async () => {
             const perfEntries = performance.getEntriesByType("navigation");

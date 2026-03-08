@@ -484,12 +484,23 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
 
     // Load parts from localStorage
     useEffect(() => {
-        const savedData = localStorage.getItem("partData");
-        if (savedData) {
-            setListResults(JSON.parse(savedData));
-        } else {
-            setListResults([]);
-        }
+        const loadData = () => {
+            const savedData = localStorage.getItem("partData");
+            if (savedData) {
+                setListResults(JSON.parse(savedData));
+            } else {
+                setListResults([]);
+            }
+        };
+
+        // 1. Run once on mount
+        loadData();
+
+        // 2. Listen for the custom "storage" event from createNewItem
+        window.addEventListener("storage", loadData);
+
+        // 3. Cleanup to prevent memory leaks
+        return () => window.removeEventListener("storage", loadData);
     }, []);
 
     // Load tags from localStorage

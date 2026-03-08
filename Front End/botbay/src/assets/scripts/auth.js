@@ -4,6 +4,13 @@ const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 const SUPABASE_URL = "https://qskjhirfbfxoiclrdkfh.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_7O6fxNAuQqS6Hea4KjH3cw_acm8Euey";
 
+export async function isUserSignedIn() {
+    const {
+        data: { session },
+    } = await supabase.auth.getSession();
+    return !!session;
+}
+
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: {
         storage: window.sessionStorage,

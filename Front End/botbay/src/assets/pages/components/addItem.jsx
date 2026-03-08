@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { isUserSignedIn, getUserGroup } from "../../scripts/auth";
+import { cloudCreatePart } from "../../scripts/database";
 
 function useIsPhone() {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
@@ -176,21 +178,10 @@ function AddMotor({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // 1. Get existing parts to determine the next ID
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
-        // 2. Format the data
         const newMotor = {
             editable: true,
             manufacturerId: formData.manufacturerId,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "",
             tags: formData.tags,
@@ -209,7 +200,7 @@ function AddMotor({ onReturn, onClose }) {
                 stall_torque: Number(formData.stallTorque) || null,
                 shaft_type: formData.shaftType || "",
             },
-            quantity: 0, // Default starting values
+            quantity: 0,
             needed: 0,
             icon: formData.iconLink,
             links: {
@@ -218,13 +209,7 @@ function AddMotor({ onReturn, onClose }) {
             },
         };
 
-        // 3. Append to the list and update localStorage
-        const updatedParts = [...existingParts, newMotor];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
-
-        console.log("New Motor Saved:", newMotor);
-
-        // 4. Return to previous view
+        createNewItem(newMotor);
         onClose();
     };
 
@@ -820,18 +805,10 @@ function AddServo({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newServo = {
             editable: true,
             manufacturerId: formData.manufacturerId,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "unknown",
             tags: formData.tags,
@@ -862,8 +839,7 @@ function AddServo({ onReturn, onClose }) {
             },
         };
 
-        const updatedParts = [...existingParts, newServo];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
+        createNewItem(newServo);
         onClose();
     };
 
@@ -1506,18 +1482,10 @@ function AddStructural({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newStructural = {
             editable: true,
             manufacturerId: formData.manufacturerId,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "unknown",
             tags: formData.tags,
@@ -1538,8 +1506,7 @@ function AddStructural({ onReturn, onClose }) {
             },
         };
 
-        const updatedParts = [...existingParts, newStructural];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
+        createNewItem(newStructural);
         onClose();
     };
 
@@ -1989,18 +1956,10 @@ function AddElectrical({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newElectrical = {
             editable: true,
             manufacturerId: formData.manufacturerId,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "unknown",
             tags: formData.tags,
@@ -2032,10 +1991,7 @@ function AddElectrical({ onReturn, onClose }) {
             },
         };
 
-        localStorage.setItem(
-            "partData",
-            JSON.stringify([...existingParts, newElectrical]),
-        );
+        createNewItem(newElectrical);
         onClose();
     };
 
@@ -2675,18 +2631,10 @@ function AddSensor({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newSensor = {
             editable: true,
             manufacturerId: formData.manufacturerId,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "unknown",
             tags: formData.tags,
@@ -2726,8 +2674,7 @@ function AddSensor({ onReturn, onClose }) {
             },
         };
 
-        const updatedParts = [...existingParts, newSensor];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
+        createNewItem(newSensor);
         onClose();
     };
 
@@ -3339,17 +3286,9 @@ function Add3dPrinted({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newPrint = {
             editable: true,
-            id: nextId,
+
             manufacturerId: formData.manufacturerId || null,
             name: formData.name,
             manufacturer: formData.manufacturer,
@@ -3387,10 +3326,7 @@ function Add3dPrinted({ onReturn, onClose }) {
             },
         };
 
-        localStorage.setItem(
-            "partData",
-            JSON.stringify([...existingParts, newPrint]),
-        );
+        createNewItem(newPrint);
         onClose();
     };
 
@@ -4144,18 +4080,10 @@ function AddMachined({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newMachined = {
             editable: true,
             manufacturerId: formData.manufacturerId || null,
-            id: nextId,
+
             name: formData.name,
             manufacturer: formData.manufacturer || "",
             tags: formData.tags,
@@ -4176,8 +4104,7 @@ function AddMachined({ onReturn, onClose }) {
             },
         };
 
-        const updatedParts = [...existingParts, newMachined];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
+        createNewItem(newMachined);
         onClose();
     };
 
@@ -4617,17 +4544,8 @@ function AddOther({ onReturn, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const existingParts = JSON.parse(
-            localStorage.getItem("partData") || "[]",
-        );
-        const nextId =
-            existingParts.length > 0
-                ? Math.max(...existingParts.map((p) => p.id)) + 1
-                : 0;
-
         const newOther = {
             editable: true,
-            id: nextId,
             manufacturerId: formData.manufacturerId || null,
             name: formData.name,
             manufacturer: formData.manufacturer || "unknown",
@@ -4645,8 +4563,7 @@ function AddOther({ onReturn, onClose }) {
             },
         };
 
-        const updatedParts = [...existingParts, newOther];
-        localStorage.setItem("partData", JSON.stringify(updatedParts));
+        createNewItem(newOther);
         onClose();
     };
 
@@ -5032,4 +4949,46 @@ function AddOther({ onReturn, onClose }) {
             </div>
         </>
     );
+}
+
+async function createNewItem(itemData) {
+    let finalizedItem;
+    const signedIn = isUserSignedIn();
+
+    if (signedIn) {
+        const { group: teamId, error } = await getUserGroup();
+
+        if (teamId && !error) {
+            const result = await cloudCreatePart(itemData, teamId);
+            if (result.success) {
+                finalizedItem = result.item;
+            }
+        } else {
+            console.warn(
+                "User signed in but no group found. Falling back to local.",
+            );
+        }
+    }
+
+    if (!finalizedItem) {
+        const rawData = localStorage.getItem("partData") || "[]";
+        const existingParts = JSON.parse(rawData);
+
+        const nextId =
+            existingParts.length > 0
+                ? Math.max(...existingParts.map((p) => Number(p.id) || 0)) + 1
+                : 1;
+
+        finalizedItem = { ...itemData, id: nextId };
+    }
+
+    // Commit to localStorage as the local cache
+    const currentLocalData = JSON.parse(
+        localStorage.getItem("partData") || "[]",
+    );
+    localStorage.setItem(
+        "partData",
+        JSON.stringify([...currentLocalData, finalizedItem]),
+    );
+    window.dispatchEvent(new Event("storage"));
 }
