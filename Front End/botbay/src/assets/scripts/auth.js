@@ -50,7 +50,23 @@ export const signUpUser = async (email, password) => {
 };
 
 export const signInUser = async (email, password) => {
-    return await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+
+    if (error) {
+        console.error("Login failed:", error.message);
+        return { success: false, error };
+    }
+
+    console.log("User signed in:", data.user);
+
+    localStorage.setItem("partData", "");
+    localStorage.setItem("tagslist", "");
+    localStorage.setItem("batteryList", "");
+
+    return { success: true, user: data.user };
 };
 
 export const getCurrentUser = async () => {
@@ -99,7 +115,7 @@ export const createGroup = async () => {
     // Inside createGroup in auth.js
     try {
         const localParts = JSON.parse(localStorage.getItem("partData") || "[]");
-        const localTags = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const localTags = JSON.parse(localStorage.getItem("tagslist") || "[]");
         const localBatteries = JSON.parse(
             localStorage.getItem("batteryList") || "[]",
         );
@@ -117,7 +133,12 @@ export const joinGroup = async (groupId) => {
     const { error } = await supabase.rpc("join_existing_group", {
         target_group_id: parseInt(groupId, 10),
     });
-    if (!error) window.location.hash = "#/dashboard";
+    if (!error) {
+        localStorage.setItem("partData", "");
+        localStorage.setItem("tagslist", "");
+        localStorage.setItem("batteryList", "");
+        window.location.hash = "#/dashboard";
+    }
     return { error };
 };
 

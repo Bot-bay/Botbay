@@ -11,20 +11,32 @@ import UpdatePasswordPage from "./assets/pages/updatepassword.jsx";
 function App() {
     useEffect(() => {
         const handleReloadAuth = async () => {
-            // Get navigation entries to see HOW the page was loaded
             const perfEntries = performance.getEntriesByType("navigation");
 
+            // 1. Detect the Reload
             if (perfEntries.length > 0 && perfEntries[0].type === "reload") {
-                console.log("Reload detected: Clearing session...");
+                // 2. Identify the Supabase auth key in localStorage
+                const sessionKey = Object.keys(localStorage).find((key) =>
+                    key.includes("-auth-token"),
+                );
+                const isUserLoggedIn = !!localStorage.getItem(sessionKey);
 
-                // 1. Sign out from Supabase
-                await supabase.auth.signOut();
+                // 3. Only act if the user was actually signed in
+                if (isUserLoggedIn) {
+                    console.log(
+                        "Authenticated reload: Clearing data and session...",
+                    );
 
-                // 2. Wipe session storage just to be safe
-                window.sessionStorage.clear();
+                    // Wipe specific dashboard data
+                    localStorage.removeItem("partData");
+                    localStorage.removeItem("tagslist");
+                    localStorage.removeItem("batteryList");
 
-                // 3. Force redirect to landing or sign-in
-                window.location.hash = "#/";
+                    // Sign out and redirect
+                    await supabase.auth.signOut();
+                    window.sessionStorage.clear();
+                    window.location.hash = "#/";
+                }
             }
         };
 

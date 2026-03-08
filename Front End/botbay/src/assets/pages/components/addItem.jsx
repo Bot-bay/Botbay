@@ -155,7 +155,7 @@ function AddMotor({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -799,7 +799,7 @@ function AddServo({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -1485,7 +1485,7 @@ function AddStructural({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -1968,7 +1968,7 @@ function AddElectrical({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -2654,7 +2654,7 @@ function AddSensor({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -3318,7 +3318,7 @@ function Add3dPrinted({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -4123,7 +4123,7 @@ function AddMachined({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
@@ -4596,7 +4596,7 @@ function AddOther({ onReturn, onClose }) {
     const [availableTags, setAvailableTags] = useState([]);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem("taglist") || "[]");
+        const stored = JSON.parse(localStorage.getItem("tagslist") || "[]");
         setAvailableTags(stored);
     }, []);
 
