@@ -16,14 +16,25 @@ function App() {
         const isReload =
             perfEntries.length > 0 && perfEntries[0].type === "reload";
 
-        // 2. Check for active Supabase session
-        const sessionKey = Object.keys(localStorage).find((key) =>
-            key.includes("-auth-token"),
-        );
-        const isUserLoggedIn = sessionKey && !!localStorage.getItem(sessionKey);
+        // 2. THE FIX: Check BOTH storage engines for the auth token
+        const findAuthToken = () => {
+            const sKey = Object.keys(sessionStorage).find((k) =>
+                k.includes("-auth-token"),
+            );
+            const lKey = Object.keys(localStorage).find((k) =>
+                k.includes("-auth-token"),
+            );
 
-        // 3. THE FIX: Only enter the "Clear" zone if the user is authenticated.
-        // Guests (not signed in) will skip this entire block, preserving their data.
+            // Return an object with the key and storage type so we can delete it if needed
+            if (sKey) return { key: sKey, storage: sessionStorage };
+            if (lKey) return { key: lKey, storage: localStorage };
+            return null;
+        };
+
+        const authSession = findAuthToken();
+        const isUserLoggedIn = !!authSession;
+
+        // 3. Authenticated Zone
         if (isUserLoggedIn) {
             if (!tabActive || isReload) {
                 console.log(
@@ -31,30 +42,36 @@ function App() {
                     " - Clearing secure data...",
                 );
 
-                // Specific removal only
+                // Wipe inventory data
                 localStorage.removeItem("partData");
                 localStorage.removeItem("tagslist");
                 localStorage.removeItem("batteryList");
 
                 if (isReload) {
-                    // Kill the session manually to prevent auto-login
-                    localStorage.removeItem(sessionKey);
+                    // Remove the specific token from whichever storage it was in
+                    authSession.storage.removeItem(authSession.key);
+
+                    // Nuclear clear for the session (only affects this tab)
                     sessionStorage.clear();
                     window.location.hash = "#/";
                 }
             }
         }
 
-        // 4. Always mark tab as active so guests can refresh/navigate safely
+        // 4. Mark tab as active
         sessionStorage.setItem("tab_session_active", "true");
     })();
 
     useEffect(() => {
         const handleTabClose = () => {
-            const sessionKey = Object.keys(localStorage).find((key) =>
-                key.includes("-auth-token"),
+            // Use the same dual-check logic here for consistency
+            const sKey = Object.keys(sessionStorage).find((k) =>
+                k.includes("-auth-token"),
             );
-            const isUserLoggedIn = !!localStorage.getItem(sessionKey);
+            const lKey = Object.keys(localStorage).find((k) =>
+                k.includes("-auth-token"),
+            );
+            const isUserLoggedIn = sKey || lKey;
 
             if (isUserLoggedIn) {
                 localStorage.removeItem("partData");
@@ -64,10 +81,7 @@ function App() {
         };
 
         window.addEventListener("beforeunload", handleTabClose);
-
-        return () => {
-            window.removeEventListener("beforeunload", handleTabClose);
-        };
+        return () => window.removeEventListener("beforeunload", handleTabClose);
     }, []);
 
     return (

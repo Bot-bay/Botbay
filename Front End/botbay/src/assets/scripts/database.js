@@ -40,12 +40,56 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
 
 /// ~~~ PARTS RELATED ~~~ ///
 
-async function overwritePart(group, part) {
-    return await flaskRequest(
-        `/database/${group}/parts/${part.id}`,
-        "PUT",
-        part,
-    );
+export async function overwritePart(part) {
+    const { group: teamId } = await getUserGroup();
+
+    try {
+        const { data, error } = await supabase.rpc("update_full_part", {
+            target_team_id: Number(teamId),
+            target_part_id: Number(part.id),
+            updated_part_data: part,
+        });
+
+        if (error) {
+            console.error("Error overwriting part in cloud:", error.message);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true, data };
+    } catch (err) {
+        console.error("System error in overwritePart:", err);
+        return { success: false, error: err.message };
+    }
+}
+
+export async function overwriteQuant(partId, quant, needed) {
+    const { group: teamId } = await getUserGroup();
+    try {
+        console.log("Attempting to push new quants");
+        // Explicitly cast to Numbers to match SQL int8/int4 types
+        const { data, error } = await supabase.rpc("update_part_quantities", {
+            target_team_id: Number(teamId),
+            target_part_id: Number(partId),
+            new_quant: Number(quant),
+            new_needed: Number(needed),
+        });
+
+        if (error) {
+            console.error("RPC Error:", error.message);
+            return { success: false, error: error.message };
+        }
+
+        // Sync local storage so the Dashboard table updates immediately
+        if (data) {
+            localStorage.setItem("partData", JSON.stringify(data));
+            window.dispatchEvent(new Event("storage"));
+        }
+
+        return { success: true, data };
+    } catch (err) {
+        console.error("System Error in overwriteQuant:", err);
+        return { success: false, error: err.message };
+    }
 }
 
 export const cloudCreatePart = async (itemData, teamId) => {
@@ -100,12 +144,25 @@ export async function cloudDeletePart(id) {
     return success || !signedIn;
 }
 
-async function readAllParts(group) {
-    return await flaskRequest(`/database/${group}/parts`, "GET");
-}
+export async function readPart(partId) {
+    const { group: teamId } = await getUserGroup();
 
-async function readPart(group, partId) {
-    return await flaskRequest(`/database/${group}/parts/${partId}`, "GET");
+    try {
+        const { data, error } = await supabase.rpc("get_single_part", {
+            target_team_id: Number(teamId),
+            target_part_id: Number(partId),
+        });
+
+        if (error) {
+            console.error("Error reading part from cloud:", error.message);
+            return null;
+        }
+
+        return data;
+    } catch (err) {
+        console.error("System error in readPart:", err);
+        return null;
+    }
 }
 
 /// ~~~ BATTERY RELATED ~~~ ///

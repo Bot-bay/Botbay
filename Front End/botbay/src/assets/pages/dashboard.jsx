@@ -44,18 +44,37 @@ function Dashboard() {
 
     useEffect(() => {
         const hydrateDashboard = async () => {
+            console.log("attempting hydrate 1: Initialization");
             try {
-                // 1. Sign-In Guard: Only proceed if a session exists
-                const sessionKey = Object.keys(localStorage).find((key) =>
-                    key.includes("-auth-token"),
-                );
-                if (!sessionKey || !localStorage.getItem(sessionKey)) {
+                // 1. Sign-In Guard: Check BOTH Session and Local Storage for the Supabase token
+                const findAuthToken = () => {
+                    const sKey = Object.keys(sessionStorage).find((k) =>
+                        k.includes("-auth-token"),
+                    );
+                    const lKey = Object.keys(localStorage).find((k) =>
+                        k.includes("-auth-token"),
+                    );
+                    return (
+                        (sKey ? sessionStorage.getItem(sKey) : null) ||
+                        (lKey ? localStorage.getItem(lKey) : null)
+                    );
+                };
+
+                const sessionData = findAuthToken();
+
+                if (!sessionData) {
+                    console.log(
+                        "Hydration stopped: No active session found in storage.",
+                    );
                     setIsHydrating(false);
                     return;
                 }
 
+                console.log("attempting hydrate 2: Session verified");
+
                 // 2. Aggression Guard: If we already have data, DON'T overwrite it.
-                if (localStorage.getItem("partData")) {
+                const localParts = localStorage.getItem("partData");
+                if (localParts && localParts !== "[]") {
                     console.log(
                         "Hydration skipped: Local cache already populated.",
                     );
@@ -63,32 +82,52 @@ function Dashboard() {
                     return;
                 }
 
-                // 3. Fetch data only when the local cache is empty
+                // 3. Fetch Team Identity
                 const groupData = await fetchGroupData();
+                console.log(
+                    "attempting hydrate 3: Group metadata fetched",
+                    groupData,
+                );
 
                 if (groupData.success && groupData.groupId) {
+                    console.log(
+                        "attempting hydrate 4: Fetching cloud inventory for Team",
+                        groupData.groupId,
+                    );
+
                     const cloudData = await getCloudData(groupData.groupId);
 
                     if (cloudData && !cloudData.error) {
+                        // Atomic save to LocalStorage
                         localStorage.setItem(
                             "partData",
-                            JSON.stringify(cloudData.Parts || []),
+                            JSON.stringify(cloudData.parts || []),
                         );
                         localStorage.setItem(
                             "tagslist",
-                            JSON.stringify(cloudData.Tags || []),
+                            JSON.stringify(cloudData.tags || []),
                         );
                         localStorage.setItem(
                             "batteryList",
-                            JSON.stringify(cloudData.Batteries || []),
+                            JSON.stringify(cloudData.batteries || []),
                         );
 
                         window.dispatchEvent(new Event("storage"));
+                        console.log(
+                            "Hydration Complete: Dashboard synced with Cloud.",
+                        );
                     }
+                } else {
+                    console.warn(
+                        "Hydration failed: Could not link user to a valid Group ID.",
+                    );
                 }
             } catch (err) {
-                console.error("Hydration failed:", err);
+                console.error("Hydration Critical Failure:", err);
             } finally {
+                console.log(
+                    "attempting hydrate 5: Cleaning up hydration state",
+                );
                 setIsHydrating(false);
             }
         };

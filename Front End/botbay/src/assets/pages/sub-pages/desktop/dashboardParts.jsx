@@ -35,6 +35,14 @@ import { megaSchema } from "../editListUtils";
 import { AddItemMenuDesktop } from "../../components/addItem";
 import { useMargin } from "recharts";
 
+import { isUserSignedIn } from "../../../scripts/auth";
+
+import {
+    overwriteQuant,
+    readPart,
+    overwritePart,
+} from "../../../scripts/database";
+
 function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
 
@@ -208,8 +216,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                 Store: formData.storeLink || "",
             },
 
-            quantity: currentItem.quantity ?? 0,
-            needed: currentItem.needed ?? 0,
+            quantity: currentItem?.quantity ?? 0,
+            needed: currentItem?.needed ?? 0,
             editable: true,
         };
 
@@ -218,7 +226,12 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
             part.id === formData.id ? updatedPart : part,
         );
 
-        localStorage.setItem("partData", JSON.stringify(updatedPartsList));
+        if (isUserSignedIn()) {
+            overwritePart(updatedPart);
+            localStorage.setItem("partData", JSON.stringify(updatedPartsList));
+        } else {
+            localStorage.setItem("partData", JSON.stringify(updatedPartsList));
+        }
         handleEditClose();
     };
 
@@ -263,7 +276,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         // other: 7,
         // wheel: 8,
 
-        switch (currentItem.stats.type) {
+        switch (currentItem?.stats.type) {
             case "motor":
                 return (
                     <MotorStatList
@@ -338,10 +351,22 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         }
     }
 
-    function handleEditOpen(item) {
+    async function handleEditOpen(originalItem) {
+        let item = originalItem;
+
+        // 1. If signed in, fetch the freshest data from the cloud
+        if (isUserSignedIn()) {
+            const cloudData = await readPart(originalItem.id);
+            if (cloudData) {
+                item = cloudData;
+            }
+        }
+
+        // 2. Open overlays and handle exit logic
         setIsEditPartOpen(true);
         onExitClick();
 
+        // 3. Map the type to the UI index
         const partTypeMap = {
             motor: 0,
             servo: 1,
@@ -354,7 +379,6 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
             wheel: 8,
         };
 
-        // 1. Set the index for your UI tabs/selection
         const type = item.type || item.stats?.type || "other";
         setPartType(partTypeMap[type]);
 
@@ -600,7 +624,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
     const [partType, setPartType] = React.useState(0);
 
     const renderStatContent = () => {
-        switch (currentItem.stats.type) {
+        switch (currentItem?.stats.type) {
             case "motor":
                 return <MotorList part={currentItem} />;
             case "servo":
@@ -690,15 +714,46 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
 
         setPartType(partTypeMap[item.stats.type]);
 
-        setCurrentItem(item);
-        setIsPartOverlayOpen(true);
-        setCurrentQuant(item?.quantity);
-        setCurrentNeeded(item?.needed);
+        if (isUserSignedIn()) {
+            readPart(item.id).then((data) => {
+                setCurrentItem(data);
+                setIsPartOverlayOpen(true);
+                setCurrentQuant(data?.quantity);
+                setCurrentNeeded(data?.needed);
+                setPreviousNeeded(item?.needed);
+                setPreviousQuant(item?.quantity);
+            });
+        } else {
+            setCurrentItem(item);
+            setIsPartOverlayOpen(true);
+            setCurrentQuant(item?.quantity);
+            setCurrentNeeded(item?.needed);
+            setPreviousNeeded(item?.needed);
+            setPreviousQuant(item?.quantity);
+        }
     };
 
     const onExitClick = () => {
         setIsPartOverlayOpen(false);
-        setCurrentItem(null);
+
+        if (isUserSignedIn()) {
+            console.log("User signed in on exit click");
+            if (
+                currentQuant != previousQuant ||
+                currentNeeded != previousNeeded
+            ) {
+                console.log("Changing quant, user signed in");
+                overwriteQuant(currentItem?.id, currentQuant, currentNeeded);
+            }
+            setCurrentItem(null);
+            setPreviousNeeded(0);
+            setPreviousQuant(0);
+        } else {
+            console.log("Local change, user not signed in");
+            setCurrentItem(null);
+            setPreviousNeeded(0);
+            setPreviousQuant(0);
+        }
 
         const savedData = localStorage.getItem("partData");
         setListResults(savedData ? JSON.parse(savedData) : []);
@@ -723,10 +778,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         if (value > -1) {
             if (target === 0) {
                 setCurrentQuant(value);
-                updatePartData(currentItem.id, value, currentNeeded);
+                updatePartData(currentItem?.id, value, currentNeeded);
             } else {
                 setCurrentNeeded(value);
-                updatePartData(currentItem.id, currentQuant, value);
+                updatePartData(currentItem?.id, currentQuant, value);
             }
         }
     };
@@ -739,7 +794,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     : Math.max(currentQuant - 1, 0);
 
             setCurrentQuant(newQuant);
-            updatePartData(currentItem.id, newQuant, currentNeeded);
+            updatePartData(currentItem?.id, newQuant, currentNeeded);
         } else {
             const newNeeded =
                 operation === 0
@@ -747,7 +802,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     : Math.max(currentNeeded - 1, 0);
 
             setCurrentNeeded(newNeeded);
-            updatePartData(currentItem.id, currentQuant, newNeeded);
+            updatePartData(currentItem?.id, currentQuant, newNeeded);
         }
     };
     const updatePartData = (id, newQuant, newNeeded) => {
@@ -826,6 +881,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
             onRowClick(partToRun);
         }
     }, []);
+
+    const [previousNeeded, setPreviousNeeded] = useState(0);
+    const [previousQuant, setPreviousQuant] = useState(0);
 
     return (
         <>
@@ -1215,10 +1273,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 <p>{currentItem?.name}</p>
                             </div>
                             <p className="d-partoverlay-subtitle">
-                                ID: {currentItem.manufacturerId}
+                                ID: {currentItem?.manufacturerId}
                             </p>
                             <p className="d-partoverlay-subtitle">
-                                Manufacturer: {currentItem.manufacturer}
+                                Manufacturer: {currentItem?.manufacturer}
                             </p>
                             <img
                                 src={currentItem?.icon}
@@ -1228,7 +1286,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 <p>Links:</p>
                                 <ul>
                                     {currentItem?.links &&
-                                        Object.entries(currentItem.links)
+                                        Object.entries(currentItem?.links)
                                             .filter(([name, url]) => url)
                                             .map(([name, url]) => (
                                                 <li key={name}>
@@ -1661,8 +1719,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 className="d-createitem-form"
                             >
                                 <h3 className="d-createitem-form-subtitle">
-                                    ({currentItem.manufacturerId}) -{" "}
-                                    {currentItem.name}
+                                    ({currentItem?.manufacturerId}) -{" "}
+                                    {currentItem?.name}
                                 </h3>
 
                                 <hr className="d-createitem-form-divider"></hr>
