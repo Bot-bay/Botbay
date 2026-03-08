@@ -167,33 +167,92 @@ export async function readPart(partId) {
 
 /// ~~~ BATTERY RELATED ~~~ ///
 
-async function deleteBattery(group, batteryId) {
-    return await flaskRequest(
-        `/database/${group}/batteries/${batteryId}`,
-        "DELETE",
-    );
+export async function deleteBattery(nameToDelete) {
+    const { group: teamId } = await getUserGroup();
+
+    try {
+        const { data, error } = await supabase.rpc("delete_battery_by_name", {
+            target_team_id: Number(teamId),
+            battery_name: nameToDelete,
+        });
+
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.error("Database error deleting battery:", err.message);
+        return { success: false, error: err.message };
+    }
 }
 
-async function createBattery(group, battery) {
-    return await flaskRequest(`/database/${group}/batteries`, "POST", battery);
+export async function createBattery(battery) {
+    const { group: teamId } = await getUserGroup();
+
+    try {
+        const { data, error } = await supabase.rpc("add_new_battery", {
+            target_team_id: Number(teamId),
+            new_battery_object: battery,
+        });
+
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.error("Database error adding battery:", err.message);
+        return { success: false, error: err.message };
+    }
 }
 
-async function readAllBatteries(group) {
-    return await flaskRequest(`/database/${group}/batteries`, "GET");
+export async function updateBatteryStatusCloud(updatedBattery) {
+    const { group: teamId } = await getUserGroup();
+
+    try {
+        const { data, error } = await supabase.rpc("update_battery_by_name", {
+            target_team_id: Number(teamId),
+            target_name: updatedBattery.name,
+            new_battery_data: updatedBattery,
+        });
+
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.error("Database error updating battery:", err.message);
+        return { success: false, error: err.message };
+    }
 }
 
 /// ~~~ TAGS RELATED ~~~ ///
 
-async function deleteTag(group, tagId) {
-    return await flaskRequest(`/database/${group}/tags/${tagId}`, "DELETE");
+export async function deleteTagCloud(tagName) {
+    const { group: teamId } = await getUserGroup();
+
+    try {
+        const { data, error } = await supabase.rpc("delete_tag_globally", {
+            target_team_id: Number(teamId),
+            tag_name_to_delete: tagName,
+        });
+
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.error("Database error:", err.message);
+        return { success: false, error: err.message };
+    }
 }
 
-async function createTag(group, tag) {
-    return await flaskRequest(`/database/${group}/tags`, "POST", tag);
-}
+export async function createTag(tag) {
+    const { group: teamId } = await getUserGroup();
 
-async function readAllTags(group) {
-    return await flaskRequest(`/database/${group}/tags`, "GET");
+    try {
+        const { data, error } = await supabase.rpc("add_new_tag", {
+            target_team_id: Number(teamId),
+            new_tag_object: tag,
+        });
+
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.error("Database error adding tag:", err.message);
+        return { success: false, error: err.message };
+    }
 }
 
 /// ~~~ SYNC RELATED ~~~ ///

@@ -41,6 +41,8 @@ import {
     overwriteQuant,
     readPart,
     overwritePart,
+    deleteTagCloud,
+    createTag,
 } from "../../../scripts/database";
 
 function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
@@ -539,25 +541,34 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
     }, []);
 
     // Add new tag
-    const addTag = (tagName, color) => {
+    const addTag = async (tagName, color) => {
         const newTag = { name: tagName, color, deletable: true };
+
+        // 1. Cloud Sync (if signed in)
+        if (isUserSignedIn()) {
+            const result = await createTag(newTag);
+            if (!result.success) {
+                alert("Failed to save tag to cloud. Please try again.");
+                return;
+            }
+        }
+
+        // 2. Update React State & LocalStorage
         setTags((prevTags) => {
             const updatedTags = [...prevTags, newTag];
             localStorage.setItem("taglist", JSON.stringify(updatedTags));
             return updatedTags;
         });
+
         onTagExitClick();
     };
 
-    const deleteTag = (tagName) => {
-        // 1. Get the freshest data directly from Storage to avoid state-sync issues
+    const deleteTag = async (tagName) => {
+        // 1. Prepare local updates
         const rawParts = JSON.parse(localStorage.getItem("partData") || "[]");
         const rawTags = JSON.parse(localStorage.getItem("taglist") || "[]");
 
-        // 2. Filter out the tag from the Master Tag List
         const updatedTagList = rawTags.filter((tag) => tag.name !== tagName);
-
-        // 3. Scrub the tag from every single part's tag array
         const updatedParts = rawParts.map((part) => {
             if (part.tags && Array.isArray(part.tags)) {
                 return {
@@ -568,18 +579,22 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
             return part;
         });
 
-        // 4. Update LocalStorage (The Source of Truth)
+        // 2. Cloud Sync
+        if (isUserSignedIn()) {
+            const result = await deleteTagCloud(tagName);
+            if (!result.success) {
+                console.error("Cloud sync failed. Deletion aborted.");
+                return;
+            }
+        }
+
+        // 3. Commit changes to UI and Storage
         localStorage.setItem("taglist", JSON.stringify(updatedTagList));
         localStorage.setItem("partData", JSON.stringify(updatedParts));
 
-        // 5. Update React State (The UI)
         setTags(updatedTagList);
         setListResults(updatedParts);
-
-        // 6. Remove from active filters if it was selected
         setSelectedTags((prev) => prev.filter((t) => t !== tagName));
-
-        // 7. UI Cleanup
         setDeletingTagName(null);
     };
 

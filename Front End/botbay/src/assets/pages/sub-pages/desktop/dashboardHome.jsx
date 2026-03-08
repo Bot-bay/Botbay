@@ -43,7 +43,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
     }, []);
 
     const partDataRaw = localStorage.getItem("partData");
-    const tagslistRaw = localStorage.getItem("tagslist");
+    const taglistRaw = localStorage.getItem("taglist");
     const batteryListRaw = localStorage.getItem("batteryList");
 
     const partData = useMemo(() => {
@@ -54,13 +54,13 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
         }
     }, [partDataRaw]);
 
-    const tagslist = useMemo(() => {
+    const taglist = useMemo(() => {
         try {
-            return tagslistRaw ? JSON.parse(tagslistRaw) : [];
+            return taglistRaw ? JSON.parse(taglistRaw) : [];
         } catch (e) {
             return [];
         }
-    }, [tagslistRaw]);
+    }, [taglistRaw]);
 
     const batteryList = useMemo(() => {
         try {
@@ -71,8 +71,8 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
     }, [batteryListRaw]);
 
     const tagColorMap = useMemo(() => {
-        return Object.fromEntries(tagslist.map((t) => [t.name, t.color]));
-    }, [tagslist]);
+        return Object.fromEntries(taglist.map((t) => [t.name, t.color]));
+    }, [taglist]);
 
     const chartData = useMemo(() => {
         const tagCounts = {};

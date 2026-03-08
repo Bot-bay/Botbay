@@ -44,7 +44,7 @@ function App() {
 
                 // Wipe inventory data
                 localStorage.removeItem("partData");
-                localStorage.removeItem("tagslist");
+                localStorage.removeItem("taglist");
                 localStorage.removeItem("batteryList");
 
                 if (isReload) {
@@ -75,7 +75,7 @@ function App() {
 
             if (isUserLoggedIn) {
                 localStorage.removeItem("partData");
-                localStorage.removeItem("tagslist");
+                localStorage.removeItem("taglist");
                 localStorage.removeItem("batteryList");
             }
         };

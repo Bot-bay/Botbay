@@ -104,7 +104,7 @@ function Dashboard() {
                             JSON.stringify(cloudData.parts || []),
                         );
                         localStorage.setItem(
-                            "tagslist",
+                            "taglist",
                             JSON.stringify(cloudData.tags || []),
                         );
                         localStorage.setItem(

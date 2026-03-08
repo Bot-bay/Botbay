@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import BatteryList from "../../components/battery";
 
+import { isUserSignedIn } from "../../../scripts/auth";
+
+import {
+    createBattery,
+    deleteBattery as deleteBatteryCloud,
+    updateBatteryStatusCloud,
+} from "../../../scripts/database";
+
 function BatteryPageDesktop() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newName, setNewName] = useState("");
@@ -39,10 +47,9 @@ function BatteryPageDesktop() {
         setIsDuplicate(exists);
     };
 
-    const addBattery = (e) => {
+    const addBattery = async (e) => {
         e.preventDefault();
 
-        // 3. Final safety check: block submission if duplicate or empty
         if (!newName.trim() || isDuplicate) return;
 
         const newBattery = {
@@ -56,29 +63,52 @@ function BatteryPageDesktop() {
             mcStatus: false,
         };
 
+        // 1. Cloud Sync (if signed in)
+        if (isUserSignedIn()) {
+            const result = await createBattery(newBattery);
+            if (!result.success) {
+                alert("Failed to sync battery to cloud.");
+                return;
+            }
+        }
+
+        // 2. Update Local State and Storage
         const updatedList = [...savedBatteries, newBattery];
         setSavedBatteries(updatedList);
         localStorage.setItem("batteryList", JSON.stringify(updatedList));
 
-        // Reset fields
+        // 3. Reset fields
         setNewName("");
-        setNewCapacity("3.0");
-        setNewSpeed("2.0");
-        setIsDuplicate(false); // Reset duplicate state
+        setNewCapacity("");
+        setNewSpeed("");
+        setIsDuplicate(false);
         setIsPopupOpen(false);
     };
 
-    // ... (deleteBattery and updateBatteryStatus remain the same)
+    const deleteBattery = async (nameToDelete) => {
+        // 1. Cloud Sync (if signed in)
+        if (isUserSignedIn()) {
+            // Change this line to use the new import name:
+            const result = await deleteBatteryCloud(nameToDelete);
 
-    const deleteBattery = (nameToDelete) => {
+            if (!result.success) {
+                console.error("Cloud deletion failed. Local state preserved.");
+                alert("Could not delete battery from cloud. Please try again.");
+                return;
+            }
+        }
+
+        // 2. Update Local State and Storage
         const updatedList = savedBatteries.filter(
             (battery) => battery.name !== nameToDelete,
         );
+
         setSavedBatteries(updatedList);
         localStorage.setItem("batteryList", JSON.stringify(updatedList));
     };
 
-    const updateBatteryStatus = (name, isCharging, startLevel = 0) => {
+    const updateBatteryStatus = async (name, isCharging, startLevel = 0) => {
+        // 1. Calculate the updated object locally first
         const updatedList = savedBatteries.map((item) => {
             if (item.name === name) {
                 return {
@@ -92,6 +122,19 @@ function BatteryPageDesktop() {
             return item;
         });
 
+        // 2. Extract the specific updated battery to send to the cloud
+        const updatedBattery = updatedList.find((b) => b.name === name);
+
+        // 3. Cloud Sync (if signed in)
+        if (isUserSignedIn() && updatedBattery) {
+            const result = await updateBatteryStatusCloud(updatedBattery);
+            if (!result.success) {
+                alert("Failed to sync battery status to cloud.");
+                return; // Exit if sync fails to keep data consistent
+            }
+        }
+
+        // 4. Update local state and storage
         setSavedBatteries(updatedList);
         localStorage.setItem("batteryList", JSON.stringify(updatedList));
     };
@@ -234,7 +277,6 @@ function BatteryPageDesktop() {
                                         </label>
                                         <input
                                             type="number"
-                                            step="10"
                                             max={20000}
                                             value={newCapacity}
                                             onChange={(e) =>
