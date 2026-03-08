@@ -3,6 +3,8 @@ const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 
 import { supabase } from "./auth.js";
 
+import { isUserSignedIn, getUserGroup } from "./auth.js";
+
 /**
  * Helper function to handle the authenticated fetch to Flask
  */
@@ -66,8 +68,36 @@ export const cloudCreatePart = async (itemData, teamId) => {
     }
 };
 
-async function deletePart(group, partId) {
-    return await flaskRequest(`/database/${group}/parts/${partId}`, "DELETE");
+export async function cloudDeletePart(id) {
+    const signedIn = await isUserSignedIn();
+    let success = false;
+
+    if (signedIn) {
+        const { group: teamId } = await getUserGroup();
+        if (teamId) {
+            const { data, error } = await supabase.rpc("delete_part_secure", {
+                target_part_id: id,
+                target_team_id: teamId,
+            });
+
+            if (!error) {
+                success = true;
+            } else {
+                console.error("Cloud delete failed:", error);
+            }
+        }
+    }
+
+    const rawData = localStorage.getItem("partData") || "[]";
+    const data = JSON.parse(rawData);
+    const updated = data.filter((p) => String(p.id) !== String(id));
+
+    localStorage.setItem("partData", JSON.stringify(updated));
+
+    // Notify the Dashboard (the "poke" we set up earlier)
+    window.dispatchEvent(new Event("storage"));
+
+    return success || !signedIn;
 }
 
 async function readAllParts(group) {

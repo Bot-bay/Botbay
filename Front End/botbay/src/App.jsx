@@ -10,53 +10,44 @@ import UpdatePasswordPage from "./assets/pages/updatepassword.jsx";
 
 function App() {
     (function () {
-        // 1. Check if this specific TAB has a session flag
+        // 1. Identification
         const tabActive = sessionStorage.getItem("tab_session_active");
+        const perfEntries = performance.getEntriesByType("navigation");
+        const isReload =
+            perfEntries.length > 0 && perfEntries[0].type === "reload";
 
-        if (!tabActive) {
-            // 2. If no flag exists, this is a brand new tab/window instance.
-            // Wipe the specific data you want cleared.
-            localStorage.removeItem("partData");
-            localStorage.removeItem("tagslist");
-            localStorage.removeItem("batteryList");
+        // 2. Check for active Supabase session
+        const sessionKey = Object.keys(localStorage).find((key) =>
+            key.includes("-auth-token"),
+        );
+        const isUserLoggedIn = sessionKey && !!localStorage.getItem(sessionKey);
 
-            // 3. Set the flag for this tab so it survives refreshes (F5)
-            sessionStorage.setItem("tab_session_active", "true");
-        }
-    })();
-    useEffect(() => {
-        const handleReloadAuth = async () => {
-            const perfEntries = performance.getEntriesByType("navigation");
-
-            // 1. Detect the Reload
-            if (perfEntries.length > 0 && perfEntries[0].type === "reload") {
-                // 2. Identify the Supabase auth key in localStorage
-                const sessionKey = Object.keys(localStorage).find((key) =>
-                    key.includes("-auth-token"),
+        // 3. THE FIX: Only enter the "Clear" zone if the user is authenticated.
+        // Guests (not signed in) will skip this entire block, preserving their data.
+        if (isUserLoggedIn) {
+            if (!tabActive || isReload) {
+                console.log(
+                    isReload ? "Auth Reload" : "New Auth Session",
+                    " - Clearing secure data...",
                 );
-                const isUserLoggedIn = !!localStorage.getItem(sessionKey);
 
-                // 3. Only act if the user was actually signed in
-                if (isUserLoggedIn) {
-                    console.log(
-                        "Authenticated reload: Clearing data and session...",
-                    );
+                // Specific removal only
+                localStorage.removeItem("partData");
+                localStorage.removeItem("tagslist");
+                localStorage.removeItem("batteryList");
 
-                    // Wipe specific dashboard data
-                    localStorage.removeItem("partData");
-                    localStorage.removeItem("tagslist");
-                    localStorage.removeItem("batteryList");
-
-                    // Sign out and redirect
-                    await supabase.auth.signOut();
-                    window.sessionStorage.clear();
+                if (isReload) {
+                    // Kill the session manually to prevent auto-login
+                    localStorage.removeItem(sessionKey);
+                    sessionStorage.clear();
                     window.location.hash = "#/";
                 }
             }
-        };
+        }
 
-        handleReloadAuth();
-    }, []);
+        // 4. Always mark tab as active so guests can refresh/navigate safely
+        sessionStorage.setItem("tab_session_active", "true");
+    })();
 
     useEffect(() => {
         const handleTabClose = () => {

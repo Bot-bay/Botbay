@@ -30,6 +30,8 @@ import { getCloudData } from "../scripts/database.js";
 
 import { fetchGroupData } from "../scripts/auth.js";
 
+import { isUserSignedIn } from "../scripts/auth.js";
+
 function Dashboard() {
     const [partToRun, setPartToRun] = React.useState(null);
     const [usePartToRun, setUsePartToRun] = React.useState(false);
@@ -43,32 +45,45 @@ function Dashboard() {
     useEffect(() => {
         const hydrateDashboard = async () => {
             try {
-                // 1. Check if data is already there (Hydration Guard)
-                if (localStorage.getItem("partData")) {
+                // 1. Sign-In Guard: Only proceed if a session exists
+                const sessionKey = Object.keys(localStorage).find((key) =>
+                    key.includes("-auth-token"),
+                );
+                if (!sessionKey || !localStorage.getItem(sessionKey)) {
                     setIsHydrating(false);
                     return;
                 }
 
-                // 2. Fetch Group ID and User Context via auth.js
+                // 2. Aggression Guard: If we already have data, DON'T overwrite it.
+                if (localStorage.getItem("partData")) {
+                    console.log(
+                        "Hydration skipped: Local cache already populated.",
+                    );
+                    setIsHydrating(false);
+                    return;
+                }
+
+                // 3. Fetch data only when the local cache is empty
                 const groupData = await fetchGroupData();
 
                 if (groupData.success && groupData.groupId) {
-                    // 3. Pull the "Save Slot" from Python via database.js
                     const cloudData = await getCloudData(groupData.groupId);
 
                     if (cloudData && !cloudData.error) {
                         localStorage.setItem(
                             "partData",
-                            JSON.stringify(cloudData.parts || []),
+                            JSON.stringify(cloudData.Parts || []),
                         );
                         localStorage.setItem(
                             "tagslist",
-                            JSON.stringify(cloudData.tags || []),
+                            JSON.stringify(cloudData.Tags || []),
                         );
                         localStorage.setItem(
                             "batteryList",
-                            JSON.stringify(cloudData.batteries || []),
+                            JSON.stringify(cloudData.Batteries || []),
                         );
+
+                        window.dispatchEvent(new Event("storage"));
                     }
                 }
             } catch (err) {
