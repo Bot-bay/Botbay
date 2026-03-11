@@ -5,12 +5,16 @@ import "../styles/landingpage.css";
 import "../styles/sharedstyles.css";
 import { switchToPage, WikiUrl } from "../scripts/navigation.js";
 
+import { FaInstagram, FaDiscord, FaEnvelope } from "react-icons/fa6";
+import { MdShield } from "react-icons/md";
+
 import multiDeviceIcon from "../images/multideviceicon.png";
 import listIcon from "../images/listicon.png";
 import bookIcon from "../images/bookicon.png";
 import navlogo from "../images/LogoTrans.png";
 import stormLogo from "../images/stormlogo.png";
 import knightsLogo from "../images/knightslogo.png";
+import dashboardImage from "../images/dashboard.png";
 
 function LandingPage() {
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
@@ -128,7 +132,13 @@ function LandingPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="halfcontainer"></div>
+                            <div className="halfcontainer">
+                                <img
+                                    className="mainimage"
+                                    alt="dashboard image"
+                                    src={dashboardImage}
+                                />
+                            </div>
                         </div>
                     </>
                 ) : (
@@ -203,6 +213,21 @@ function LandingPage() {
                                     Try it Out
                                 </button>
                             </div>
+                            <div
+                                style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <img
+                                    className="mainimage"
+                                    alt="dashboard image"
+                                    src={dashboardImage}
+                                />
+                            </div>
                         </div>
                     </>
                 )}
@@ -224,18 +249,123 @@ function LandingPage() {
                     Teams #16423 and #27966.
                 </p>
                 <div className="teamlogocontainer">
-                    <img
-                        draggable="false"
-                        className="teamlogo"
-                        src={stormLogo}
-                    ></img>
-                    <img
-                        draggable="false"
-                        className="teamlogo"
-                        src={knightsLogo}
-                    ></img>
+                    <a
+                        href="https://storm16423.ca/index.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            draggable="false"
+                            className="teamlogo"
+                            src={stormLogo}
+                        />
+                    </a>
+
+                    <a
+                        href="https://ftc-events.firstinspires.org/team/27966"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            draggable="false"
+                            className="teamlogo"
+                            src={knightsLogo}
+                        />
+                    </a>
                 </div>
             </div>
+
+            <footer className="footer-container">
+                <div className="footer-content">
+                    <div className="footer-left">
+                        <p className="footer-header">Connect</p>
+                        <div className="footer-social-row">
+                            <a
+                                href="https://www.instagram.com/sdhs_stormbot16423/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="footer-link"
+                                title="16423 Instagram"
+                            >
+                                <FaInstagram
+                                    style={{
+                                        marginRight: "8px",
+                                        verticalAlign: "middle",
+                                    }}
+                                />{" "}
+                                16423 Instagram
+                            </a>
+                            <a
+                                href="https://www.instagram.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="footer-link"
+                                title="27966 Instagram"
+                            >
+                                <FaInstagram
+                                    style={{
+                                        marginRight: "8px",
+                                        verticalAlign: "middle",
+                                    }}
+                                />{" "}
+                                27966 Instagram
+                            </a>
+                        </div>
+                    </div>
+
+                    <div className="footer-center">
+                        <img
+                            src={navlogo}
+                            className="footer-logo"
+                            alt="Botbay Logo"
+                            onClick={() =>
+                                window.scrollTo({ top: 0, behavior: "smooth" })
+                            }
+                        />
+                    </div>
+
+                    <div className="footer-right">
+                        <p className="footer-header">Resources</p>
+                        <div>
+                            <a href="/privacy" className="footer-link">
+                                <MdShield
+                                    style={{
+                                        marginRight: "8px",
+                                        verticalAlign: "middle",
+                                    }}
+                                />
+                                Privacy Policy
+                            </a>
+                            <a
+                                href="mailto:botbay_contact@outlook.com"
+                                className="footer-link"
+                            >
+                                <FaEnvelope
+                                    style={{
+                                        marginRight: "8px",
+                                        verticalAlign: "middle",
+                                    }}
+                                />{" "}
+                                Email
+                            </a>
+                            <a
+                                href="https://discord.gg/73AJ2WuAJK"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="footer-link"
+                            >
+                                <FaDiscord
+                                    style={{
+                                        marginRight: "8px",
+                                        verticalAlign: "middle",
+                                    }}
+                                />{" "}
+                                Discord
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </>
     );
 }
