@@ -5,6 +5,8 @@ import "../styles/landingpage.css";
 import "../styles/sharedstyles.css";
 import { switchToPage, WikiUrl } from "../scripts/navigation.js";
 
+import { Link } from "react-router-dom";
+
 import { FaInstagram, FaDiscord, FaEnvelope } from "react-icons/fa6";
 import { MdShield } from "react-icons/md";
 
@@ -278,7 +280,7 @@ function LandingPage() {
             <footer className="footer-container">
                 <div className="footer-content">
                     <div className="footer-left">
-                        <p className="footer-header">Connect</p>
+                        <p className="footer-header">Socials</p>
                         <div className="footer-social-row">
                             <a
                                 href="https://www.instagram.com/sdhs_stormbot16423/"
@@ -327,15 +329,16 @@ function LandingPage() {
                     <div className="footer-right">
                         <p className="footer-header">Resources</p>
                         <div>
-                            <a href="/privacy" className="footer-link">
+                            <Link to="/privacy" className="footer-link">
                                 <MdShield
                                     style={{
+                                        cursor: "pointer",
                                         marginRight: "8px",
                                         verticalAlign: "middle",
                                     }}
                                 />
                                 Privacy Policy
-                            </a>
+                            </Link>
                             <a
                                 href="mailto:botbay_contact@outlook.com"
                                 className="footer-link"
