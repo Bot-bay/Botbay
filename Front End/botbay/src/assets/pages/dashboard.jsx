@@ -254,7 +254,7 @@ function Dashboard() {
                 {/* The Text */}
                 <p
                     style={{
-                        fontSize: isDesktop ? "1.2rem" : "1rem",
+                        fontSize: isDesktop ? "1.2rem" : "3rem",
                         fontWeight: "500",
                         margin: 0,
                     }}

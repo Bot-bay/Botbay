@@ -1812,7 +1812,7 @@
 
     .d-partitem {
         color: white;
-        font-size: 1.7rem;
+        font-size: 2rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1833,6 +1833,10 @@
         outline: none;
         transition: all 0.2s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .d-searchbar::placeholder {
+        font-size: 3rem;
     }
 
     .d-createitem-input-group {
@@ -2025,7 +2029,7 @@
     .d-preset-box {
         display: flex;
         gap: 40px;
-        background: transparent; /* Overriding the old solid background */
+        background: transparent;
         padding: 0;
     }
 
@@ -2254,7 +2258,6 @@
     z-index: 9999;
 }
 
-/* The centered content box */
 .d-settings-verified-popup-box {
     background: #111;
     border: 2px solid #444;
@@ -2267,7 +2270,6 @@
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Mobile specific overrides for the 4rem requirement */
 .d-settings-verified-phone-box {
     padding: 60px;
     border-width: 5px;
