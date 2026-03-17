@@ -33,6 +33,24 @@ body {
     flex-direction: row;
 }
 
+.landingherocontainer {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (min-width: 1100px) {
+    .landingherocontainer {
+        height: 100vh;
+    }
+
+    .aboutcontainer {
+        height: 100vh;
+    }
+}
+
 .halfcontainer {
     display: flex;
     justify-content: center;
@@ -273,7 +291,7 @@ li {
     justify-content: center;
     background-color: #000029;
     width: 100%;
-    height: 100vh;
+    min-height: 50vh;
 }
 
 .privacycontainer {

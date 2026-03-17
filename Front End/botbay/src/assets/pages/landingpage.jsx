@@ -18,6 +18,9 @@ import stormLogo from "../images/stormlogo.png";
 import knightsLogo from "../images/knightslogo.png";
 import dashboardImage from "../images/dashboard.png";
 
+import landingImage1 from "../images/landingimagerest1.png";
+import landingImage2 from "../images/landingimagerest2.png";
+
 function LandingPage() {
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
     const goToSignUp = switchToPage("/signup");
@@ -276,6 +279,180 @@ function LandingPage() {
                     </a>
                 </div>
             </div>
+
+            {isDesktop ? (
+                <>
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            background:
+                                "linear-gradient(to bottom, #000029 0%, #000029 15%, #000056 45%, #2b0056 75%, #002b56 100%)",
+                        }}
+                    >
+                        <div className="halfcontainer">
+                            <p
+                                className="herotitle"
+                                style={{ textAlign: "center" }}
+                            >
+                                Part Tracking
+                            </p>
+                            <p className="abouttext" style={{ width: "75%" }}>
+                                Know every detail about every part in an instant
+                            </p>
+                        </div>
+                        <div className="halfcontainer">
+                            <img
+                                className="mainimage"
+                                alt="dashboard image"
+                                src={landingImage1}
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            background:
+                                "linear-gradient(to top, #000029 0%, #000029 15%, #000056 45%, #2b0056 75%, #002b56 100%)",
+                        }}
+                    >
+                        <div className="halfcontainer">
+                            <img
+                                className="mainimage"
+                                alt="dashboard image"
+                                src={landingImage1}
+                            />
+                        </div>
+                        <div className="halfcontainer">
+                            <p
+                                className="herotitle"
+                                style={{ textAlign: "center" }}
+                            >
+                                Battery Tracking
+                            </p>
+                            <p className="abouttext" style={{ width: "75%" }}>
+                                Forget about struggling to remember which
+                                battery you put on the charger last
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            backgroundColor: "#000029",
+                            flexDirection: "column",
+                            gap: "30px",
+                            padding: "30px",
+                            userSelect: "none",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <p
+                            className="herotitle"
+                            style={{ textAlign: "center" }}
+                        >
+                            Every Device. Every Member. One Tool.
+                        </p>
+                        <img
+                            alt="dashboard image"
+                            src={landingImage2}
+                            style={{ width: "80%" }}
+                        />
+                        <button className="herobutton" onClick={goToSignUp}>
+                            Elevate your team now.
+                        </button>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            background:
+                                "linear-gradient(to bottom, #000029 0%, #000029 15%, #000056 45%, #2b0056 75%, #002b56 100%)",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            textAlign: "center",
+                            padding: "30px 20px",
+                            gap: "20px",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <p className="herotitle">Part Tracking</p>
+
+                        <p className="abouttext" style={{ maxWidth: "500px" }}>
+                            Know every detail about every part in an instant
+                        </p>
+
+                        <img
+                            className="mainimage"
+                            alt="dashboard image"
+                            src={landingImage1}
+                            style={{ width: "100%", maxWidth: "500px" }}
+                        />
+                    </div>
+
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            background:
+                                "linear-gradient(to top, #000029 0%, #000029 15%, #000056 45%, #2b0056 75%, #002b56 100%)",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            textAlign: "center",
+                            padding: "30px 20px",
+                            gap: "20px",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <p className="herotitle">Battery Tracking</p>
+
+                        <p className="abouttext" style={{ maxWidth: "500px" }}>
+                            Forget about struggling to remember which battery
+                            you put on the charger last
+                        </p>
+
+                        <img
+                            className="mainimage"
+                            alt="dashboard image"
+                            src={landingImage1}
+                            style={{ width: "100%", maxWidth: "500px" }}
+                        />
+                    </div>
+
+                    <div
+                        className="landingherocontainer"
+                        style={{
+                            backgroundColor: "#000029",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            textAlign: "center",
+                            gap: "30px",
+                            padding: "30px 20px",
+                            userSelect: "none",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <p className="herotitle">
+                            Every Device. Every Member. One Tool.
+                        </p>
+
+                        <img
+                            alt="dashboard image"
+                            src={landingImage2}
+                            style={{ width: "100%", maxWidth: "600px" }}
+                        />
+
+                        <button className="herobutton" onClick={goToSignUp}>
+                            Elevate your team now.
+                        </button>
+                    </div>
+                </>
+            )}
 
             <footer className="footer-container">
                 <div className="footer-content">
