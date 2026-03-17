@@ -240,7 +240,6 @@ function AddMotor({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. NeveRest Orbital 20"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -283,7 +282,6 @@ function AddMotor({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. am-3637b"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -327,7 +325,6 @@ function AddMotor({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. am-3637b"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -425,7 +422,6 @@ function AddMotor({ onReturn, onClose }) {
                         >
                             <input
                                 name="connectorTypes"
-                                placeholder="JST-VH-2, Anderson Powerpoles"
                                 value={formData.connectorTypes}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -869,7 +865,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. Smart Robot Servo"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -912,7 +907,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. REV-41-1097"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -956,7 +950,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. rev"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -1045,7 +1038,6 @@ function AddServo({ onReturn, onClose }) {
                                 step="0.1"
                                 max={99999}
                                 name="sizeL"
-                                placeholder="L"
                                 value={formData.sizeL}
                                 onChange={handleChange}
                             />
@@ -1054,7 +1046,6 @@ function AddServo({ onReturn, onClose }) {
                                 step="0.1"
                                 max={99999}
                                 name="sizeW"
-                                placeholder="W"
                                 value={formData.sizeW}
                                 onChange={handleChange}
                             />
@@ -1063,7 +1054,6 @@ function AddServo({ onReturn, onClose }) {
                                 step="0.1"
                                 max={99999}
                                 name="sizeH"
-                                placeholder="H"
                                 value={formData.sizeH}
                                 onChange={handleChange}
                             />
@@ -1117,7 +1107,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="gearMaterial"
-                                placeholder="e.g. metal"
                                 value={formData.gearMaterial}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -1161,7 +1150,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="splineType"
-                                placeholder="e.g. 25T"
                                 value={formData.splineType}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -1205,7 +1193,6 @@ function AddServo({ onReturn, onClose }) {
                         >
                             <input
                                 name="splineThreadType"
-                                placeholder="e.g. M3"
                                 value={formData.splineThreadType}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -1535,7 +1522,6 @@ function AddStructural({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. 45mm U Channel"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -1578,7 +1564,6 @@ function AddStructural({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. REV-41-1755"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -1622,7 +1607,6 @@ function AddStructural({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. rev"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2020,7 +2004,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. Tamiya Male to PowerPole"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2063,7 +2046,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. 70191"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2107,7 +2089,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. studica"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2196,7 +2177,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="connectorTypes"
-                                placeholder="Tamiya, Anderson Powerpoles"
                                 value={formData.connectorTypes}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -2296,7 +2276,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="replaceableFuse"
-                                placeholder="e.g. 20A Mini Blade"
                                 value={formData.replaceableFuse}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -2340,7 +2319,6 @@ function AddElectrical({ onReturn, onClose }) {
                         >
                             <input
                                 name="chargeRates"
-                                placeholder="e.g. 2C"
                                 value={formData.chargeRates}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -2391,7 +2369,6 @@ function AddElectrical({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeL"
-                                placeholder="L"
                                 value={formData.sizeL}
                                 onChange={handleChange}
                             />
@@ -2399,7 +2376,6 @@ function AddElectrical({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeW"
-                                placeholder="W"
                                 value={formData.sizeW}
                                 onChange={handleChange}
                             />
@@ -2407,7 +2383,6 @@ function AddElectrical({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeH"
-                                placeholder="H"
                                 value={formData.sizeH}
                                 onChange={handleChange}
                             />
@@ -2703,7 +2678,6 @@ function AddSensor({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. Color Sensor V2"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2746,7 +2720,6 @@ function AddSensor({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. REV-31-1537"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2791,7 +2764,6 @@ function AddSensor({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. rev"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -2880,7 +2852,6 @@ function AddSensor({ onReturn, onClose }) {
                         >
                             <input
                                 name="sensorType"
-                                placeholder="e.g. I2C"
                                 value={formData.sensorType}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -2931,7 +2902,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeL"
-                                placeholder="L"
                                 value={formData.sizeL}
                                 onChange={handleChange}
                             />
@@ -2939,7 +2909,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeW"
-                                placeholder="W"
                                 value={formData.sizeW}
                                 onChange={handleChange}
                             />
@@ -2947,7 +2916,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeH"
-                                placeholder="H"
                                 value={formData.sizeH}
                                 onChange={handleChange}
                             />
@@ -2961,7 +2929,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="proxMin"
-                                placeholder="Min"
                                 value={formData.proxMin}
                                 onChange={handleChange}
                             />
@@ -2969,7 +2936,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="proxMax"
-                                placeholder="Max"
                                 value={formData.proxMax}
                                 onChange={handleChange}
                             />
@@ -2983,7 +2949,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="distMin"
-                                placeholder="Min"
                                 value={formData.distMin}
                                 onChange={handleChange}
                             />
@@ -2991,7 +2956,6 @@ function AddSensor({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="distMax"
-                                placeholder="Max"
                                 value={formData.distMax}
                                 onChange={handleChange}
                             />
@@ -3021,7 +2985,6 @@ function AddSensor({ onReturn, onClose }) {
                         >
                             <input
                                 name="imu"
-                                placeholder="e.g. 6-Axis"
                                 value={formData.imu}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -3355,7 +3318,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="My Random Brick"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -3526,7 +3488,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeL"
-                                placeholder="L"
                                 value={formData.sizeL}
                                 onChange={handleChange}
                             />
@@ -3534,7 +3495,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeW"
-                                placeholder="W"
                                 value={formData.sizeW}
                                 onChange={handleChange}
                             />
@@ -3542,7 +3502,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="sizeH"
-                                placeholder="H"
                                 value={formData.sizeH}
                                 onChange={handleChange}
                             />
@@ -3561,7 +3520,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                         >
                             <input
                                 name="filament"
-                                placeholder="e.g. PLA, PETG"
                                 value={formData.filament}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -3615,7 +3573,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                         >
                             <input
                                 name="infillPattern"
-                                placeholder="e.g. grid, gyroid"
                                 value={formData.infillPattern}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -3688,7 +3645,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                         >
                             <input
                                 name="supportType"
-                                placeholder="e.g. Tree, Snug"
                                 value={formData.supportType}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -3767,7 +3723,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                         >
                             <input
                                 name="brimType"
-                                placeholder="e.g. Outer only"
                                 value={formData.brimType}
                                 maxLength={150}
                                 onChange={handleChange}
@@ -3857,7 +3812,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="timeH"
-                                placeholder="H"
                                 value={formData.timeH}
                                 onChange={handleChange}
                             />
@@ -3865,7 +3819,6 @@ function Add3dPrinted({ onReturn, onClose }) {
                                 type="number"
                                 max={99999}
                                 name="timeM"
-                                placeholder="M"
                                 value={formData.timeM}
                                 onChange={handleChange}
                             />
@@ -4133,7 +4086,6 @@ function AddMachined({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. My Random Plate"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4176,7 +4128,6 @@ function AddMachined({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. Custom-01"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4221,7 +4172,6 @@ function AddMachined({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. custom"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4592,7 +4542,6 @@ function AddOther({ onReturn, onClose }) {
                         >
                             <input
                                 name="name"
-                                placeholder="e.g. Battery Strap"
                                 value={formData.name}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4635,7 +4584,6 @@ function AddOther({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturerId"
-                                placeholder="e.g. MISC-001"
                                 value={formData.manufacturerId}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4680,7 +4628,6 @@ function AddOther({ onReturn, onClose }) {
                         >
                             <input
                                 name="manufacturer"
-                                placeholder="e.g. Generic"
                                 value={formData.manufacturer}
                                 maxLength={30}
                                 onChange={handleChange}
@@ -4772,7 +4719,6 @@ function AddOther({ onReturn, onClose }) {
                             <textarea
                                 className="d-createitem-input"
                                 name="description"
-                                placeholder="Additional details..."
                                 value={formData.description}
                                 maxLength={550}
                                 onChange={handleChange}

@@ -1773,7 +1773,6 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     >
                                         <input
                                             name="name"
-                                            placeholder="e.g. NeveRest Orbital 20"
                                             value={formData?.name || ""}
                                             onChange={(e) => {
                                                 const val =
@@ -1832,7 +1831,6 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     >
                                         <input
                                             name="manufacturerId"
-                                            placeholder="e.g. am-3637b"
                                             value={
                                                 formData?.manufacturerId || ""
                                             }
@@ -1891,7 +1889,6 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     >
                                         <input
                                             name="manufacturer"
-                                            placeholder="e.g. Andymark"
                                             value={formData?.manufacturer || ""}
                                             onChange={(e) => {
                                                 const val =
