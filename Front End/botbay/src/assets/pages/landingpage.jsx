@@ -343,7 +343,6 @@ function LandingPage() {
                             backgroundColor: "#000029",
                             flexDirection: "column",
                             gap: "30px",
-                            padding: "30px",
                             userSelect: "none",
                             boxSizing: "border-box",
                         }}
@@ -359,9 +358,19 @@ function LandingPage() {
                             src={landingImage2}
                             style={{ width: "80%" }}
                         />
-                        <button className="herobutton" onClick={goToSignUp}>
-                            Elevate your team now.
-                        </button>
+                        <div
+                            style={{
+                                width: "100%",
+                                paddingBottom: "30px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <button className="herobutton" onClick={goToSignUp}>
+                                Elevate your team now.
+                            </button>
+                        </div>
                     </div>
                 </>
             ) : (
@@ -432,7 +441,6 @@ function LandingPage() {
                             alignItems: "center",
                             textAlign: "center",
                             gap: "30px",
-                            padding: "30px 20px",
                             userSelect: "none",
                             boxSizing: "border-box",
                         }}
@@ -447,9 +455,11 @@ function LandingPage() {
                             style={{ width: "100%", maxWidth: "600px" }}
                         />
 
-                        <button className="herobutton" onClick={goToSignUp}>
-                            Elevate your team now.
-                        </button>
+                        <div style={{ width: "100%", padding: "10px" }}>
+                            <button className="herobutton" onClick={goToSignUp}>
+                                Elevate your team now.
+                            </button>
+                        </div>
                     </div>
                 </>
             )}
