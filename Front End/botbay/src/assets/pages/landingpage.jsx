@@ -485,7 +485,7 @@ function LandingPage() {
                                 16423 Instagram
                             </a>
                             <a
-                                href="https://www.instagram.com/"
+                                href="https://www.instagram.com/knightsofloopfunction/"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="footer-link"

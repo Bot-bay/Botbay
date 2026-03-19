@@ -39,13 +39,11 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    padding: 75px;
+    box-sizing: border-box;
 }
 
 @media (min-width: 1100px) {
-    .landingherocontainer {
-        height: 100vh;
-    }
-
     .aboutcontainer {
         height: 100vh;
     }
@@ -328,8 +326,6 @@ li {
         box-shadow 0.4s ease;
     object-fit: cover;
     display: block;
-    margin-left: auto;
-    margin-right: 5%;
 }
 
 .mainimage:hover {
