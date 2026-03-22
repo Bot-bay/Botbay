@@ -1,8 +1,7 @@
 const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 
 import { supabase } from "./auth.js";
-
-import { isUserSignedIn, getUserGroup } from "./auth.js";
+import { getUserGroup } from "./auth.js";
 
 /**
  * Helper function to handle the authenticated fetch to Flask
@@ -33,7 +32,8 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
     const response = await fetch(`${RENDER_URL}${endpoint}`, options);
     const result = await response.json();
 
-    if (!response.ok) throw new Error(result.error || "Request failed");
+    if (!response.ok)
+        throw new Error(result.error || result.message || "Request failed");
     return result;
 }
 
@@ -48,7 +48,7 @@ export async function overwritePart(part) {
 
     try {
         const result = await flaskRequest(
-            `/database/${teamId}/parts/${part.id}/update`,
+            `/database/${teamId}/parts/${part.id}/overwrite`,
             "POST",
             { updated_part_data: part },
         );
