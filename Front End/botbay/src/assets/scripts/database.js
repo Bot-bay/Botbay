@@ -1,10 +1,23 @@
+// --- CONFIGURATION ---
 const RENDER_URL = "https://botbay-python-services-latest.onrender.com";
 
 import { supabase } from "./auth.js";
-import { getUserGroup } from "./auth.js";
+import { isUserSignedIn, getUserGroup } from "./auth.js";
 
 /**
- * Helper function to handle the authenticated fetch to Flask
+ * INTERNAL STATE: Store the Socket ID globally within this module.
+ * Set this once upon socket connection in your socket initialization file.
+ */
+let currentSocketId = null;
+
+export const setSocketId = (sid) => {
+    console.log(`[database.js] 🆔 Socket ID synchronized: ${sid}`);
+    currentSocketId = sid;
+};
+
+/**
+ * Helper function to handle the authenticated fetch to Flask.
+ * Automatically injects the 'sid' into the request body for POST/PUT.
  */
 async function flaskRequest(endpoint, method = "GET", body = null) {
     const {
@@ -13,7 +26,9 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
     const token = session?.access_token;
 
     if (!token) {
-        console.error("User is not logged in");
+        console.error(
+            "[flaskRequest] ❌ No token found. User likely not logged in.",
+        );
         return { error: "No session found" };
     }
 
@@ -25,15 +40,23 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
         },
     };
 
-    if (method !== "GET" && body) {
-        options.body = JSON.stringify(body);
+    // Automatically inject sid if it exists and method is not GET
+    if (method !== "GET") {
+        const payload = body || {};
+        options.body = JSON.stringify({
+            ...payload,
+            sid: currentSocketId,
+        });
     }
 
+    console.log(`[flaskRequest] 🚀 Sending ${method} to ${endpoint}`);
     const response = await fetch(`${RENDER_URL}${endpoint}`, options);
-    const result = await response.json();
 
-    if (!response.ok)
-        throw new Error(result.error || result.message || "Request failed");
+    // Handle empty successful responses
+    if (response.status === 204) return { success: true };
+
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Request failed");
     return result;
 }
 
@@ -41,21 +64,15 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
 
 export async function overwritePart(part) {
     const { group: teamId } = await getUserGroup();
-
-    if (!teamId) {
-        return { success: false, error: "No team context found" };
-    }
-
     try {
         const result = await flaskRequest(
             `/database/${teamId}/parts/overwrite-logic/${part.id}`,
             "POST",
             { updated_part_data: part },
         );
-
         return { success: true, data: result };
     } catch (err) {
-        console.error("System error in overwritePart:", err);
+        console.error("[Trace] ❌ overwritePart failed:", err);
         return { success: false, error: err.message };
     }
 }
@@ -78,42 +95,44 @@ export async function overwriteQuant(partId, quant, needed) {
         }
         return result;
     } catch (err) {
+        console.error("[Trace] ❌ overwriteQuant failed:", err);
         return { success: false, error: err.message };
     }
 }
 
 export const cloudCreatePart = async (itemData, teamId) => {
     try {
-        const result = await flaskRequest(
-            `/database/${teamId}/parts/add`,
-            "POST",
-            {
-                item_data: itemData,
-            },
-        );
-        return result;
+        return await flaskRequest(`/database/${teamId}/parts/add`, "POST", {
+            item_data: itemData,
+        });
     } catch (err) {
+        console.error("[Trace] ❌ cloudCreatePart failed:", err);
         return { success: false, error: err.message };
     }
 };
 
 export async function cloudDeletePart(id) {
-    const signedIn = localStorage.getItem("is_logged_in") === "true";
+    const signedIn = await isUserSignedIn();
     let success = false;
 
     if (signedIn) {
         const { group: teamId } = await getUserGroup();
-        try {
-            const result = await flaskRequest(
-                `/database/${teamId}/parts/delete/${id}`,
-                "DELETE",
-            );
-            success = result.success;
-        } catch (err) {
-            console.error("Cloud delete failed:", err);
+        if (teamId) {
+            try {
+                // Use POST so we can send the SID body to the server
+                const result = await flaskRequest(
+                    `/database/${teamId}/parts/delete/${id}`,
+                    "POST",
+                    {},
+                );
+                success = result.success;
+            } catch (err) {
+                console.error("[Delete Trace] ❌ Cloud delete error:", err);
+            }
         }
     }
 
+    // Local Storage Cleanup (Optimistic Update)
     const rawData = localStorage.getItem("partData") || "[]";
     const data = JSON.parse(rawData);
     const updated = data.filter((p) => String(p.id) !== String(id));
@@ -132,6 +151,7 @@ export async function readPart(partId) {
         );
         return result.data;
     } catch (err) {
+        console.error("[Trace] ❌ readPart failed:", err);
         return null;
     }
 }
@@ -141,9 +161,11 @@ export async function readPart(partId) {
 export async function deleteBattery(nameToDelete) {
     const { group: teamId } = await getUserGroup();
     try {
+        // Use POST for SID support
         return await flaskRequest(
             `/database/${teamId}/batteries/delete/${nameToDelete}`,
-            "DELETE",
+            "POST",
+            {},
         );
     } catch (err) {
         return { success: false, error: err.message };
@@ -179,9 +201,11 @@ export async function updateBatteryStatusCloud(updatedBattery) {
 export async function deleteTagCloud(tagName) {
     const { group: teamId } = await getUserGroup();
     try {
+        // Use POST for SID support
         return await flaskRequest(
             `/database/${teamId}/tags/delete/${tagName}`,
-            "DELETE",
+            "POST",
+            {},
         );
     } catch (err) {
         return { success: false, error: err.message };
@@ -210,6 +234,5 @@ export async function syncLocalData(groupId, parts, tags, batteries) {
 }
 
 export async function getCloudData(groupId) {
-    // Matches the updated /all-data endpoint logic
     return await flaskRequest(`/database/${groupId}/all-data`, "GET");
 }
