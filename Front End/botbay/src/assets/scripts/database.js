@@ -48,7 +48,7 @@ export async function overwritePart(part) {
 
     try {
         const result = await flaskRequest(
-            `/database/${teamId}/parts/${part.id}/overwrite`,
+            `/database/${teamId}/parts/overwrite-logic/${part.id}`,
             "POST",
             { updated_part_data: part },
         );
@@ -64,7 +64,7 @@ export async function overwriteQuant(partId, quant, needed) {
     const { group: teamId } = await getUserGroup();
     try {
         const result = await flaskRequest(
-            `/database/${teamId}/parts/${partId}/quantities`,
+            `/database/${teamId}/parts/update-quantities/${partId}`,
             "POST",
             {
                 new_quant: Number(quant),
@@ -84,9 +84,13 @@ export async function overwriteQuant(partId, quant, needed) {
 
 export const cloudCreatePart = async (itemData, teamId) => {
     try {
-        const result = await flaskRequest(`/database/${teamId}/parts`, "POST", {
-            item_data: itemData,
-        });
+        const result = await flaskRequest(
+            `/database/${teamId}/parts/add`,
+            "POST",
+            {
+                item_data: itemData,
+            },
+        );
         return result;
     } catch (err) {
         return { success: false, error: err.message };
@@ -101,7 +105,7 @@ export async function cloudDeletePart(id) {
         const { group: teamId } = await getUserGroup();
         try {
             const result = await flaskRequest(
-                `/database/${teamId}/parts/${id}`,
+                `/database/${teamId}/parts/delete/${id}`,
                 "DELETE",
             );
             success = result.success;
@@ -123,7 +127,7 @@ export async function readPart(partId) {
     const { group: teamId } = await getUserGroup();
     try {
         const result = await flaskRequest(
-            `/database/${teamId}/parts/${partId}`,
+            `/database/${teamId}/parts/get/${partId}`,
             "GET",
         );
         return result.data;
@@ -138,7 +142,7 @@ export async function deleteBattery(nameToDelete) {
     const { group: teamId } = await getUserGroup();
     try {
         return await flaskRequest(
-            `/database/${teamId}/batteries/${nameToDelete}`,
+            `/database/${teamId}/batteries/delete/${nameToDelete}`,
             "DELETE",
         );
     } catch (err) {
@@ -149,7 +153,7 @@ export async function deleteBattery(nameToDelete) {
 export async function createBattery(battery) {
     const { group: teamId } = await getUserGroup();
     try {
-        return await flaskRequest(`/database/${teamId}/batteries`, "POST", {
+        return await flaskRequest(`/database/${teamId}/batteries/add`, "POST", {
             battery,
         });
     } catch (err) {
@@ -176,7 +180,7 @@ export async function deleteTagCloud(tagName) {
     const { group: teamId } = await getUserGroup();
     try {
         return await flaskRequest(
-            `/database/${teamId}/tags/${tagName}`,
+            `/database/${teamId}/tags/delete/${tagName}`,
             "DELETE",
         );
     } catch (err) {
@@ -187,7 +191,9 @@ export async function deleteTagCloud(tagName) {
 export async function createTag(tag) {
     const { group: teamId } = await getUserGroup();
     try {
-        return await flaskRequest(`/database/${teamId}/tags`, "POST", { tag });
+        return await flaskRequest(`/database/${teamId}/tags/add`, "POST", {
+            tag,
+        });
     } catch (err) {
         return { success: false, error: err.message };
     }
@@ -195,10 +201,6 @@ export async function createTag(tag) {
 
 /// ~~~ SYNC RELATED ~~~ ///
 
-/**
- * Syncs all local storage data (Parts, Tags, Batteries) to the cloud group
- * in a single request to the Python backend.
- */
 export async function syncLocalData(groupId, parts, tags, batteries) {
     return await flaskRequest(`/database/${groupId}/sync`, "POST", {
         parts: parts || [],
@@ -208,5 +210,6 @@ export async function syncLocalData(groupId, parts, tags, batteries) {
 }
 
 export async function getCloudData(groupId) {
+    // Matches the updated /all-data endpoint logic
     return await flaskRequest(`/database/${groupId}/all-data`, "GET");
 }
