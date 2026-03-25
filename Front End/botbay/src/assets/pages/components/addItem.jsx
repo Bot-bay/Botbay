@@ -188,7 +188,7 @@ export function AddItemMenuDesktop({ onClose }) {
             });
         switch (type) {
             case 0:
-                handleAddMotor(assigningParts[assignmentIndex], createNewItem);
+                handlerAddMotor(assigningParts[assignmentIndex], createNewItem);
                 break;
             case 1:
                 handlerAddServo(assigningParts[assignmentIndex], createNewItem);
