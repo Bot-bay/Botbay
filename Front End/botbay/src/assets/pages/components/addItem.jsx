@@ -3,7 +3,7 @@ import { isUserSignedIn, getUserGroup } from "../../scripts/auth";
 import { cloudCreatePart } from "../../scripts/database";
 
 import {
-    handleAddMotor,
+    handlerAddMotor,
     handlerAddServo,
     handlerAddStructural,
     handlerAddElectrical,
