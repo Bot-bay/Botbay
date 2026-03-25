@@ -2361,6 +2361,10 @@
     align-items: center;
 }
 
+.d-additem-existing-img {
+    width: 90%;
+}
+
 .d-additem-existing-table {
     width: 95%;
     border-collapse: separate;

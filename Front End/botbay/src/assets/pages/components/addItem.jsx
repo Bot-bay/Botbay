@@ -187,43 +187,43 @@ export function AddItemMenuDesktop({ onClose }) {
                 type,
             });
         switch (type) {
-            case 0:
+            case "Motor":
                 handlerAddMotor(assigningParts[assignmentIndex], createNewItem);
                 break;
-            case 1:
+            case "Servo":
                 handlerAddServo(assigningParts[assignmentIndex], createNewItem);
                 break;
-            case 2:
+            case "Structural":
                 handlerAddStructural(
                     assigningParts[assignmentIndex],
                     createNewItem,
                 );
                 break;
-            case 3:
+            case "Electrical":
                 handlerAddElectrical(
                     assigningParts[assignmentIndex],
                     createNewItem,
                 );
                 break;
-            case 4:
+            case "Sensor":
                 handlerAddSensor(
                     assigningParts[assignmentIndex],
                     createNewItem,
                 );
                 break;
-            case 5:
-                handlerAdd3DPrinted(
+            case "3D Printed":
+                handlerAdd3dPrinted(
                     assigningParts[assignmentIndex],
                     createNewItem,
                 );
                 break;
-            case 6:
+            case "Machined":
                 handlerAddMachined(
                     assigningParts[assignmentIndex],
                     createNewItem,
                 );
                 break;
-            case 7:
+            case "Other":
                 handlerAddOther(assigningParts[assignmentIndex], createNewItem);
                 break;
             default:
@@ -383,6 +383,10 @@ export function AddItemMenuDesktop({ onClose }) {
                             Assign type for:{" "}
                             {assigningParts[assignmentIndex].name}
                         </p>
+                        <img
+                            className="d-additem-existing-img"
+                            src={assigningParts[assignmentIndex].img}
+                        ></img>
                         {[
                             "Motor",
                             "Servo",

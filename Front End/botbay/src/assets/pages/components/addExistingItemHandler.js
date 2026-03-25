@@ -8,7 +8,7 @@ function handleManufacturer(num) {
     }
 }
 
-function handlerAddMotor(data, createNewItem) {
+export function handlerAddMotor(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newMotor = {
@@ -42,7 +42,7 @@ function handlerAddMotor(data, createNewItem) {
     createNewItem(newMotor);
 }
 
-function handlerAddServo(data, createNewItem) {
+export function handlerAddServo(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newServo = {
@@ -76,7 +76,7 @@ function handlerAddServo(data, createNewItem) {
     createNewItem(newServo);
 }
 
-function handlerAddStructural(data, createNewItem) {
+export function handlerAddStructural(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newStructural = {
@@ -101,7 +101,7 @@ function handlerAddStructural(data, createNewItem) {
     createNewItem(newStructural);
 }
 
-function handlerAddElectrical(data, createNewItem) {
+export function handlerAddElectrical(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newElectrical = {
@@ -135,7 +135,7 @@ function handlerAddElectrical(data, createNewItem) {
     createNewItem(newElectrical);
 }
 
-function handlerAddSensor(data, createNewItem) {
+export function handlerAddSensor(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newSensor = {
@@ -167,7 +167,7 @@ function handlerAddSensor(data, createNewItem) {
     createNewItem(newSensor);
 }
 
-function handlerAdd3dPrinted(data, createNewItem) {
+export function handlerAdd3DPrinted(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newPrint = {
@@ -207,7 +207,7 @@ function handlerAdd3dPrinted(data, createNewItem) {
     createNewItem(newPrint);
 }
 
-function handlerAddMachined(data, createNewItem) {
+export function handlerAddMachined(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newMachined = {
@@ -232,7 +232,7 @@ function handlerAddMachined(data, createNewItem) {
     createNewItem(newMachined);
 }
 
-function handlerAddOther(data, createNewItem) {
+export function handlerAddOther(data, createNewItem) {
     var manufacturer = handleManufacturer(data.manufacturer);
 
     const newOther = {
