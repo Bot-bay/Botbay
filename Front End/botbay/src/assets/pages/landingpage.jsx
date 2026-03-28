@@ -20,6 +20,7 @@ import dashboardImage from "../images/dashboard.png";
 
 import landingImage1 from "../images/landingimagerest1.png";
 import landingImage2 from "../images/landingimagerest2.png";
+import landingImage3 from "../images/landingimagerest3.png";
 
 function LandingPage() {
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
@@ -320,7 +321,7 @@ function LandingPage() {
                             <img
                                 className="mainimage"
                                 alt="dashboard image"
-                                src={landingImage1}
+                                src={landingImage3}
                             />
                         </div>
                         <div className="halfcontainer">
@@ -427,7 +428,7 @@ function LandingPage() {
                         <img
                             className="mainimage"
                             alt="dashboard image"
-                            src={landingImage1}
+                            src={landingImage3}
                             style={{ width: "100%", maxWidth: "500px" }}
                         />
                     </div>
