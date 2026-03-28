@@ -15,6 +15,8 @@ function handleManufacturer(num) {
         return "Swyft Robotics";
     } else if (num == 8) {
         return "Limelight Robotics";
+    } else if (num == 9) {
+        return "West Coast Products";
     }
 }
 

@@ -27,6 +27,7 @@ import tetrixlogo from "../../images/tetrix.png";
 import axonlogo from "../../images/axon.png";
 import swyftlogo from "../../images/swyft.png";
 import limelightlogo from "../../images/limelight.png";
+import wcplogo from "../../images/wcp.png";
 
 function useIsPhone() {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
@@ -342,6 +343,14 @@ export function AddItemMenuDesktop({ onClose }) {
                             onClick={() => setCurrentManufacturer(8)}
                         >
                             <img src={limelightlogo} alt="Limelight" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 9 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(9)}
+                        >
+                            <img src={wcplogo} alt="WCP" />
                         </button>
                     </div>
 
