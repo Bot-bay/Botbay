@@ -71,10 +71,7 @@ function PrivacyPolicy() {
             </h2>
             <p className="abouttext">
                 If you have any questions, please contact us at{" "}
-                <span className="abouttext-bold">
-                    botbay_contact@outlook.com
-                </span>
-                .
+                <span className="abouttext-bold">botbay-dev@outlook.com</span>.
             </p>
         </div>
     );

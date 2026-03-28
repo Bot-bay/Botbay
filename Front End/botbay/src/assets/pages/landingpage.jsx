@@ -528,7 +528,7 @@ function LandingPage() {
                                 Privacy Policy
                             </Link>
                             <a
-                                href="mailto:botbay_contact@outlook.com"
+                                href="mailto:botbay-dev@outlook.com"
                                 className="footer-link"
                             >
                                 <FaEnvelope
