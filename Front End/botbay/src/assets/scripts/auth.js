@@ -34,7 +34,7 @@ async function flaskRequest(endpoint, method = "GET", body = null) {
         method: method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: token,
+            Authorization: "Bearer " + token,
         },
     };
 

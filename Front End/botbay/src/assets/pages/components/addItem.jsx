@@ -1,6 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { isUserSignedIn, getUserGroup } from "../../scripts/auth";
 import { cloudCreatePart } from "../../scripts/database";
+
+import {
+    handlerAddMotor,
+    handlerAddServo,
+    handlerAddStructural,
+    handlerAddElectrical,
+    handlerAddSensor,
+    handlerAdd3DPrinted,
+    handlerAddMachined,
+    handlerAddOther,
+} from "./addExistingItemHandler";
+
+import {
+    RiExpandUpDownFill,
+    RiArrowDownSFill,
+    RiArrowUpSFill,
+} from "react-icons/ri";
+
+import andymarklogo from "../../images/andymark.png";
+import revlogo from "../../images/rev.png";
+import gobildalogo from "../../images/gobilda.png";
+import studicalogo from "../../images/studica.png";
+import tetrixlogo from "../../images/tetrix.png";
+import axonlogo from "../../images/axon.png";
+import swyftlogo from "../../images/swyft.png";
+import limelightlogo from "../../images/limelight.png";
+import wcplogo from "../../images/wcp.png";
 
 function useIsPhone() {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
@@ -16,20 +43,112 @@ function useIsPhone() {
 
 export function AddItemMenuDesktop({ onClose }) {
     const [partIndexOpen, setPartIndexOpen] = useState(null);
+    const [existingSelectOpen, setExistingSelectOpen] = useState(true);
+    const [existingOpen, setExistingOpen] = useState(false);
+    const [renderingPartIndex, setRenderingPartIndex] = useState(false);
+    const [currentManufacturer, setCurrentManufacturer] = useState(1); // 1: Andymark, 2: REV, 3: Gobilda, 4: Studica, 5: Tetrix, 6: Axon, 7: Swyft, 8: Limelight
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedParts, setSelectedParts] = useState([]);
+    const [sortConfig, setSortConfig] = useState({
+        key: "name",
+        direction: "asc",
+    });
+
+    const [partsData, setPartsData] = useState([]);
+    const [assignmentIndex, setAssignmentIndex] = useState(0);
+    const [assigningParts, setAssigningParts] = useState([]);
+
+    useEffect(() => {
+        fetch("manudata.json")
+            .then((res) => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            })
+            .then((data) => setPartsData(data))
+            .catch((err) => console.error("Error loading manudata.json:", err));
+    }, []);
+
+    const filteredAndSortedParts = useMemo(() => {
+        const lowerQuery = searchTerm.toLowerCase();
+
+        let result = partsData
+            .filter((part) => part.manufacturer === currentManufacturer)
+            .filter(
+                (part) =>
+                    part.name.toLowerCase().includes(lowerQuery) ||
+                    part.id.toLowerCase().includes(lowerQuery),
+            );
+
+        if (sortConfig.key) {
+            result.sort((a, b) => {
+                const aVal = a[sortConfig.key];
+                const bVal = b[sortConfig.key];
+                if (aVal < bVal) return sortConfig.direction === "asc" ? -1 : 1;
+                if (aVal > bVal) return sortConfig.direction === "asc" ? 1 : -1;
+                return 0;
+            });
+        }
+
+        return result;
+    }, [partsData, currentManufacturer, searchTerm, sortConfig]);
+
+    const requestSort = (key) => {
+        let direction = "asc";
+        if (sortConfig.key === key && sortConfig.direction === "asc") {
+            direction = "desc";
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const togglePartSelection = (id) => {
+        setSelectedParts((prev) =>
+            prev.includes(id)
+                ? prev.filter((item) => item !== id)
+                : [...prev, id],
+        );
+    };
+
+    const getSortIcon = (columnKey) => {
+        if (sortConfig.key !== columnKey) return <RiExpandUpDownFill />;
+        return sortConfig.direction === "asc" ? (
+            <RiArrowUpSFill />
+        ) : (
+            <RiArrowDownSFill />
+        );
+    };
+
+    function handleClose() {
+        setExistingOpen(false);
+        setExistingSelectOpen(false);
+        setRenderingPartIndex(false);
+        setPartIndexOpen(null);
+        setAssignmentIndex(0);
+        setAssigningParts([]);
+        onClose();
+    }
+
     function handleReturn() {
         setPartIndexOpen(null);
     }
-    // Part type indexes:
-    // null -> not open
-    // 0 -> Motor
-    // 1 -> Servo
-    // 2 -> Structural
-    // 3 -> Electrical
-    // 4 -> Sensor
-    // 5 -> 3D Printed
-    // 6 -> Machined
-    // 7 -> Other
-    // 8 -> Wheel
+
+    function handleOpenSelect() {
+        setExistingOpen(false);
+        setExistingSelectOpen(true);
+        setRenderingPartIndex(false);
+    }
+
+    function handleSelect(option) {
+        if (option === 1) {
+            setExistingOpen(true);
+            setExistingSelectOpen(false);
+            setRenderingPartIndex(false);
+        } else {
+            setExistingOpen(false);
+            setExistingSelectOpen(false);
+            setRenderingPartIndex(true);
+        }
+    }
+
     function renderCorrectItemToAdd() {
         switch (partIndexOpen) {
             case 0:
@@ -56,51 +175,339 @@ export function AddItemMenuDesktop({ onClose }) {
                 );
             case 7:
                 return <AddOther onReturn={handleReturn} onClose={onClose} />;
+            default:
+                return null;
+        }
+    }
+
+    function handleItemCreation() {
+        setAssigningParts(
+            selectedParts.map((id) => partsData.find((p) => p.id === id)),
+        );
+        setAssignmentIndex(0);
+    }
+
+    function handleAssignType(type) {
+        if (type)
+            console.log({
+                item: assigningParts[assignmentIndex],
+                type,
+            });
+        switch (type) {
+            case "Motor":
+                handlerAddMotor(assigningParts[assignmentIndex], createNewItem);
+                break;
+            case "Servo":
+                handlerAddServo(assigningParts[assignmentIndex], createNewItem);
+                break;
+            case "Structural":
+                handlerAddStructural(
+                    assigningParts[assignmentIndex],
+                    createNewItem,
+                );
+                break;
+            case "Electrical":
+                handlerAddElectrical(
+                    assigningParts[assignmentIndex],
+                    createNewItem,
+                );
+                break;
+            case "Sensor":
+                handlerAddSensor(
+                    assigningParts[assignmentIndex],
+                    createNewItem,
+                );
+                break;
+            case "3D Printed":
+                handlerAdd3dPrinted(
+                    assigningParts[assignmentIndex],
+                    createNewItem,
+                );
+                break;
+            case "Machined":
+                handlerAddMachined(
+                    assigningParts[assignmentIndex],
+                    createNewItem,
+                );
+                break;
+            case "Other":
+                handlerAddOther(assigningParts[assignmentIndex], createNewItem);
+                break;
+            default:
+                console.warn("Unknown type:", type);
+        }
+        if (assignmentIndex < assigningParts.length - 1) {
+            setAssignmentIndex((prev) => prev + 1);
+        } else {
+            setAssigningParts([]);
+            setSelectedParts([]);
         }
     }
 
     return (
-        <>
-            <div className="d-partoverlay">
-                <button className="d-partoverlay-exitbutton" onClick={onClose}>
-                    X
-                </button>
-                <div className={`d-titlecontainer d-titlecontainer-centered`}>
-                    <p>Add Item</p>
+        <div className="d-partoverlay">
+            <button className="d-partoverlay-exitbutton" onClick={handleClose}>
+                X
+            </button>
+            <div className="d-titlecontainer d-titlecontainer-centered">
+                <p>Add Item</p>
+            </div>
+
+            {existingSelectOpen && (
+                <div className="d-createitem-centercontainer">
+                    <div className="d-createitem-middlecontainer">
+                        <button onClick={() => handleSelect(1)}>
+                            Existing Part
+                        </button>
+                        <button onClick={() => handleSelect(2)}>
+                            Custom Part
+                        </button>
+                    </div>
                 </div>
-                {partIndexOpen === null && (
+            )}
+
+            {existingOpen && !assigningParts.length && (
+                <div className="d-additem-existing-main-wrapper">
+                    <button
+                        className="d-partoverlay-returnbutton"
+                        onClick={handleOpenSelect}
+                    >
+                        &lt;
+                    </button>
+
+                    <div className="d-additem-existing-manu-tabs">
+                        <button
+                            className={
+                                currentManufacturer === 1 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(1)}
+                        >
+                            <img src={andymarklogo} alt="Andymark" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 2 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(2)}
+                        >
+                            <img src={revlogo} alt="Rev" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 3 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(3)}
+                        >
+                            <img src={gobildalogo} alt="Gobilda" />
+                        </button>
+                    </div>
+                    <div className="d-additem-existing-manu-tabs">
+                        <button
+                            className={
+                                currentManufacturer === 4 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(4)}
+                        >
+                            <img src={studicalogo} alt="Studica" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 5 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(5)}
+                        >
+                            <img src={tetrixlogo} alt="Tetrix" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 6 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(6)}
+                        >
+                            <img src={axonlogo} alt="Axon" />
+                        </button>
+                    </div>
+                    <div className="d-additem-existing-manu-tabs">
+                        <button
+                            className={
+                                currentManufacturer === 7 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(7)}
+                        >
+                            <img src={swyftlogo} alt="Swyft" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 8 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(8)}
+                        >
+                            <img src={limelightlogo} alt="Limelight" />
+                        </button>
+                        <button
+                            className={
+                                currentManufacturer === 9 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(9)}
+                        >
+                            <img src={wcplogo} alt="WCP" />
+                        </button>
+                    </div>
+
+                    <div className="d-additem-existing-inputwrapper">
+                        <input
+                            className="d-additem-existing-searchbar"
+                            type="text"
+                            placeholder="Search by name or ID..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="d-additem-existing-listcontainer">
+                        <table className="d-additem-existing-table">
+                            <thead>
+                                <tr>
+                                    <th style={{ width: "15%" }}>Icon</th>
+                                    <th
+                                        style={{
+                                            width: "45%",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => requestSort("name")}
+                                    >
+                                        Name {getSortIcon("name")}
+                                    </th>
+                                    <th
+                                        style={{
+                                            width: "25%",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => requestSort("id")}
+                                    >
+                                        ID {getSortIcon("id")}
+                                    </th>
+                                    <th style={{ width: "15%" }}>Select</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {filteredAndSortedParts.map((part, index) => (
+                                    <tr key={`${part.id}-${index}`}>
+                                        <td>
+                                            <img
+                                                src={part.img}
+                                                alt="part"
+                                                className="d-additem-existing-table-img"
+                                                style={{ width: "30px" }}
+                                            />
+                                        </td>
+                                        <td
+                                            style={{
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                            }}
+                                        >
+                                            {part.name}
+                                        </td>
+                                        <td>{part.id}</td>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedParts.includes(
+                                                    part.id,
+                                                )}
+                                                onChange={() =>
+                                                    togglePartSelection(part.id)
+                                                }
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {selectedParts.length > 0 && (
+                        <button
+                            className="d-additem-existing-add-trigger"
+                            onClick={handleItemCreation}
+                        >
+                            Add {selectedParts.length}{" "}
+                            {selectedParts.length === 1
+                                ? "Selected Item"
+                                : "Selected Items"}
+                        </button>
+                    )}
+                </div>
+            )}
+
+            {assigningParts.length > 0 && (
+                <div className="d-createitem-centercontainer">
+                    <div className="d-createitem-middlecontainer">
+                        <p className="abouttext2">
+                            Assign type for:{" "}
+                            {assigningParts[assignmentIndex].name}
+                        </p>
+                        <img
+                            className="d-additem-existing-img"
+                            src={assigningParts[assignmentIndex].img}
+                        ></img>
+                        {[
+                            "Motor",
+                            "Servo",
+                            "Structural",
+                            "Electrical",
+                            "Sensor",
+                            "3D Printed",
+                            "Machined",
+                            "Other",
+                        ].map((label, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => handleAssignType(label)}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {partIndexOpen === null &&
+                renderingPartIndex &&
+                !assigningParts.length && (
                     <div className="d-createitem-centercontainer">
+                        <button
+                            className="d-partoverlay-returnbutton"
+                            onClick={handleOpenSelect}
+                        >
+                            &lt;
+                        </button>
                         <div className="d-createitem-middlecontainer">
-                            <button onClick={() => setPartIndexOpen(0)}>
-                                Motor
-                            </button>
-                            <button onClick={() => setPartIndexOpen(1)}>
-                                Servo
-                            </button>
-                            <button onClick={() => setPartIndexOpen(2)}>
-                                Structural
-                            </button>
-                            <button onClick={() => setPartIndexOpen(3)}>
-                                Electrical
-                            </button>
-                            <button onClick={() => setPartIndexOpen(4)}>
-                                Sensor
-                            </button>
-                            <button onClick={() => setPartIndexOpen(5)}>
-                                3D Printed
-                            </button>
-                            <button onClick={() => setPartIndexOpen(6)}>
-                                Machined
-                            </button>
-                            <button onClick={() => setPartIndexOpen(7)}>
-                                Other
-                            </button>
+                            {[
+                                "Motor",
+                                "Servo",
+                                "Structural",
+                                "Electrical",
+                                "Sensor",
+                                "3D Printed",
+                                "Machined",
+                                "Other",
+                            ].map((label, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setPartIndexOpen(idx)}
+                                >
+                                    {label}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 )}
-                {partIndexOpen !== null && renderCorrectItemToAdd()}
-            </div>
-        </>
+            {partIndexOpen !== null && renderCorrectItemToAdd()}
+        </div>
     );
 }
 
