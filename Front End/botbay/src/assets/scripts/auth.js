@@ -53,8 +53,7 @@ export const signUpUser = async (email, password) => {
         email,
         password,
         options: {
-            emailRedirectTo:
-                "https://abcde456.github.io/Botbay-Testing-Repo/#/signup",
+            emailRedirectTo: "https://bot-bay.github.io/Botbay/#/signup",
         },
     });
 };
@@ -301,7 +300,7 @@ export const verifyCurrentPassword = async (password) => {
  */
 export const sendPasswordResetEmail = async (email) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `https://abcde456.github.io/Botbay-Testing-Repo/#/updatepassword`,
+        redirectTo: `https://bot-bay.github.io/Botbay/#/updatepassword`,
     });
     if (error) throw error;
     return { success: true };
