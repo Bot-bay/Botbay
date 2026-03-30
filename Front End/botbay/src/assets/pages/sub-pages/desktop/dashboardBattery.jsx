@@ -184,7 +184,13 @@ function BatteryPageDesktop() {
                     />
                 ) : (
                     <div className="centercontainer">
-                        <p style={{ color: "white" }}>
+                        <p
+                            style={{
+                                color: "white",
+                                fontSize: isPhone ? "3rem" : "inherit",
+                                paddingLeft: isPhone ? "20px" : "inherit",
+                            }}
+                        >
                             You are not tracking any batteries...
                         </p>
                     </div>

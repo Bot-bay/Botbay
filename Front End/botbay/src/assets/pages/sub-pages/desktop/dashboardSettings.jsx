@@ -172,7 +172,7 @@ function SettingsPageDesktop() {
                                 marginBottom: "15px",
                             }}
                         >
-                            Confirm Identity
+                            Confirm Password
                         </h2>
                         <p
                             style={{
