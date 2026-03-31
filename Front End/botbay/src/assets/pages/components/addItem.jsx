@@ -182,7 +182,9 @@ export function AddItemMenuDesktop({ onClose }) {
 
     function handleItemCreation() {
         setAssigningParts(
-            selectedParts.map((id) => partsData.find((p) => p.id === id)),
+            selectedParts.map((fakeid) =>
+                partsData.find((p) => p.fakeid === fakeid),
+            ),
         );
         setAssignmentIndex(0);
     }
