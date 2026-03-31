@@ -100,11 +100,11 @@ export function AddItemMenuDesktop({ onClose }) {
         setSortConfig({ key, direction });
     };
 
-    const togglePartSelection = (id) => {
+    const togglePartSelection = (index) => {
         setSelectedParts((prev) =>
-            prev.includes(id)
-                ? prev.filter((item) => item !== id)
-                : [...prev, id],
+            prev.includes(index)
+                ? prev.filter((i) => i !== index)
+                : [...prev, index],
         );
     };
 
@@ -393,7 +393,7 @@ export function AddItemMenuDesktop({ onClose }) {
 
                             <tbody>
                                 {filteredAndSortedParts.map((part, index) => (
-                                    <tr key={`${part.id}-${index}`}>
+                                    <tr key={`${part.id ?? index}`}>
                                         <td>
                                             <img
                                                 src={part.img}
@@ -416,10 +416,10 @@ export function AddItemMenuDesktop({ onClose }) {
                                             <input
                                                 type="checkbox"
                                                 checked={selectedParts.includes(
-                                                    part.id,
+                                                    index,
                                                 )}
                                                 onChange={() =>
-                                                    togglePartSelection(part.id)
+                                                    togglePartSelection(index)
                                                 }
                                             />
                                         </td>
