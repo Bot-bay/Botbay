@@ -100,11 +100,11 @@ export function AddItemMenuDesktop({ onClose }) {
         setSortConfig({ key, direction });
     };
 
-    const togglePartSelection = (index) => {
+    const togglePartSelection = (fakeid) => {
         setSelectedParts((prev) =>
-            prev.includes(index)
-                ? prev.filter((i) => i !== index)
-                : [...prev, index],
+            prev.includes(fakeid)
+                ? prev.filter((item) => item !== fakeid)
+                : [...prev, fakeid],
         );
     };
 
@@ -392,8 +392,8 @@ export function AddItemMenuDesktop({ onClose }) {
                             </thead>
 
                             <tbody>
-                                {filteredAndSortedParts.map((part, index) => (
-                                    <tr key={`${part.id ?? index}`}>
+                                {filteredAndSortedParts.map((part) => (
+                                    <tr key={`${part.fakeid}`}>
                                         <td>
                                             <img
                                                 src={part.img}
@@ -416,10 +416,12 @@ export function AddItemMenuDesktop({ onClose }) {
                                             <input
                                                 type="checkbox"
                                                 checked={selectedParts.includes(
-                                                    index,
+                                                    part.fakeid,
                                                 )}
                                                 onChange={() =>
-                                                    togglePartSelection(index)
+                                                    togglePartSelection(
+                                                        part.fakeid,
+                                                    )
                                                 }
                                             />
                                         </td>
