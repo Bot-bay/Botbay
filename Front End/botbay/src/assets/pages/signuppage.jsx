@@ -61,7 +61,7 @@ function SignUpPage() {
             if (error) {
                 if (error.message.includes("Password should contain")) {
                     setErrorMessage(
-                        "Password is too weak. Use a mix of letters, numbers, and symbols.",
+                        "Password is too weak. It must be at least 6 characters, include an uppercase, and lowercase letter, a number, and a symbol.",
                     );
                 } else {
                     setErrorMessage(error.message);

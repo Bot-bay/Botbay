@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { updatePassword } from "../scripts/auth.js";
+import { supabase, updatePassword } from "../scripts/auth.js";
 import signUpLogo from "../images/LogoTrans.png";
-
-import "../styles/signupstyles.css";
-import "../styles/sharedstyles.css";
 
 function UpdatePasswordPage() {
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false); // Toggle state
+    const [showPassword, setShowPassword] = useState(false);
     const [notice, setNotice] = useState({ message: "", color: "transparent" });
     const [loading, setLoading] = useState(false);
-
-    // --- PHONE CHECK LOGIC ---
-    const [isPhone, setIsPhone] = useState(window.innerWidth <= 1199);
+    const [sessionReady, setSessionReady] = useState(false);
 
     useEffect(() => {
-        const handleResize = () => setIsPhone(window.innerWidth <= 1199);
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        async function handleResetSession() {
+            const { error } = await supabase.auth.setSessionFromUrl({
+                storeSession: false,
+            });
+            if (error) {
+                setNotice({ message: error.message, color: "red" });
+            } else {
+                setSessionReady(true);
+            }
+        }
+
+        handleResetSession();
     }, []);
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const handleUpdateAction = async () => {
+        if (!sessionReady) {
+            setNotice({
+                message: "Auth session missing. Try the reset link again.",
+                color: "red",
+            });
+            return;
+        }
+
         if (password.length < 6) {
             setNotice({
-                message: "Password must be at least 6 characters.",
+                message:
+                    "Password is too weak. It must be at least 6 characters, include an uppercase, and lowercase letter, a number, and a symbol.",
                 color: "red",
             });
             return;
@@ -65,7 +76,6 @@ function UpdatePasswordPage() {
                     </div>
                     <div className="inputcontainer">
                         <p className="inputheader">Enter New Password:</p>
-
                         <div style={{ position: "relative", width: "100%" }}>
                             <input
                                 className="signupinput"
@@ -80,7 +90,7 @@ function UpdatePasswordPage() {
                                 onClick={togglePasswordVisibility}
                                 style={{
                                     position: "absolute",
-                                    right: isPhone ? "40px" : "15px",
+                                    right: "15px",
                                     top: "50%",
                                     transform: "translateY(-50%)",
                                     cursor: "pointer",
@@ -89,15 +99,9 @@ function UpdatePasswordPage() {
                                 }}
                             >
                                 {showPassword ? (
-                                    <EyeOff
-                                        size={isPhone ? 24 : 24}
-                                        color="black"
-                                    />
+                                    <EyeOff size={24} />
                                 ) : (
-                                    <Eye
-                                        size={isPhone ? 24 : 24}
-                                        color="black"
-                                    />
+                                    <Eye size={24} />
                                 )}
                             </div>
                         </div>
