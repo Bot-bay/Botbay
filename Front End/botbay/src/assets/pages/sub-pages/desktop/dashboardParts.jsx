@@ -1776,7 +1776,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             value={formData?.name || ""}
                                             onChange={(e) => {
                                                 const val =
-                                                    e.target.value.slice(0, 40);
+                                                    e.target.value.slice(0, 60);
                                                 handleChange({
                                                     target: {
                                                         name: "name",
@@ -1797,7 +1797,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             }}
                                         />
                                         {(formData?.name?.length || 0) >=
-                                            35 && (
+                                            55 && (
                                             <p
                                                 style={{
                                                     position: "absolute",
@@ -1813,7 +1813,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     pointerEvents: "none",
                                                 }}
                                             >
-                                                {40 -
+                                                {60 -
                                                     (formData?.name?.length ||
                                                         0)}
                                             </p>
@@ -1836,7 +1836,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             }
                                             onChange={(e) => {
                                                 const val =
-                                                    e.target.value.slice(0, 40);
+                                                    e.target.value.slice(0, 60);
                                                 handleChange({
                                                     target: {
                                                         name: "manufacturerId",
@@ -1845,6 +1845,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                 });
                                             }}
                                             style={{
+                                                width: "100%",
+                                                boxSizing: "border-box",
                                                 paddingRight:
                                                     (formData?.storeLink
                                                         ?.length || 0) >= 230
@@ -1855,7 +1857,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             }}
                                         />
                                         {(formData?.manufacturerId?.length ||
-                                            0) >= 35 && (
+                                            0) >= 55 && (
                                             <p
                                                 style={{
                                                     position: "absolute",
@@ -1871,7 +1873,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     pointerEvents: "none",
                                                 }}
                                             >
-                                                {40 -
+                                                {60 -
                                                     (formData?.manufacturerId
                                                         ?.length || 0)}
                                             </p>
@@ -1892,7 +1894,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             value={formData?.manufacturer || ""}
                                             onChange={(e) => {
                                                 const val =
-                                                    e.target.value.slice(0, 40);
+                                                    e.target.value.slice(0, 60);
                                                 handleChange({
                                                     target: {
                                                         name: "manufacturer",
@@ -1901,6 +1903,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                 });
                                             }}
                                             style={{
+                                                width: "100%",
+                                                boxSizing: "border-box",
                                                 paddingRight:
                                                     (formData?.storeLink
                                                         ?.length || 0) >= 230
@@ -1911,7 +1915,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             }}
                                         />
                                         {(formData?.manufacturer?.length ||
-                                            0) >= 35 && (
+                                            0) >= 55 && (
                                             <p
                                                 style={{
                                                     position: "absolute",
@@ -1927,7 +1931,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     pointerEvents: "none",
                                                 }}
                                             >
-                                                {40 -
+                                                {60 -
                                                     (formData?.manufacturer
                                                         ?.length || 0)}
                                             </p>

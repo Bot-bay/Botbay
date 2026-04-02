@@ -28,6 +28,7 @@ import axonlogo from "../../images/axon.png";
 import swyftlogo from "../../images/swyft.png";
 import limelightlogo from "../../images/limelight.png";
 import wcplogo from "../../images/wcp.png";
+import logitechlogo from "../../images/logitech.png";
 
 function useIsPhone() {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
@@ -46,7 +47,7 @@ export function AddItemMenuDesktop({ onClose }) {
     const [existingSelectOpen, setExistingSelectOpen] = useState(true);
     const [existingOpen, setExistingOpen] = useState(false);
     const [renderingPartIndex, setRenderingPartIndex] = useState(false);
-    const [currentManufacturer, setCurrentManufacturer] = useState(1); // 1: Andymark, 2: REV, 3: Gobilda, 4: Studica, 5: Tetrix, 6: Axon, 7: Swyft, 8: Limelight
+    const [currentManufacturer, setCurrentManufacturer] = useState(1); // 1: Andymark, 2: REV, 3: Gobilda, 4: Studica, 5: Tetrix, 6: Axon, 7: Swyft, 8: Limelight, 9: WCP, 10: Logitech
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedParts, setSelectedParts] = useState([]);
     const [sortConfig, setSortConfig] = useState({
@@ -355,6 +356,16 @@ export function AddItemMenuDesktop({ onClose }) {
                             <img src={wcplogo} alt="WCP" />
                         </button>
                     </div>
+                    <div className="d-additem-existing-manu-tabs">
+                        <button
+                            className={
+                                currentManufacturer === 10 ? "active" : ""
+                            }
+                            onClick={() => setCurrentManufacturer(10)}
+                        >
+                            <img src={logitechlogo} alt="Logitech" />
+                        </button>
+                    </div>
 
                     <div className="d-additem-existing-inputwrapper">
                         <input
@@ -401,7 +412,7 @@ export function AddItemMenuDesktop({ onClose }) {
                                                 src={part.img}
                                                 alt="part"
                                                 className="d-additem-existing-table-img"
-                                                style={{ width: "30px" }}
+                                                style={{ width: "60px" }}
                                             />
                                         </td>
                                         <td
@@ -652,19 +663,19 @@ function AddMotor({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -675,7 +686,7 @@ function AddMotor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.name.length}
+                                    {60 - formData.name.length}
                                 </span>
                             )}
                         </div>
@@ -694,20 +705,20 @@ function AddMotor({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -718,7 +729,7 @@ function AddMotor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturerId.length}
+                                    {60 - formData.manufacturerId.length}
                                 </span>
                             )}
                         </div>
@@ -737,7 +748,7 @@ function AddMotor({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -750,7 +761,7 @@ function AddMotor({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -761,7 +772,7 @@ function AddMotor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturer.length}
+                                    {60 - formData.manufacturer.length}
                                 </span>
                             )}
                         </div>
@@ -1277,19 +1288,19 @@ function AddServo({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -1300,7 +1311,7 @@ function AddServo({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.name.length}
+                                    {60 - formData.name.length}
                                 </span>
                             )}
                         </div>
@@ -1319,20 +1330,20 @@ function AddServo({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -1343,7 +1354,7 @@ function AddServo({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturerId.length}
+                                    {60 - formData.manufacturerId.length}
                                 </span>
                             )}
                         </div>
@@ -1362,7 +1373,7 @@ function AddServo({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -1375,7 +1386,7 @@ function AddServo({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -1386,7 +1397,7 @@ function AddServo({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturer.length}
+                                    {60 - formData.manufacturer.length}
                                 </span>
                             )}
                         </div>
@@ -1934,19 +1945,19 @@ function AddStructural({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -1957,7 +1968,7 @@ function AddStructural({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.name.length}
+                                    {60 - formData.name.length}
                                 </span>
                             )}
                         </div>
@@ -1976,20 +1987,20 @@ function AddStructural({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -2000,7 +2011,7 @@ function AddStructural({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturerId.length}
+                                    {60 - formData.manufacturerId.length}
                                 </span>
                             )}
                         </div>
@@ -2019,7 +2030,7 @@ function AddStructural({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -2032,7 +2043,7 @@ function AddStructural({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -2043,7 +2054,7 @@ function AddStructural({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturer.length}
+                                    {60 - formData.manufacturer.length}
                                 </span>
                             )}
                         </div>
@@ -2416,19 +2427,19 @@ function AddElectrical({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -2439,7 +2450,7 @@ function AddElectrical({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.name.length}
+                                    {60 - formData.name.length}
                                 </span>
                             )}
                         </div>
@@ -2458,20 +2469,20 @@ function AddElectrical({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -2482,7 +2493,7 @@ function AddElectrical({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturerId.length}
+                                    {60 - formData.manufacturerId.length}
                                 </span>
                             )}
                         </div>
@@ -2501,7 +2512,7 @@ function AddElectrical({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -2514,7 +2525,7 @@ function AddElectrical({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -2525,7 +2536,7 @@ function AddElectrical({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - formData.manufacturer.length}
+                                    {60 - formData.manufacturer.length}
                                 </span>
                             )}
                         </div>
@@ -3090,19 +3101,19 @@ function AddSensor({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3113,7 +3124,7 @@ function AddSensor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.name?.length || 0)}
+                                    {60 - (formData.name?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -3132,20 +3143,20 @@ function AddSensor({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3156,7 +3167,7 @@ function AddSensor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 -
+                                    {60 -
                                         (formData.manufacturerId?.length || 0)}
                                 </span>
                             )}
@@ -3176,7 +3187,7 @@ function AddSensor({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -3189,7 +3200,7 @@ function AddSensor({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3200,7 +3211,7 @@ function AddSensor({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.manufacturer?.length || 0)}
+                                    {60 - (formData.manufacturer?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -3730,19 +3741,19 @@ function Add3dPrinted({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3753,7 +3764,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.name?.length || 0)}
+                                    {60 - (formData.name?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -3772,20 +3783,20 @@ function Add3dPrinted({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3796,7 +3807,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 -
+                                    {60 -
                                         (formData.manufacturerId?.length || 0)}
                                 </span>
                             )}
@@ -3816,7 +3827,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -3829,7 +3840,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -3840,7 +3851,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.manufacturer?.length || 0)}
+                                    {60 - (formData.manufacturer?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -4498,19 +4509,19 @@ function AddMachined({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -4521,7 +4532,7 @@ function AddMachined({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.name?.length || 0)}
+                                    {60 - (formData.name?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -4540,20 +4551,20 @@ function AddMachined({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -4564,7 +4575,7 @@ function AddMachined({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 -
+                                    {60 -
                                         (formData.manufacturerId?.length || 0)}
                                 </span>
                             )}
@@ -4584,7 +4595,7 @@ function AddMachined({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -4597,7 +4608,7 @@ function AddMachined({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -4608,7 +4619,7 @@ function AddMachined({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.manufacturer?.length || 0)}
+                                    {60 - (formData.manufacturer?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -4954,19 +4965,19 @@ function AddOther({ onReturn, onClose }) {
                             <input
                                 name="name"
                                 value={formData.name}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
-                                        (formData.name?.length || 0) >= 25
+                                        (formData.name?.length || 0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.name?.length || 0) >= 25 && (
+                            {(formData.name?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -4977,7 +4988,7 @@ function AddOther({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.name?.length || 0)}
+                                    {60 - (formData.name?.length || 0)}
                                 </span>
                             )}
                         </div>
@@ -4996,20 +5007,20 @@ function AddOther({ onReturn, onClose }) {
                             <input
                                 name="manufacturerId"
                                 value={formData.manufacturerId}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
                                     paddingRight:
                                         (formData.manufacturerId?.length ||
-                                            0) >= 25
+                                            0) >= 55
                                             ? isPhone
                                                 ? "100px"
                                                 : "45px"
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturerId?.length || 0) >= 25 && (
+                            {(formData.manufacturerId?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -5020,7 +5031,7 @@ function AddOther({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 -
+                                    {60 -
                                         (formData.manufacturerId?.length || 0)}
                                 </span>
                             )}
@@ -5040,7 +5051,7 @@ function AddOther({ onReturn, onClose }) {
                             <input
                                 name="manufacturer"
                                 value={formData.manufacturer}
-                                maxLength={30}
+                                maxLength={60}
                                 onChange={handleChange}
                                 style={{
                                     width: "100%",
@@ -5053,7 +5064,7 @@ function AddOther({ onReturn, onClose }) {
                                             : "10px",
                                 }}
                             />
-                            {(formData.manufacturer?.length || 0) >= 25 && (
+                            {(formData.manufacturer?.length || 0) >= 55 && (
                                 <span
                                     style={{
                                         position: "absolute",
@@ -5064,7 +5075,7 @@ function AddOther({ onReturn, onClose }) {
                                         lineHeight: "1",
                                     }}
                                 >
-                                    {30 - (formData.manufacturer?.length || 0)}
+                                    {60 - (formData.manufacturer?.length || 0)}
                                 </span>
                             )}
                         </div>
