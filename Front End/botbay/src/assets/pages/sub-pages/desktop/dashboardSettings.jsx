@@ -201,7 +201,7 @@ function SettingsPageDesktop() {
                             style={{ marginTop: isPhone ? "40px" : "20px" }}
                             disabled={loading}
                         >
-                            {loading ? t(verifying) : t(unlocksettings)}
+                            {loading ? t("verifying") : t("unlocksettings")}
                         </button>
                     </div>
                 </div>
