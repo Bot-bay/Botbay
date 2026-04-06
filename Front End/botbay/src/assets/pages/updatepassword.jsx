@@ -3,7 +3,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { supabase, updatePassword } from "../scripts/auth.js";
 import signUpLogo from "../images/LogoTrans.png";
 
+import { useTranslation } from "react-i18next";
+
 function UpdatePasswordPage() {
+    const { t } = useTranslation();
+
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [notice, setNotice] = useState({ message: "", color: "transparent" });
@@ -30,7 +34,7 @@ function UpdatePasswordPage() {
     const handleUpdateAction = async () => {
         if (!sessionReady) {
             setNotice({
-                message: "Auth session missing. Try the reset link again.",
+                message: t("authseshmissing"),
                 color: "red",
             });
             return;
@@ -38,8 +42,7 @@ function UpdatePasswordPage() {
 
         if (password.length < 6) {
             setNotice({
-                message:
-                    "Password is too weak. It must be at least 6 characters, include an uppercase, and lowercase letter, a number, and a symbol.",
+                message: t("passwordtooweak"),
                 color: "red",
             });
             return;
@@ -49,7 +52,7 @@ function UpdatePasswordPage() {
         try {
             await updatePassword(password);
             setNotice({
-                message: "Success! Redirecting to login...",
+                message: t("successredirect"),
                 color: "green",
             });
             setTimeout(() => {
@@ -72,10 +75,10 @@ function UpdatePasswordPage() {
                             src={signUpLogo}
                             alt="Logo"
                         />
-                        <p className="signupheader">New Password</p>
+                        <p className="signupheader">{t("newpassword")}</p>
                     </div>
                     <div className="inputcontainer">
-                        <p className="inputheader">Enter New Password:</p>
+                        <p className="inputheader">{t("enternewpassword")}</p>
                         <div style={{ position: "relative", width: "100%" }}>
                             <input
                                 className="signupinput"
@@ -108,7 +111,7 @@ function UpdatePasswordPage() {
 
                         <div className="bottomcontainer">
                             <p className="bottomtext">
-                                Choose a strong password to secure your account.
+                                {t("choosestrongpassword")}
                             </p>
                             <p
                                 id="noticetext"
@@ -124,7 +127,7 @@ function UpdatePasswordPage() {
                                     textAlign: "center",
                                 }}
                             >
-                                {notice.message || "Hello"}
+                                {notice.message || ""}
                             </p>
                         </div>
                         <div className="bottomcontainer">
@@ -133,7 +136,7 @@ function UpdatePasswordPage() {
                                 onClick={handleUpdateAction}
                                 disabled={loading}
                             >
-                                {loading ? "Updating..." : "Update Password"}
+                                {loading ? t("updating") : t("updatepassword")}
                             </button>
                         </div>
                     </div>

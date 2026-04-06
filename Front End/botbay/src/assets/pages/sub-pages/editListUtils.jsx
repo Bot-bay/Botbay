@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useTranslation } from "react-i18next";
+
 export const megaSchema = {
     // Basic Info (Shared by all)
     id: null,
@@ -85,6 +87,7 @@ export function assembleEditList(typeOfItem) {
 }
 
 export function MotorStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
 
@@ -136,16 +139,16 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
 
             {renderTextInput(
                 "connectorTypes",
-                "Connector Types (Comma Separated):",
+                t("connectortypescommaseparated"),
                 "JST-VH-2, Anderson Powerpoles",
             )}
 
             <div className="d-createitem-input-group">
-                <label>Max Power (W):</label>
+                <label>{t("maxpowerw")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -156,7 +159,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Stall Current (A):</label>
+                <label>{t("stallcurrenta")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -167,7 +170,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Voltage (V):</label>
+                <label>{t("voltagev")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -178,7 +181,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Output Shaft Length (mm):</label>
+                <label>{t("outputshaftlengthmm")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -189,7 +192,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>No-Load Speed (RPM):</label>
+                <label>{t("noloadspeedrpm")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -200,7 +203,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Counts per Revolution:</label>
+                <label>{t("countsperrevolution")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -211,7 +214,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Pulses per Revolution:</label>
+                <label>{t("pulsesperrevolution")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -222,7 +225,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Stall Torque (Nm):</label>
+                <label>{t("stalltorquenm")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -232,7 +235,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
                 />
             </div>
 
-            {renderTextInput("shaftType", "Shaft Type:")}
+            {renderTextInput("shaftType", t("shafttype"))}
 
             <hr className="d-createitem-form-divider" />
         </>
@@ -240,6 +243,7 @@ export function MotorStatList({ handleChange, formData, isPhone }) {
 }
 
 export function ServoStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
 
@@ -291,17 +295,17 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
 
             <div className="d-createitem-input-group">
-                <label>Size (L, W, H mm):</label>
+                <label>{t("sizelwhmm")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         step="0.1"
                         max={99999}
                         name="sizeL"
-                        placeholder="L"
+                        placeholder={t("l")}
                         value={formData.sizeL ?? ""}
                         onChange={handleChange}
                     />
@@ -310,7 +314,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
                         step="0.1"
                         max={99999}
                         name="sizeW"
-                        placeholder="W"
+                        placeholder={t("w")}
                         value={formData.sizeW ?? ""}
                         onChange={handleChange}
                     />
@@ -319,7 +323,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
                         step="0.1"
                         max={99999}
                         name="sizeH"
-                        placeholder="H"
+                        placeholder={t("h")}
                         value={formData.sizeH ?? ""}
                         onChange={handleChange}
                     />
@@ -327,7 +331,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Weight (g):</label>
+                <label>{t("weightg")}</label>
                 <input
                     type="number"
                     step="0.01"
@@ -339,7 +343,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Speed (sec/60°):</label>
+                <label>{t("speedsec60")}</label>
                 <input
                     type="number"
                     step="0.01"
@@ -351,7 +355,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Angular Range (°):</label>
+                <label>{t("angularrange")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -361,16 +365,16 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
                 />
             </div>
 
-            {renderTextInput("gearMaterial", "Gear Material:", "e.g. metal")}
-            {renderTextInput("splineType", "Spline Type:", "e.g. 25T")}
+            {renderTextInput("gearMaterial", t("gearmaterial"), "e.g. metal")}
+            {renderTextInput("splineType", t("splinetype"), "e.g. 25T")}
             {renderTextInput(
                 "splineThreadType",
-                "Spline Thread Type:",
+                t("splinethreadtype"),
                 "e.g. M3",
             )}
 
             <div className="d-createitem-input-group">
-                <label>Spline Internal Depth (mm):</label>
+                <label>{t("splineinternaldepthmm")}</label>
                 <input
                     type="number"
                     max={99999}
@@ -381,7 +385,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Stall Current (A):</label>
+                <label>{t("stallcurrenta")}</label>
                 <input
                     type="number"
                     step="0.1"
@@ -393,7 +397,7 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Stall Torque (Nm):</label>
+                <label>{t("stalltorquenm")}</label>
                 <input
                     type="number"
                     step="0.01"
@@ -410,44 +414,45 @@ export function ServoStatList({ handleChange, formData, isPhone }) {
 }
 
 export function StructuralStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
 
             <div className="d-createitem-input-group">
-                <label>Length (mm):</label>
+                <label>{t("lengthmm")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="sizeL"
-                    placeholder="e.g. 450"
+                    placeholder={t("structuralstatex1")}
                     value={formData?.sizeL ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Width (mm):</label>
+                <label>{t("widthmm")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="sizeW"
-                    placeholder="e.g. 45"
+                    placeholder={t("structuralstatex2")}
                     value={formData?.sizeW ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Height (mm):</label>
+                <label>{t("heightmm")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="sizeH"
-                    placeholder="e.g. 15"
+                    placeholder={t("structuralstatex3")}
                     value={formData?.sizeH ?? ""}
                     onChange={handleChange}
                 />
@@ -459,6 +464,7 @@ export function StructuralStatList({ handleChange, formData, isPhone }) {
 }
 
 export function ElectricalStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
 
@@ -510,70 +516,70 @@ export function ElectricalStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
 
             {renderTextInput(
                 "connectorTypes",
-                "Connector Types (Comma separated):",
-                "e.g. Tamiya, XT60, Anderson Powerpoles",
+                t("connectortypes"),
+                t("electricalstatex0"),
             )}
 
             <div className="d-createitem-input-group">
-                <label>Voltage (V):</label>
+                <label>{t("voltage")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="voltage"
-                    placeholder="e.g. 12"
+                    placeholder={t("electricalstatex1")}
                     value={formData?.voltage ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Capacity (mAh):</label>
+                <label>{t("capacity")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="capacity"
-                    placeholder="e.g. 3000"
+                    placeholder={t("electricalstatex2")}
                     value={formData?.capacity ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Wire Gauge (AWG):</label>
+                <label>{t("wiregauge")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="wireGauge"
-                    placeholder="e.g. 14"
+                    placeholder={t("electricalstatex3")}
                     value={formData?.wireGauge ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Wire Length (mm):</label>
+                <label>{t("wirelength")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="wireLength"
-                    placeholder="e.g. 150"
+                    placeholder={t("electricalstatex4")}
                     value={formData?.wireLength ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Max Discharge (A):</label>
+                <label>{t("maxdischarge")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="maxDischarge"
-                    placeholder="e.g. 40"
+                    placeholder={t("electricalstatex5")}
                     value={formData?.maxDischarge ?? ""}
                     onChange={handleChange}
                 />
@@ -581,32 +587,36 @@ export function ElectricalStatList({ handleChange, formData, isPhone }) {
 
             {renderTextInput(
                 "replaceableFuse",
-                "Replaceable Fuse:",
-                "e.g. 20A Mini Blade",
+                t("replaceablefuse"),
+                t("electricalstatex6"),
             )}
-            {renderTextInput("chargeRates", "Charge Rates:", "e.g. 2C")}
+            {renderTextInput(
+                "chargeRates",
+                t("chargerates"),
+                t("electricalstatex7"),
+            )}
 
             <div className="d-createitem-input-group">
-                <label>Weight (g):</label>
+                <label>{t("weightg")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="weight"
-                    placeholder="e.g. 250"
+                    placeholder={t("electricalstatex8")}
                     value={formData?.weight ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Size (L, W, H mm):</label>
+                <label>{t("sizelwhmm")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         max={99999}
                         name="sizeL"
-                        placeholder="L"
+                        placeholder={t("l")}
                         value={formData?.sizeL ?? ""}
                         onChange={handleChange}
                     />
@@ -614,7 +624,7 @@ export function ElectricalStatList({ handleChange, formData, isPhone }) {
                         type="number"
                         max={99999}
                         name="sizeW"
-                        placeholder="W"
+                        placeholder={t("w")}
                         value={formData?.sizeW ?? ""}
                         onChange={handleChange}
                     />
@@ -622,7 +632,7 @@ export function ElectricalStatList({ handleChange, formData, isPhone }) {
                         type="number"
                         max={99999}
                         name="sizeH"
-                        placeholder="H"
+                        placeholder={t("h")}
                         value={formData?.sizeH ?? ""}
                         onChange={handleChange}
                     />
@@ -635,6 +645,7 @@ export function ElectricalStatList({ handleChange, formData, isPhone }) {
 }
 
 export function SensorStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
 
@@ -686,126 +697,76 @@ export function SensorStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
 
-            {renderTextInput(
-                "sensorType",
-                "Sensor Type:",
-                "e.g. I2C, Analog, Digital",
-            )}
+            {renderTextInput("sensorType", t("sensortype"), t("sensorstatex1"))}
 
             <div className="d-createitem-input-group">
-                <label>Max Voltage (V):</label>
+                <label>{t("voltage")}</label>
                 <input
                     type="number"
                     step="0.1"
                     max={99999}
                     name="maxVoltage"
-                    placeholder="e.g. 5.0"
+                    placeholder={t("sensorstatex2")}
                     value={formData?.maxVoltage ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Size (L, W, H mm):</label>
-                <div style={{ display: "flex", gap: "5px" }}>
-                    <input
-                        type="number"
-                        max={99999}
-                        name="sizeL"
-                        placeholder="L"
-                        value={formData?.sizeL ?? ""}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="number"
-                        max={99999}
-                        name="sizeW"
-                        placeholder="W"
-                        value={formData?.sizeW ?? ""}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="number"
-                        max={99999}
-                        name="sizeH"
-                        placeholder="H"
-                        value={formData?.sizeH ?? ""}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-
-            <div className="d-createitem-input-group">
-                <label>Proximity Range (Min, Max mm):</label>
+                <label>{t("proximityrange")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         max={99999}
                         name="proxMin"
-                        placeholder="Min"
-                        value={formData?.proxMin ?? ""}
+                        value={formData.proxMin}
                         onChange={handleChange}
                     />
                     <input
                         type="number"
                         max={99999}
                         name="proxMax"
-                        placeholder="Max"
-                        value={formData?.proxMax ?? ""}
+                        value={formData.proxMax}
                         onChange={handleChange}
                     />
                 </div>
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Distance Range (Min, Max mm):</label>
+                <label>{t("distancerange")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         max={99999}
                         name="distMin"
-                        placeholder="Min"
-                        value={formData?.distMin ?? ""}
+                        value={formData.distMin}
                         onChange={handleChange}
                     />
                     <input
                         type="number"
                         max={99999}
                         name="distMax"
-                        placeholder="Max"
-                        value={formData?.distMax ?? ""}
+                        value={formData.distMax}
                         onChange={handleChange}
                     />
                 </div>
             </div>
 
             <div className="d-createitem-input-group">
-                <label>FOV (°):</label>
+                <label>{t("fov")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="fov"
-                    placeholder="e.g. 60"
+                    placeholder={t("sensorstatex3")}
                     value={formData?.fov ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
-            {renderTextInput("imu", "IMU:", "e.g. 6-Axis, 9-Axis")}
-
-            <div className="d-createitem-input-group">
-                <label>CPR (Encoder Resolution):</label>
-                <input
-                    type="number"
-                    max={99999}
-                    name="cpr"
-                    placeholder="e.g. 28"
-                    value={formData?.cpr ?? ""}
-                    onChange={handleChange}
-                />
-            </div>
+            {renderTextInput("imu", t("imu"), t("sensorstatex4"))}
 
             <hr className="d-createitem-form-divider" />
         </>
@@ -813,6 +774,7 @@ export function SensorStatList({ handleChange, formData, isPhone }) {
 }
 
 export function ThreeDPrintedStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
 
@@ -864,16 +826,16 @@ export function ThreeDPrintedStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Slicing Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("slicingstats")}</h4>
 
             <div className="d-createitem-input-group">
-                <label>Size (L, W, H mm):</label>
+                <label>{t("sizelwhmm")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         max={99999}
                         name="sizeL"
-                        placeholder="L"
+                        placeholder={t("l")}
                         value={formData?.sizeL ?? ""}
                         onChange={handleChange}
                     />
@@ -881,7 +843,7 @@ export function ThreeDPrintedStatList({ handleChange, formData, isPhone }) {
                         type="number"
                         max={99999}
                         name="sizeW"
-                        placeholder="W"
+                        placeholder={t("w")}
                         value={formData?.sizeW ?? ""}
                         onChange={handleChange}
                     />
@@ -889,150 +851,163 @@ export function ThreeDPrintedStatList({ handleChange, formData, isPhone }) {
                         type="number"
                         max={99999}
                         name="sizeH"
-                        placeholder="H"
+                        placeholder={t("h")}
                         value={formData?.sizeH ?? ""}
                         onChange={handleChange}
                     />
                 </div>
             </div>
 
-            {renderTextInput(
-                "filament",
-                "Filament Type:",
-                "e.g. PLA, PETG, ABS",
-            )}
-
+            {renderTextInput("filament", t("filament"), t("3dprintstatex1"))}
             <div className="d-createitem-input-group">
-                <label>Infill %:</label>
+                <label>{t("infill")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="infill"
-                    placeholder="15"
+                    placeholder={t("3dprintstatex2")}
                     value={formData?.infill ?? ""}
                     onChange={handleChange}
                 />
             </div>
-
             {renderTextInput(
                 "infillPattern",
-                "Infill Pattern:",
-                "e.g. grid, gyroid",
+                t("infillpattern"),
+                t("3dprintstatex3"),
             )}
-
             <div className="d-createitem-input-group">
-                <label>Wall Loops:</label>
+                <label>{t("wallloops")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="wallLoops"
-                    placeholder="2"
+                    placeholder={t("3dprintstatex4")}
                     value={formData?.wallLoops ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
             <hr className="d-createitem-form-divider" />
-            <h4 className="d-createitem-form-subtitle2">Supports & Brim:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("supports")}</h4>
 
             <div className="d-createitem-input-group">
-                <label>Supports:</label>
+                <label>{t("supports")}</label>
                 <select
                     name="support"
                     value={formData?.support ?? "false"}
                     onChange={handleChange}
                 >
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
+                    <option value="false">{t("no")}</option>
+                    <option value="true">{t("yes")}</option>
                 </select>
             </div>
 
-            {renderTextInput("supportType", "Support Type:", "e.g. Tree, Snug")}
+            {renderTextInput(
+                "supportType",
+                t("supporttype"),
+                t("3dprintstatex5"),
+            )}
 
             <div className="d-createitem-input-group">
-                <label>On Buildplate Only:</label>
+                <label>{t("onbuildplateonly")}</label>
                 <select
                     name="onBuildplateOnly"
                     value={formData?.onBuildplateOnly ?? "false"}
                     onChange={handleChange}
                 >
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
+                    <option value="false">{t("no")}</option>
+                    <option value="true">{t("yes")}</option>
                 </select>
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Threshold Angle (°):</label>
+                <label>{t("removesmalloverhangs")}</label>
+                <select
+                    name="removeSmallOverhangs"
+                    value={formData?.removeSmallOverhangs ?? "false"}
+                    onChange={handleChange}
+                >
+                    <option value="false">{t("no")}</option>
+                    <option value="true">{t("yes")}</option>
+                </select>
+            </div>
+
+            <div className="d-createitem-input-group">
+                <label>{t("thresholdangle")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="thresholdAngle"
-                    placeholder="30"
+                    placeholder={t("3dprintstatex6")}
                     value={formData?.thresholdAngle ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
-            {renderTextInput("brimType", "Brim Type:", "e.g. auto, outer only")}
+            {renderTextInput("brimType", t("brimtype"), t("3dprintstatex7"))}
 
             <div className="d-createitem-input-group">
-                <label>Brim Width (mm):</label>
+                <label>{t("brimwidth")}</label>
                 <input
                     type="number"
                     max={99999}
                     name="brimWidth"
-                    placeholder="5"
+                    placeholder={t("3dprintstatex8")}
                     value={formData?.brimWidth ?? ""}
                     onChange={handleChange}
                 />
             </div>
 
-            <hr className="d-createitem-form-divider" />
-            <h4 className="d-createitem-form-subtitle2">Print Details:</h4>
-
             <div className="d-createitem-input-group">
-                <label>Filament Amount (g):</label>
+                <label>{t("brimobjectgap")}</label>
                 <input
                     type="number"
-                    step="0.01"
                     max={99999}
+                    name="brimObjectGap"
+                    value={formData?.brimObjectGap ?? ""}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div className="d-createitem-input-group">
+                <label>{t("filamentamount")}</label>
+                <input
+                    type="number"
+                    max={99999}
+                    step="0.01"
                     name="filamentAmount"
-                    placeholder="0.00"
-                    value={formData?.filamentAmount ?? ""}
+                    value={formData?.filamentAmount}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Cost ($):</label>
+                <label>{t("cost")}</label>
                 <input
                     type="number"
-                    step="0.01"
                     max={99999}
+                    step="0.01"
                     name="cost"
-                    placeholder="0.00"
-                    value={formData?.cost ?? ""}
+                    value={formData?.cost}
                     onChange={handleChange}
                 />
             </div>
 
             <div className="d-createitem-input-group">
-                <label>Print Time (H:M):</label>
+                <label>{t("time")}</label>
                 <div style={{ display: "flex", gap: "5px" }}>
                     <input
                         type="number"
                         max={99999}
                         name="timeH"
-                        placeholder="H"
-                        value={formData?.timeH ?? ""}
+                        value={formData?.timeH}
                         onChange={handleChange}
                     />
                     <input
                         type="number"
                         max={99999}
                         name="timeM"
-                        placeholder="M"
-                        value={formData?.timeM ?? ""}
+                        value={formData?.timeM}
                         onChange={handleChange}
                     />
                 </div>
@@ -1044,41 +1019,42 @@ export function ThreeDPrintedStatList({ handleChange, formData, isPhone }) {
 }
 
 export function MachinedStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
             <div className="d-createitem-input-group">
-                <label>Length (mm):</label>
+                <label>{t("lengthmm")}</label>
                 <input
                     type="number"
                     step="0.001"
                     max={99999}
                     name="sizeL"
-                    placeholder="0.000"
+                    placeholder={t("0.000")}
                     value={formData?.sizeL ?? ""}
                     onChange={handleChange}
                 />
             </div>
             <div className="d-createitem-input-group">
-                <label>Width (mm):</label>
+                <label>{t("widthmm")}</label>
                 <input
                     type="number"
                     step="0.001"
                     max={99999}
                     name="sizeW"
-                    placeholder="0.000"
+                    placeholder={t("0.000")}
                     value={formData?.sizeW ?? ""}
                     onChange={handleChange}
                 />
             </div>
             <div className="d-createitem-input-group">
-                <label>Thickness (mm):</label>
+                <label>{t("thicknessmm")}</label>
                 <input
                     type="number"
                     step="0.001"
                     max={99999}
                     name="sizeH"
-                    placeholder="0.000"
+                    placeholder={t("0.000")}
                     value={formData?.sizeH ?? ""}
                     onChange={handleChange}
                 />
@@ -1089,6 +1065,7 @@ export function MachinedStatList({ handleChange, formData, isPhone }) {
 }
 
 export function OtherStatList({ handleChange, formData, isPhone }) {
+    const { t } = useTranslation();
     const textLimit = 150;
     const trigger = 130;
     const val = formData?.description || "";
@@ -1096,13 +1073,13 @@ export function OtherStatList({ handleChange, formData, isPhone }) {
 
     return (
         <>
-            <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+            <h4 className="d-createitem-form-subtitle2">{t("stats")}</h4>
             <div className="d-createitem-input-group">
-                <label>Description / Notes:</label>
+                <label>{t("description")}</label>
                 <div style={{ position: "relative", width: "100%" }}>
                     <input
                         name="description"
-                        placeholder="Additional details..."
+                        placeholder={t("additionaldetails")}
                         value={val}
                         onChange={(e) => {
                             const sliced = e.target.value.slice(0, textLimit);

@@ -45,7 +45,11 @@ import {
     createTag,
 } from "../../../scripts/database";
 
+import { useTranslation } from "react-i18next";
+
 function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
+    const { t } = useTranslation();
+
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
 
     useEffect(() => {
@@ -921,13 +925,13 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
         <>
             <div className="d-homepagecontainer">
                 <div className="d-titlecontainer">
-                    <p>Parts</p>
+                    <p>{t("parts")}</p>
                     <div className="d-inputwrapper">
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             className="d-searchbar"
-                            placeholder="Search..."
+                            placeholder={t("search")}
                         />
                     </div>
                 </div>
@@ -940,19 +944,19 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                         {!isPhone ? (
                             <>
                                 <button onClick={() => setIsAddItemOpen(true)}>
-                                    + Add Item
+                                    {t("additem")}
                                 </button>
                                 <div className="d-titlecontainer-small-downloadwrapper">
                                     <button onClick={handleTagManageOpen}>
                                         <FaTags />
                                         <span style={{ marginLeft: 4 }}>
-                                            Manage Tags
+                                            {t("managetags")}
                                         </span>
                                     </button>
                                     <button onClick={downloadJSON}>
                                         <MdDownload />
                                         <span style={{ marginLeft: 4 }}>
-                                            JSON
+                                            {t("json")}
                                         </span>
                                     </button>
                                 </div>
@@ -963,7 +967,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     style={{ fontSize: "3rem" }}
                                     onClick={() => setIsAddItemOpen(true)}
                                 >
-                                    + Add Item
+                                    {t("additem")}
                                 </button>
                                 <button
                                     style={{ fontSize: "3rem" }}
@@ -971,7 +975,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 >
                                     <FaTags />
                                     <span style={{ marginLeft: 4 }}>
-                                        Manage Tags
+                                        {t("managetags")}
                                     </span>
                                 </button>
                                 <button
@@ -979,7 +983,9 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     onClick={downloadJSON}
                                 >
                                     <MdDownload />
-                                    <span style={{ marginLeft: 4 }}>JSON</span>
+                                    <span style={{ marginLeft: 4 }}>
+                                        {t("json")}
+                                    </span>
                                 </button>
                                 <div
                                     className="custom-tag-dropdown"
@@ -999,8 +1005,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     >
                                         <span>
                                             {selectedTags.length > 0
-                                                ? `${selectedTags.length} Selected`
-                                                : "Tags"}
+                                                ? t("tagsselected", {
+                                                      count: selectedTags.length,
+                                                  })
+                                                : t("tags")}
                                         </span>
                                         {isDropdownOpen ? (
                                             <RiArrowUpSFill />
@@ -1079,7 +1087,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                 >
                                                     +
                                                 </span>
-                                                Add Tag
+                                                {t("addtag")}
                                             </div>
                                         </div>
                                     )}
@@ -1124,7 +1132,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     }}
                                     onClick={() => reloadPartsList("name")}
                                 >
-                                    Name {getSortIcon("name")}
+                                    {t("name")} {getSortIcon("name")}
                                 </span>
                             </div>
 
@@ -1142,7 +1150,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     }}
                                     onClick={() => reloadPartsList("quantity")}
                                 >
-                                    Quantity {getSortIcon("quantity")}
+                                    {t("quantity")} {getSortIcon("quantity")}
                                 </span>
                             </div>
 
@@ -1160,7 +1168,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     }}
                                     onClick={() => reloadPartsList("needed")}
                                 >
-                                    Needed {getSortIcon("needed")}
+                                    {t("needed")} {getSortIcon("needed")}
                                 </span>
                             </div>
                             {!isPhone && (
@@ -1253,7 +1261,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     >
                                                         +
                                                     </span>
-                                                    Add Tag
+                                                    {t("addtag")}
                                                 </div>
                                             </div>
                                         )}
@@ -1308,17 +1316,17 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 <p>{currentItem?.name}</p>
                             </div>
                             <p className="d-partoverlay-subtitle">
-                                ID: {currentItem?.manufacturerId}
+                                {t("id")} {currentItem?.manufacturerId}
                             </p>
                             <p className="d-partoverlay-subtitle">
-                                Manufacturer: {currentItem?.manufacturer}
+                                {t("manufacturer")} {currentItem?.manufacturer}
                             </p>
                             <img
                                 src={currentItem?.icon}
                                 alt={currentItem?.name}
                             />
                             <div className="d-partoverlay-infodiv1">
-                                <p>Links:</p>
+                                <p>{t("links")}</p>
                                 <ul>
                                     {currentItem?.links &&
                                         Object.entries(currentItem?.links)
@@ -1347,7 +1355,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                             }}
                         >
                             <div className="d-partoverlay-infodiv1">
-                                <p>Stats:</p>
+                                <p>{t("stats")}</p>
                                 {renderStatContent()}
                             </div>
                             <div className="d-partoverlay-infodiv1">
@@ -1359,7 +1367,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                     handleNumChangeClick(0, 1)
                                                 }
                                             >
-                                                −
+                                                -
                                             </button>
                                             {isEditingQuant ? (
                                                 <input
@@ -1390,7 +1398,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                         setIsEditingQuant(true)
                                                     }
                                                 >
-                                                    Quantity: {currentQuant}
+                                                    {t("quantity")}{" "}
+                                                    {currentQuant}
                                                 </p>
                                             )}
                                             <button
@@ -1443,7 +1452,8 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                                         setIsEditingNeeded(true)
                                                     }
                                                 >
-                                                    Needed: {currentNeeded}
+                                                    {t("needed")}{" "}
+                                                    {currentNeeded}
                                                 </p>
                                             )}
                                             <button
@@ -1468,7 +1478,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                             }}
                         >
                             <div className="d-partoverlay-infodiv1">
-                                <p>Tags:</p>
+                                <p>{t("tags")}</p>
                                 <div
                                     style={{
                                         display: "grid",
@@ -1533,7 +1543,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     >
                         X
                     </button>
-                    <p>Custom Tag</p>
+                    <p>{t("customtag")}</p>
                     {tagError && (
                         <p
                             style={{
@@ -1549,7 +1559,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                         <div style={{ position: "relative", width: "100%" }}>
                             <input
                                 id="createtaginput"
-                                placeholder="Tag Name..."
+                                placeholder={t("tagnameplaceholder")}
                                 value={newTagName}
                                 onChange={(e) => {
                                     setNewTagName(e.target.value.slice(0, 25));
@@ -1603,7 +1613,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
 
                             // 1 Check for empty input
                             if (!trimmedName) {
-                                setTagError("Tag name cannot be empty");
+                                setTagError(t("tagnamecannotbeempty"));
                                 return;
                             }
 
@@ -1614,7 +1624,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                     trimmedName.toLowerCase(),
                             );
                             if (isDuplicate) {
-                                setTagError("Tag name already exists");
+                                setTagError(t("tagnameexists"));
                                 return;
                             }
 
@@ -1624,7 +1634,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                             setTagError(""); // clear any previous error
                         }}
                     >
-                        Create Tag
+                        {t("createtag")}
                     </button>
                 </div>
             )}
@@ -1641,7 +1651,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                     >
                         X
                     </button>
-                    <p>Manage Tags</p>
+                    <p>{t("managetags")}</p>
 
                     <div
                         style={{
@@ -1719,7 +1729,10 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             </div>
                                             {deletingTagName === tag.name && (
                                                 <WarningPopup
-                                                    message={`This will delete ${tag.name}`}
+                                                    message={t(
+                                                        "deleteitemmessage",
+                                                        { itemName: tag.name },
+                                                    )}
                                                     complete={() => {
                                                         deleteTag(tag.name);
                                                         setDeletingTagName(
@@ -1760,11 +1773,11 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
 
                                 <hr className="d-createitem-form-divider"></hr>
                                 <h4 className="d-createitem-form-subtitle2">
-                                    Basic Info:
+                                    {t("basicinfo")}
                                 </h4>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Name:</label>
+                                    <label>{t("namewithcolon")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -1822,7 +1835,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 </div>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Manufacturer ID:</label>
+                                    <label>{t("manufacturerid")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -1882,7 +1895,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 </div>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Manufacturer:</label>
+                                    <label>{t("manufacturer")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -1940,7 +1953,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 </div>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Tags (Select all that apply):</label>
+                                    <label>{t("tagsselectallapply")}</label>
                                     <div
                                         style={{
                                             display: "flex",
@@ -2001,11 +2014,11 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 {renderSpecificEditStatContent()}
 
                                 <h4 className="d-createitem-form-subtitle2">
-                                    Links:
+                                    {t("links")}
                                 </h4>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Icon URL:</label>
+                                    <label>{t("iconurl")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -2064,7 +2077,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 </div>
 
                                 <div className="d-createitem-input-group">
-                                    <label>CAD Link:</label>
+                                    <label>{t("cadlink")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -2114,7 +2127,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                 </div>
 
                                 <div className="d-createitem-input-group">
-                                    <label>Store Link:</label>
+                                    <label>{t("storelink")}</label>
                                     <div
                                         style={{
                                             position: "relative",
@@ -2177,7 +2190,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                         type="submit"
                                         className="d-createitem-submit-button"
                                     >
-                                        Submit
+                                        {t("submit")}
                                     </button>
                                 </div>
                             </form>

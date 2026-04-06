@@ -1,19 +1,22 @@
 import React from "react";
-import { createPortal } from "react-dom"; // Import this
+import { createPortal } from "react-dom";
 import Blocker from "./blocker";
 import "../../styles/status.css";
 
+import { useTranslation } from "react-i18next";
+
 function WarningPopup({ message, complete, close }) {
+    const { t } = useTranslation();
     const content = (
         <>
             <div className="s-popup" style={{ zIndex: 10006 }}>
-                <p id="s-popup-warning-title">Warning</p>
+                <p id="s-popup-warning-title">{t("warning")}</p>
                 <p>{message}</p>
-                <p>Are you sure you want to continue?</p>
+                <p>{t("areyousure")}</p>
                 <div className="leftcontainer">
                     <div className="halfcontainer">
                         <button id="s-popup-warning-button-no" onClick={close}>
-                            No
+                            {t("no")}
                         </button>
                     </div>
                     <div className="halfcontainer">
@@ -21,7 +24,7 @@ function WarningPopup({ message, complete, close }) {
                             id="s-popup-warning-button-yes"
                             onClick={complete}
                         >
-                            Yes
+                            {t("yes")}
                         </button>
                     </div>
                 </div>

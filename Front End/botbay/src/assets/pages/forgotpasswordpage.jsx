@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import signUpLogo from "../images/LogoTrans.png";
 import { sendPasswordResetEmail } from "../scripts/auth.js";
+import { useTranslation } from "react-i18next";
 
 import "../styles/signupstyles.css";
 import "../styles/sharedstyles.css";
 
 function ResetPasswordPage() {
+    const { t } = useTranslation();
+
     const [email, setEmail] = useState("");
     const [notice, setNotice] = useState({ message: "", color: "transparent" });
     const [loading, setLoading] = useState(false);
@@ -21,19 +24,19 @@ function ResetPasswordPage() {
 
     const handleResetAction = async () => {
         if (!email) {
-            setNotice({ message: "Please enter your email.", color: "red" });
+            setNotice({ message: t("enteremail"), color: "red" });
             return;
         }
 
         setLoading(true);
         try {
             await sendPasswordResetEmail(email);
-            setNotice({
-                message: "Reset link sent! Check your inbox.",
-                color: "green",
-            });
+            setNotice({ message: t("resetlinksent"), color: "green" });
         } catch (err) {
-            setNotice({ message: err.message, color: "red" });
+            setNotice({
+                message: err.message || t("networkerror"),
+                color: "red",
+            });
         } finally {
             setLoading(false);
         }
@@ -52,7 +55,7 @@ function ResetPasswordPage() {
                         <p className="signupheader">Botbay</p>
                     </div>
                     <div className="inputcontainer">
-                        <p className="inputheader">Email:</p>
+                        <p className="inputheader">{t("resetpassword")}</p>
                         <input
                             className="signupinput"
                             type="email"
@@ -62,9 +65,7 @@ function ResetPasswordPage() {
                             disabled={loading}
                         />
                         <div className="bottomcontainer">
-                            <p className="bottomtext">
-                                Input your email for a reset link.
-                            </p>
+                            <p className="bottomtext">{t("inputyouremail")}</p>
                             <p
                                 id="noticetext"
                                 style={{
@@ -79,7 +80,7 @@ function ResetPasswordPage() {
                                     textAlign: "center",
                                 }}
                             >
-                                {notice.message || "Hello"}
+                                {notice.message || ""}
                             </p>
                         </div>
                         <div className="bottomcontainer">
@@ -88,7 +89,7 @@ function ResetPasswordPage() {
                                 onClick={handleResetAction}
                                 disabled={loading}
                             >
-                                {loading ? "Sending..." : "Reset Password"}
+                                {loading ? t("sending") : t("resetpassword")}
                             </button>
                         </div>
                     </div>

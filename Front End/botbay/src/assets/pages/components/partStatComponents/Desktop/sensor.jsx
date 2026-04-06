@@ -1,12 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 function SensorList({ part }) {
+    const { t } = useTranslation();
     const { stats } = part || {};
     if (!stats || stats.type !== "sensor") return null;
 
     const rows = [
         {
-            label: "Size",
+            label: t("sizelwhmm"),
             value:
                 stats.size &&
                 stats.size.length === 3 &&
@@ -15,18 +17,18 @@ function SensorList({ part }) {
                     : null,
         },
         {
-            label: "Sensor Type",
+            label: t("sensortype"),
             value: stats.sensor_type ?? null,
         },
         {
-            label: "Max Operating Voltage",
+            label: t("voltage"),
             value:
                 stats.max_operating_voltage != null
                     ? `${stats.max_operating_voltage} V`
                     : null,
         },
         {
-            label: "Proximity Range",
+            label: t("proximityrange"),
             value:
                 stats.proximity_sensor_range &&
                 stats.proximity_sensor_range.every((v) => v != null)
@@ -34,7 +36,7 @@ function SensorList({ part }) {
                     : null,
         },
         {
-            label: "Distance Range",
+            label: t("distancerange"),
             value:
                 stats.distance_sensor_range &&
                 stats.distance_sensor_range.every((v) => v != null)
@@ -42,15 +44,15 @@ function SensorList({ part }) {
                     : null,
         },
         {
-            label: "Field of View",
+            label: t("fov"),
             value: stats.fov != null ? `${stats.fov}°` : null,
         },
         {
-            label: "IMU",
-            value: stats.imu != null || stats.imu != "" ? stats.imu : null,
+            label: t("imu"),
+            value: stats.imu != null || stats.imu !== "" ? stats.imu : null,
         },
         {
-            label: "Counts Per Revolution",
+            label: t("cpr"),
             value: stats.cpr != null ? stats.cpr : null,
         },
     ];

@@ -1,12 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 function OtherList({ part }) {
+    const { t } = useTranslation();
     const { stats } = part || {};
     if (!stats) return null;
 
     const rows = [
         {
-            label: "Description",
+            label: t("description"),
             value: stats.description ?? null,
         },
     ];

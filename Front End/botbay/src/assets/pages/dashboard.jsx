@@ -26,7 +26,11 @@ import { isUserSignedIn } from "../scripts/auth.js";
 import { io } from "socket.io-client";
 import { setSocketId } from "../scripts/database.js";
 
+import { useTranslation } from "react-i18next";
+
 function Dashboard() {
+    const { t } = useTranslation();
+
     const [partToRun, setPartToRun] = React.useState(null);
     const [usePartToRun, setUsePartToRun] = React.useState(false);
     const [pageIndex, setPageIndex] = React.useState(0);
@@ -310,10 +314,10 @@ function Dashboard() {
     }
 
     const navItems = [
-        { name: "Home", icon: <FaHome />, index: 0 },
-        { name: "Parts", icon: <FaTools />, index: 1 },
-        { name: "Batteries", icon: <FaBatteryFull />, index: 2 },
-        { name: "Settings", icon: <IoMdSettings />, index: 3 },
+        { name: t("home"), icon: <FaHome />, index: 0 },
+        { name: t("parts"), icon: <FaTools />, index: 1 },
+        { name: t("batteries"), icon: <FaBatteryFull />, index: 2 },
+        { name: t("settings"), icon: <IoMdSettings />, index: 3 },
     ];
 
     const renderPageContent = () => {
@@ -410,7 +414,7 @@ function Dashboard() {
                         margin: 0,
                     }}
                 >
-                    Syncing with cloud...
+                    {t("syncingwithcloud")}
                 </p>
 
                 {/* Inline Animation Definition */}

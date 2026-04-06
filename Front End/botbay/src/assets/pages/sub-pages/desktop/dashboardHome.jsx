@@ -30,7 +30,11 @@ import WarningPopup from "../../components/warningpopup";
 import Blocker from "../../components/blocker";
 import { MdContentCopy, MdCheck } from "react-icons/md";
 
+import { useTranslation, Trans } from "react-i18next";
+
 function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
+    const { t } = useTranslation();
+
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
 
     useEffect(() => {
@@ -375,7 +379,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
             )}
             <div className="d-homepagecontainer">
                 <div className="d-titlecontainer">
-                    <p>Home</p>
+                    <p>{t("home")}</p>
                 </div>
                 <div className="d-gridcontainer-3c2r">
                     <div
@@ -406,7 +410,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             fontWeight: "bold",
                                         }}
                                     >
-                                        Members
+                                        {t("members")}
                                     </p>
                                     <table
                                         id="d-griditem-membertable"
@@ -432,7 +436,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                         color: "white",
                                                     }}
                                                 >
-                                                    Member
+                                                    {t("member")}
                                                 </th>
                                                 <th
                                                     style={{
@@ -444,7 +448,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                         color: "white",
                                                     }}
                                                 >
-                                                    Admin
+                                                    {t("admin")}
                                                 </th>
                                                 <th
                                                     style={{
@@ -537,7 +541,16 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                         {deletingUserId ===
                                                             member.id && (
                                                             <WarningPopup
-                                                                message={`Remove ${member.id.substring(0, 8)}...?`}
+                                                                message={t(
+                                                                    "removemembermessage",
+                                                                    {
+                                                                        memberId:
+                                                                            member.id.substring(
+                                                                                0,
+                                                                                8,
+                                                                            ),
+                                                                    },
+                                                                )}
                                                                 complete={() => {
                                                                     handleRemoveMember(
                                                                         member.id,
@@ -571,7 +584,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             fontWeight: "bold",
                                         }}
                                     >
-                                        Invited
+                                        {t("invited")}
                                     </p>
                                     <table
                                         id="d-griditem-membertable"
@@ -609,7 +622,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                         color: "white",
                                                     }}
                                                 >
-                                                    Status
+                                                    {t("status")}
                                                 </th>
                                                 <th
                                                     style={{
@@ -671,7 +684,9 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                                             "center",
                                                                     }}
                                                                 >
-                                                                    Pending
+                                                                    {t(
+                                                                        "pending",
+                                                                    )}
                                                                 </td>
                                                                 <td
                                                                     style={{
@@ -719,7 +734,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                             fontStyle: "italic",
                                                         }}
                                                     >
-                                                        No pending invites
+                                                        {t("nopendinginvites")}
                                                     </td>
                                                 </tr>
                                             )}
@@ -755,7 +770,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             alignItems: "center",
                                         }}
                                     >
-                                        Invite
+                                        {t("invite")}
                                     </button>
                                     <button
                                         className="signupbutton"
@@ -771,13 +786,13 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             alignItems: "center",
                                         }}
                                     >
-                                        Update
+                                        {t("update")}
                                     </button>
                                 </div>
 
                                 {isUpdatingAdmins && (
                                     <WarningPopup
-                                        message="Update group permissions?"
+                                        message={t("updategroupperms")}
                                         complete={() => {
                                             saveMemberUpdates();
                                             setIsUpdatingAdmins(false);
@@ -818,14 +833,14 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                 textTransform: "uppercase",
                                             }}
                                         >
-                                            Group ID
+                                            {t("groupid")}
                                         </span>
                                         <code
                                             style={{
                                                 fontSize: isPhone
                                                     ? "4rem"
                                                     : "1.2rem",
-                                                color: "#ffffff", // Changed from teal to white
+                                                color: "#ffffff",
                                                 fontFamily: "monospace",
                                             }}
                                         >
@@ -833,7 +848,6 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                         </code>
                                     </div>
 
-                                    {/* The copy icon now changes based on the 'copied' state */}
                                     {copied ? (
                                         <MdCheck
                                             className="d-memberlist-idcard-copy-icon"
@@ -841,7 +855,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             style={{
                                                 color: "#4caf50",
                                                 cursor: "default",
-                                            }} // Green check for feedback
+                                            }}
                                         />
                                     ) : (
                                         <MdContentCopy
@@ -873,14 +887,14 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                         fontStyle: "italic",
                                     }}
                                 >
-                                    Nothing to see here...
+                                    {t("nothingtoseehere")}
                                 </p>
                             </div>
                         )}
                     </div>
 
                     <div className="d-griditem-2r" style={{ gridColumn: 2 }}>
-                        <p id="d-griditem-title">Parts</p>
+                        <p id="d-griditem-title">{t("parts")}</p>
 
                         <div
                             style={{
@@ -958,7 +972,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                 }}
                             >
                                 <span style={{ color: "#94a3b8" }}>
-                                    Total Items
+                                    {t("totalitems")}
                                 </span>
                                 <span style={{ fontWeight: "600" }}>
                                     {totalParts}
@@ -975,7 +989,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                 }}
                             >
                                 <span style={{ color: "#94a3b8" }}>
-                                    Stock Volume
+                                    {t("stockvolume")}
                                 </span>
                                 <span style={{ fontWeight: "600" }}>
                                     {totalQuantity}
@@ -991,23 +1005,28 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                 }}
                             >
                                 {totalQuantity !== 0 ? (
-                                    <>
-                                        Inventory is weighted toward{" "}
-                                        <span
-                                            style={{
-                                                color:
-                                                    tagColorMap[mostUsedTag] ||
-                                                    "#a78bfa",
-                                                fontWeight: "600",
-                                            }}
-                                        >
-                                            {mostUsedTag}
-                                        </span>{" "}
-                                        components across {chartData.length}{" "}
-                                        active tags.
-                                    </>
+                                    <Trans
+                                        i18nKey="inventoryweighted"
+                                        components={{
+                                            strong: (
+                                                <span
+                                                    style={{
+                                                        color:
+                                                            tagColorMap[
+                                                                mostUsedTag
+                                                            ] || "#a78bfa",
+                                                        fontWeight: 600,
+                                                    }}
+                                                />
+                                            ),
+                                        }}
+                                        values={{
+                                            tag: mostUsedTag,
+                                            count: chartData.length,
+                                        }}
+                                    />
                                 ) : (
-                                    "You currently have 0 items."
+                                    t("youhave0items")
                                 )}
                             </p>
                         </div>
@@ -1023,7 +1042,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                     letterSpacing: "0.05em",
                                 }}
                             >
-                                Critical Stock ({criticalStock.length})
+                                {t("criticalstock")} ({criticalStock.length})
                             </p>
                             <div className="d-homedash-part-scroll-area">
                                 {criticalStock.length > 0 ? (
@@ -1084,7 +1103,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                             marginTop: "10px",
                                         }}
                                     >
-                                        All items in stock.
+                                        {t("allinstock")}
                                     </p>
                                 )}
                             </div>
@@ -1092,7 +1111,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                     </div>
 
                     <div className="d-griditem-2r" style={{ gridColumn: 3 }}>
-                        <p id="d-griditem-title">Batteries</p>
+                        <p id="d-griditem-title">{t("batteries")}</p>
 
                         {/* Battery Type Bar Chart */}
                         <div
@@ -1186,7 +1205,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                     margin: 0,
                                 }}
                             >
-                                Active Charging (
+                                {t("activecharging")} (
                                 {sortedBatteriesByChargingTime.length})
                             </p>
                             {/* SCROLLABLE WRAPPER */}
@@ -1361,7 +1380,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                                             "uppercase",
                                                                     }}
                                                                 >
-                                                                    ETA
+                                                                    {t("eta")}
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -1410,7 +1429,7 @@ function HomePageDesktop({ handleLowStockClick, handleBatteryClick }) {
                                                 color: "#475569",
                                             }}
                                         >
-                                            No active charging sessions.
+                                            {t("nochargingsessions")}
                                         </p>
                                     </div>
                                 )}

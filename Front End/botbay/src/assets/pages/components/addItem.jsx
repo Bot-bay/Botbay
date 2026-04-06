@@ -30,6 +30,8 @@ import limelightlogo from "../../images/limelight.png";
 import wcplogo from "../../images/wcp.png";
 import logitechlogo from "../../images/logitech.png";
 
+import { useTranslation } from "react-i18next";
+
 function useIsPhone() {
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
 
@@ -43,6 +45,7 @@ function useIsPhone() {
 }
 
 export function AddItemMenuDesktop({ onClose }) {
+    const { t } = useTranslation();
     const [partIndexOpen, setPartIndexOpen] = useState(null);
     const [existingSelectOpen, setExistingSelectOpen] = useState(true);
     const [existingOpen, setExistingOpen] = useState(false);
@@ -253,17 +256,17 @@ export function AddItemMenuDesktop({ onClose }) {
                 X
             </button>
             <div className="d-titlecontainer d-titlecontainer-centered">
-                <p>Add Item</p>
+                <p>{t("additemnoplus")}</p>
             </div>
 
             {existingSelectOpen && (
                 <div className="d-createitem-centercontainer">
                     <div className="d-createitem-middlecontainer">
                         <button onClick={() => handleSelect(1)}>
-                            Existing Part
+                            {t("existingpart")}
                         </button>
                         <button onClick={() => handleSelect(2)}>
-                            Custom Part
+                            {t("custompart")}
                         </button>
                     </div>
                 </div>
@@ -371,7 +374,7 @@ export function AddItemMenuDesktop({ onClose }) {
                         <input
                             className="d-additem-existing-searchbar"
                             type="text"
-                            placeholder="Search by name or ID..."
+                            placeholder={t("searchbynameid")}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -381,7 +384,9 @@ export function AddItemMenuDesktop({ onClose }) {
                         <table className="d-additem-existing-table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: "15%" }}>Icon</th>
+                                    <th style={{ width: "15%" }}>
+                                        {t("icon")}
+                                    </th>
                                     <th
                                         style={{
                                             width: "45%",
@@ -389,7 +394,7 @@ export function AddItemMenuDesktop({ onClose }) {
                                         }}
                                         onClick={() => requestSort("name")}
                                     >
-                                        Name {getSortIcon("name")}
+                                        {t("name")} {getSortIcon("name")}
                                     </th>
                                     <th
                                         style={{
@@ -398,9 +403,11 @@ export function AddItemMenuDesktop({ onClose }) {
                                         }}
                                         onClick={() => requestSort("id")}
                                     >
-                                        ID {getSortIcon("id")}
+                                        {t("id")} {getSortIcon("id")}
                                     </th>
-                                    <th style={{ width: "15%" }}>Select</th>
+                                    <th style={{ width: "15%" }}>
+                                        {t("select")}
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -449,7 +456,7 @@ export function AddItemMenuDesktop({ onClose }) {
                             className="d-additem-existing-add-trigger"
                             onClick={handleItemCreation}
                         >
-                            Add {selectedParts.length}{" "}
+                            {t("add")} {selectedParts.length}{" "}
                             {selectedParts.length === 1
                                 ? "Selected Item"
                                 : "Selected Items"}
@@ -462,7 +469,7 @@ export function AddItemMenuDesktop({ onClose }) {
                 <div className="d-createitem-centercontainer">
                     <div className="d-createitem-middlecontainer">
                         <p className="abouttext2">
-                            Assign type for:{" "}
+                            {t("assigntypefor")}{" "}
                             {assigningParts[assignmentIndex].name}
                         </p>
                         <img
@@ -470,14 +477,14 @@ export function AddItemMenuDesktop({ onClose }) {
                             src={assigningParts[assignmentIndex].img}
                         ></img>
                         {[
-                            "Motor",
-                            "Servo",
-                            "Structural",
-                            "Electrical",
-                            "Sensor",
-                            "3D Printed",
-                            "Machined",
-                            "Other",
+                            t("motor"),
+                            t("servo"),
+                            t("structural"),
+                            t("electrical"),
+                            t("sensor"),
+                            t("3dprinted"),
+                            t("machined"),
+                            t("other"),
                         ].map((label, idx) => (
                             <button
                                 key={idx}
@@ -502,14 +509,14 @@ export function AddItemMenuDesktop({ onClose }) {
                         </button>
                         <div className="d-createitem-middlecontainer">
                             {[
-                                "Motor",
-                                "Servo",
-                                "Structural",
-                                "Electrical",
-                                "Sensor",
-                                "3D Printed",
-                                "Machined",
-                                "Other",
+                                t("motor"),
+                                t("servo"),
+                                t("structural"),
+                                t("electrical"),
+                                t("sensor"),
+                                t("3dprinted"),
+                                t("machined"),
+                                t("other"),
                             ].map((label, idx) => (
                                 <button
                                     key={idx}
@@ -526,9 +533,8 @@ export function AddItemMenuDesktop({ onClose }) {
     );
 }
 
-export function AddItemMenuPhone() {}
-
 function AddMotor({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -644,14 +650,16 @@ function AddMotor({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Motor Specifications
+                        {t("motorspecs")}
                     </h3>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -693,7 +701,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -736,7 +744,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -779,7 +787,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Tags (Select all that apply):</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -830,10 +838,12 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Connector Types (Comma Separated):</label>
+                        <label>{t("connectortypes")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -876,7 +886,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Max Power (V):</label>
+                        <label>{t("maxpower")}</label>
                         <input
                             type="number"
                             name="maxPower"
@@ -887,7 +897,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Stall Current (A):</label>
+                        <label>{t("stallcurrent")}</label>
                         <input
                             type="number"
                             name="stallCurrent"
@@ -898,7 +908,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Voltage (V):</label>
+                        <label>{t("voltage")}</label>
                         <input
                             type="number"
                             name="voltage"
@@ -909,7 +919,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Output Shaft Length (mm):</label>
+                        <label>{t("outputshaftlength")}</label>
                         <input
                             type="number"
                             name="outputShaftLength"
@@ -920,7 +930,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>No-Load Speed (RPM):</label>
+                        <label>{t("noloadspeed")}</label>
                         <input
                             type="number"
                             name="noLoadSpeed"
@@ -931,7 +941,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Counts per Revolution:</label>
+                        <label>{t("countsperrevolution")}</label>
                         <input
                             type="number"
                             name="cpr"
@@ -942,7 +952,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Pulses per Revolution:</label>
+                        <label>{t("pulsesperrevolution")}</label>
                         <input
                             type="number"
                             name="ppr"
@@ -953,7 +963,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Stall Torque (Nm):</label>
+                        <label>{t("stalltorque")}</label>
                         <input
                             type="number"
                             name="stallTorque"
@@ -964,7 +974,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Shaft Type:</label>
+                        <label>{t("shafttype")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1006,10 +1016,12 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Image Link:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1051,7 +1063,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1093,7 +1105,7 @@ function AddMotor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1147,6 +1159,7 @@ function AddMotor({ onReturn, onClose }) {
 }
 
 function AddServo({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -1228,7 +1241,7 @@ function AddServo({ onReturn, onClose }) {
             manufacturerId: formData.manufacturerId,
 
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "servo",
@@ -1270,13 +1283,15 @@ function AddServo({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Servo Specifications
+                        {t("servospecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1318,7 +1333,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1361,7 +1376,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1404,7 +1419,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Tags (Select all that apply):</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -1450,10 +1465,12 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Size (L, W, H mm):</label>
+                        <label>{t("sizelwhmm")}</label>
                         <div style={{ display: "flex", gap: "5px" }}>
                             <input
                                 type="number"
@@ -1483,7 +1500,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Weight (g):</label>
+                        <label>{t("weightg")}</label>
                         <input
                             type="number"
                             step="0.01"
@@ -1495,7 +1512,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Speed (sec/60°):</label>
+                        <label>{t("speedsec60")}</label>
                         <input
                             type="number"
                             step="0.01"
@@ -1507,7 +1524,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Angular Range (°):</label>
+                        <label>{t("angularrange")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -1518,7 +1535,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Gear Material:</label>
+                        <label>{t("gearmaterial")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1561,7 +1578,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Spline Type:</label>
+                        <label>{t("splinetype")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1604,7 +1621,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Spline Thread Type:</label>
+                        <label>{t("splinethreadtype")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1648,7 +1665,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Spline Internal Depth (mm):</label>
+                        <label>{t("splineinternaldepthmm")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -1659,7 +1676,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Stall Current (A):</label>
+                        <label>{t("stallcurrent")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -1671,7 +1688,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Stall Torque (Nm):</label>
+                        <label>{t("stalltorque")}</label>
                         <input
                             type="number"
                             step="0.01"
@@ -1683,10 +1700,12 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1728,7 +1747,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1770,7 +1789,7 @@ function AddServo({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1824,6 +1843,7 @@ function AddServo({ onReturn, onClose }) {
 }
 
 function AddStructural({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -1896,7 +1916,7 @@ function AddStructural({ onReturn, onClose }) {
             manufacturerId: formData.manufacturerId,
 
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "structural",
@@ -1927,13 +1947,15 @@ function AddStructural({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Structural Specifications
+                        {t("structuralspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -1975,7 +1997,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2018,7 +2040,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2061,7 +2083,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Tags (Select all that apply):</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -2106,10 +2128,12 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Length (mm):</label>
+                        <label>{t("lengthmm")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -2121,7 +2145,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Width (mm):</label>
+                        <label>{t("widthmm")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -2133,7 +2157,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Height (mm):</label>
+                        <label>{t("heightmm")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -2145,10 +2169,12 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2190,7 +2216,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2232,7 +2258,7 @@ function AddStructural({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2286,6 +2312,7 @@ function AddStructural({ onReturn, onClose }) {
 }
 
 function AddElectrical({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -2367,7 +2394,7 @@ function AddElectrical({ onReturn, onClose }) {
             manufacturerId: formData.manufacturerId,
 
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "electrical",
@@ -2409,13 +2436,15 @@ function AddElectrical({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Electrical Specifications
+                        {t("electricalspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2457,7 +2486,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2500,7 +2529,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2542,7 +2571,7 @@ function AddElectrical({ onReturn, onClose }) {
                         </div>
                     </div>
                     <div className="d-createitem-input-group">
-                        <label>Tags (Select all that apply):</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -2585,10 +2614,12 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Connector Types (Comma separated):</label>
+                        <label>{t("connectortypes")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2631,7 +2662,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Voltage (V):</label>
+                        <label>{t("voltage")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -2643,7 +2674,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Capacity (mAh):</label>
+                        <label>{t("batterycapacity")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -2654,7 +2685,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Wire Gauge (AWG):</label>
+                        <label>{t("wiregauge")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -2665,7 +2696,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Wire Length (mm):</label>
+                        <label>{t("wirelength")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -2676,7 +2707,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Max Discharge (A):</label>
+                        <label>{t("maxdischarge")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -2687,7 +2718,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Replaceable Fuse:</label>
+                        <label>{t("replaceablefuse")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2730,7 +2761,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Charge Rates:</label>
+                        <label>{t("chargerates")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2773,7 +2804,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Weight (g):</label>
+                        <label>{t("weightg")}</label>
                         <input
                             type="number"
                             step="0.1"
@@ -2785,7 +2816,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Size (L, W, H mm):</label>
+                        <label>{t("sizelwhmm")}</label>
                         <div style={{ display: "flex", gap: "5px" }}>
                             <input
                                 type="number"
@@ -2812,9 +2843,11 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2856,7 +2889,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2898,7 +2931,7 @@ function AddElectrical({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -2952,6 +2985,7 @@ function AddElectrical({ onReturn, onClose }) {
 }
 
 function AddSensor({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -3033,7 +3067,7 @@ function AddSensor({ onReturn, onClose }) {
             manufacturerId: formData.manufacturerId,
 
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "sensor",
@@ -3083,13 +3117,15 @@ function AddSensor({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Sensor Specifications
+                        {t("sensorspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3131,7 +3167,7 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3175,7 +3211,7 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3217,7 +3253,7 @@ function AddSensor({ onReturn, onClose }) {
                         </div>
                     </div>
                     <div className="d-createitem-input-group">
-                        <label>Tags:</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -3260,7 +3296,9 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
                         <label>Sensor Type:</label>
@@ -3318,7 +3356,7 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Size (L, W, H mm):</label>
+                        <label>{t("sizelwhmm")}</label>
                         <div style={{ display: "flex", gap: "5px" }}>
                             <input
                                 type="number"
@@ -3449,9 +3487,11 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3493,7 +3533,7 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3535,7 +3575,7 @@ function AddSensor({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3589,6 +3629,7 @@ function AddSensor({ onReturn, onClose }) {
 }
 
 function Add3dPrinted({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -3723,13 +3764,15 @@ function Add3dPrinted({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        3D Print Specifications
+                        {t("3dprintspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider" />
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3771,7 +3814,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3815,7 +3858,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3857,7 +3900,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                         </div>
                     </div>
                     <div className="d-createitem-input-group">
-                        <label>Tags:</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -3904,7 +3947,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                         Slicing Stats:
                     </h4>
                     <div className="d-createitem-input-group">
-                        <label>Size (L, W, H mm):</label>
+                        <label>{t("sizelwhmm")}</label>
                         <div style={{ display: "flex", gap: "5px" }}>
                             <input
                                 type="number"
@@ -3931,7 +3974,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Filament Type:</label>
+                        <label>{t("filament")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -3973,7 +4016,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Infill %:</label>
+                        <label>{t("infill")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -3984,7 +4027,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Infill Pattern:</label>
+                        <label>{t("infillpattern")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4028,7 +4071,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Wall Loops:</label>
+                        <label>{t("wallloops")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4044,19 +4087,19 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Supports:</label>
+                        <label>{t("supports")}</label>
                         <select
                             name="support"
                             value={formData.support}
                             onChange={handleChange}
                         >
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
+                            <option value="false">{t("no")}</option>
+                            <option value="true">{t("yes")}</option>
                         </select>
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Support Type:</label>
+                        <label>{t("supporttype")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4099,31 +4142,31 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>On Buildplate Only:</label>
+                        <label>{t("onbuildplateonly")}</label>
                         <select
                             name="onBuildplateOnly"
                             value={formData.onBuildplateOnly}
                             onChange={handleChange}
                         >
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
+                            <option value="false">{t("no")}</option>
+                            <option value="true">{t("yes")}</option>
                         </select>
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Remove Small Overhangs:</label>
+                        <label>{t("removesmalloverhangs")}</label>
                         <select
                             name="removeSmallOverhangs"
                             value={formData.removeSmallOverhangs}
                             onChange={handleChange}
                         >
-                            <option value="false">No</option>
-                            <option value="true">Yes</option>
+                            <option value="false">{t("no")}</option>
+                            <option value="true">{t("yes")}</option>
                         </select>
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Threshold Angle (°):</label>
+                        <label>{t("thresholdangle")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4134,7 +4177,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Brim Type:</label>
+                        <label>{t("brimtype")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4176,7 +4219,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Brim Width (mm):</label>
+                        <label>{t("brimwidth")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4187,7 +4230,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Brim Object Gap (mm):</label>
+                        <label>{t("brimobjectgap")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4200,11 +4243,11 @@ function Add3dPrinted({ onReturn, onClose }) {
 
                     <hr className="d-createitem-form-divider" />
                     <h4 className="d-createitem-form-subtitle2">
-                        Print Details:
+                        {t("printdetails")}
                     </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Filament Amount (g):</label>
+                        <label>{t("filamentamount")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4216,7 +4259,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Cost ($):</label>
+                        <label>{t("cost")}</label>
                         <input
                             type="number"
                             max={99999}
@@ -4228,7 +4271,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Print Time (H:M):</label>
+                        <label>{t("time")}</label>
                         <div style={{ display: "flex", gap: "5px" }}>
                             <input
                                 type="number"
@@ -4248,9 +4291,11 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider" />
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4292,7 +4337,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4334,7 +4379,7 @@ function Add3dPrinted({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4388,6 +4433,7 @@ function Add3dPrinted({ onReturn, onClose }) {
 }
 
 function AddMachined({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -4491,13 +4537,15 @@ function AddMachined({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Machined Part Specifications
+                        {t("machinedspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4539,7 +4587,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4583,7 +4631,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4626,7 +4674,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Tags:</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -4671,10 +4719,12 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Length (mm):</label>
+                        <label>{t("lengthmm")}</label>
                         <input
                             max={99999}
                             type="number"
@@ -4686,7 +4736,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Width (mm):</label>
+                        <label>{t("widthmm")}</label>
                         <input
                             max={99999}
                             type="number"
@@ -4698,7 +4748,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Thickness (mm):</label>
+                        <label>{t("thicknessmm")}</label>
                         <input
                             max={99999}
                             type="number"
@@ -4710,10 +4760,12 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4755,7 +4807,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4797,7 +4849,7 @@ function AddMachined({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4851,6 +4903,7 @@ function AddMachined({ onReturn, onClose }) {
 }
 
 function AddOther({ onReturn, onClose }) {
+    const { t } = useTranslation();
     const isPhone = useIsPhone();
     const getContrastYIQ = (hexcolor) => {
         if (!hexcolor) return "black";
@@ -4920,7 +4973,7 @@ function AddOther({ onReturn, onClose }) {
             editable: true,
             manufacturerId: formData.manufacturerId || null,
             name: formData.name,
-            manufacturer: formData.manufacturer || "unknown",
+            manufacturer: formData.manufacturer || "",
             tags: formData.tags,
             stats: {
                 type: "other",
@@ -4947,13 +5000,15 @@ function AddOther({ onReturn, onClose }) {
             <div className="d-createitem-centercontainer">
                 <form onSubmit={handleSubmit} className="d-createitem-form">
                     <h3 className="d-createitem-form-subtitle">
-                        Miscellaneous Part Specifications
+                        {t("otherspecs")}
                     </h3>
                     <hr className="d-createitem-form-divider"></hr>
 
-                    <h4 className="d-createitem-form-subtitle2">Basic Info:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("basicinfo")}
+                    </h4>
                     <div className="d-createitem-input-group">
-                        <label>Name:</label>
+                        <label>{t("namewithcolon")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -4995,7 +5050,7 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer ID:</label>
+                        <label>{t("manufacturerid")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -5039,7 +5094,7 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Manufacturer:</label>
+                        <label>{t("manufacturer")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -5082,7 +5137,7 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Tags (Select all that apply):</label>
+                        <label>{t("tagsselectallapply")}</label>
                         <div
                             style={{
                                 display: "flex",
@@ -5127,10 +5182,12 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Stats:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("stats")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Description / Notes:</label>
+                        <label>{t("description")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -5179,10 +5236,12 @@ function AddOther({ onReturn, onClose }) {
                         </div>
                     </div>
                     <hr className="d-createitem-form-divider"></hr>
-                    <h4 className="d-createitem-form-subtitle2">Links:</h4>
+                    <h4 className="d-createitem-form-subtitle2">
+                        {t("links")}
+                    </h4>
 
                     <div className="d-createitem-input-group">
-                        <label>Icon URL:</label>
+                        <label>{t("iconurl")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -5224,7 +5283,7 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>CAD Link:</label>
+                        <label>{t("cadlink")}</label>
                         <div
                             style={{
                                 position: "relative",
@@ -5266,7 +5325,7 @@ function AddOther({ onReturn, onClose }) {
                     </div>
 
                     <div className="d-createitem-input-group">
-                        <label>Store Link:</label>
+                        <label>{t("storelink")}</label>
                         <div
                             style={{
                                 position: "relative",

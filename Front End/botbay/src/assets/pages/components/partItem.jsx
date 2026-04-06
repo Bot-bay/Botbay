@@ -5,7 +5,11 @@ import WarningPopup from "./warningpopup";
 
 import { cloudDeletePart } from "../../scripts/database";
 
+import { useTranslation } from "react-i18next";
+
 function PartItem({ part, onRowClick, onDelete, onEdit }) {
+    const { t } = useTranslation();
+
     const [imgLoaded, setImgLoaded] = useState(true);
     const [warningOn, setWarningOn] = useState(false);
     const [visible, setVisible] = useState(true);
@@ -90,13 +94,13 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
 
                     <div className="phone-card-stats-row">
                         <div className="phone-card-stat">
-                            <label>QTY</label>
+                            <label>{t("quantitycaps")}</label>
                             <span style={{ color: statusColor }}>
                                 {part.quantity}
                             </span>
                         </div>
                         <div className="phone-card-stat">
-                            <label>NEEDED</label>
+                            <label>{t("neededcaps")}</label>
                             <span style={{ color: statusColor }}>
                                 {part.needed || 0}
                             </span>
@@ -106,7 +110,9 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
 
                 {warningOn && (
                     <WarningPopup
-                        message={`This will delete ${part.name}`}
+                        message={t("deleteitemmessage", {
+                            itemName: part.name,
+                        })}
                         complete={deletePart}
                         close={() => setWarningOn(false)}
                     />
@@ -180,7 +186,7 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
             </div>
             {warningOn && (
                 <WarningPopup
-                    message={`This will delete ${part.name}`}
+                    message={t("deleteitemmessage", { itemName: part.name })}
                     complete={deletePart}
                     close={() => setWarningOn(false)}
                 />

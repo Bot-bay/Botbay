@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function StructuralList({ part }) {
+    const { t } = useTranslation();
     const { stats } = part || {};
     if (!stats) return null;
 
     const rows = [
         {
-            label: "Size",
+            label: t("sizelwhmm"),
             value: stats.size?.map((v) => `${v}mm`).join(", ") ?? "",
         },
     ];

@@ -1,77 +1,57 @@
 import React from "react";
 import "../styles/landingpage.css";
 import "../styles/sharedstyles.css";
+import { Trans, useTranslation } from "react-i18next";
 
 function PrivacyPolicy() {
+    const { t } = useTranslation();
     return (
         <div className="privacycontainer">
-            <h1 className="herotitle">Privacy Policy</h1>
+            <h1 className="herotitle">{t("privacypolicy")}</h1>
 
             <p className="abouttext">
-                <span className="abouttext-bold">
-                    Your privacy is important to us.
-                </span>{" "}
-                This Privacy Policy explains how our application collects, uses,
-                and protects your information.
+                <span className="abouttext-bold">{t("privacytitle1")}</span>{" "}
+                {t("privacytext1")}
             </p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">Information We Collect</span>
+                <span className="abouttext-bold">{t("privacytitle2")}</span>
             </h2>
             <p className="abouttext">
-                Your <span className="abouttext-bold">email address</span> is
-                collected when you sign up for an account and is used to
-                authenticate your account and communicate with you. We may also
-                collect{" "}
-                <span className="abouttext-bold">
-                    non-personally identifiable information
-                </span>{" "}
-                such as app usage statistics. We do not use cookies or track
-                activity outside the app.
+                <Trans
+                    i18nKey="privacytext2"
+                    components={{ bold: <span className="abouttext-bold" /> }}
+                />
             </p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">
-                    How We Use Your Information
-                </span>
+                <span className="abouttext-bold">{t("privacytitle3")}</span>
             </h2>
-            <p className="abouttext">
-                To manage your account, provide and improve app functionality.
-            </p>
+            <p className="abouttext">{t("privacytext3")}</p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">
-                    Data Storage and Deletion
-                </span>
+                <span className="abouttext-bold">{t("privacytitle4")}</span>
             </h2>
-            <p className="abouttext">
-                All information is securely stored using Supabase. If you delete
-                your account, all personal data, including email and non-PII
-                data, will be permanently removed.
-            </p>
+            <p className="abouttext">{t("privacytext4")}</p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">Sharing Your Information</span>
+                <span className="abouttext-bold">{t("privacytitle5")}</span>
             </h2>
-            <p className="abouttext">
-                We do not sell, trade, or share your personal information with
-                third parties. Data is used only for your dashboard.
-            </p>
+            <p className="abouttext">{t("privacytext5")}</p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">Security</span>
+                <span className="abouttext-bold">{t("privacytitle6")}</span>
             </h2>
-            <p className="abouttext">
-                We implement technical measures to protect your information from
-                unauthorized access, alteration, disclosure, or destruction.
-            </p>
+            <p className="abouttext">{t("privacytext6")}</p>
 
             <h2 className="abouttext">
-                <span className="abouttext-bold">Contact Us</span>
+                <span className="abouttext-bold">{t("privacytitle7")}</span>
             </h2>
             <p className="abouttext">
-                If you have any questions, please contact us at{" "}
-                <span className="abouttext-bold">botbay-dev@outlook.com</span>.
+                <Trans
+                    i18nKey="privacytext7"
+                    components={{ bold: <span className="abouttext-bold" /> }}
+                />
             </p>
         </div>
     );

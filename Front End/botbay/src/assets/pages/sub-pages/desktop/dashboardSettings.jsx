@@ -17,7 +17,11 @@ import {
 import "../../../styles/dashboard.css";
 import Blocker from "../../components/blocker";
 
+import { useTranslation } from "react-i18next";
+
 function SettingsPageDesktop() {
+    const { t } = useTranslation();
+
     const [isPhone, setIsPhone] = useState(window.innerWidth < 1200);
     const [isVerified, setIsVerified] = useState(false);
     const [verifyPass, setVerifyPass] = useState("");
@@ -62,7 +66,7 @@ function SettingsPageDesktop() {
                 setPopup({
                     show: true,
                     type: "info",
-                    message: "Failed to load group data: " + res.error,
+                    message: t("settingsmessage1") + res.error,
                 });
             }
         } catch (e) {
@@ -80,7 +84,7 @@ function SettingsPageDesktop() {
             setPopup({
                 show: true,
                 type: "info",
-                message: "Confirmation email sent to both addresses.",
+                message: t("settingsmessage2"),
             });
         } catch (e) {
             setPopup({ show: true, type: "info", message: e.message });
@@ -94,7 +98,7 @@ function SettingsPageDesktop() {
             setPopup({
                 show: true,
                 type: "info",
-                message: "Password updated!",
+                message: t("settingsmessage3"),
             });
         } catch (e) {
             setPopup({ show: true, type: "info", message: e.message });
@@ -104,9 +108,7 @@ function SettingsPageDesktop() {
     // 4. Updated handleGroupAction (The Confirmation Popup)
     const handleGroupAction = (action) => {
         const message =
-            action === "delete"
-                ? "PERMANENTLY DELETE entire group? This cannot be undone."
-                : "Leave this group?";
+            action === "delete" ? t("settingsmessage4") : t("settingsmessage5");
 
         setPopup({
             show: true,
@@ -127,7 +129,7 @@ function SettingsPageDesktop() {
         setPopup({
             show: true,
             type: "confirm",
-            message: "DELETE ACCOUNT? This is permanent and cannot be undone.",
+            message: t("settingsmessage6"),
             onConfirm: () => {
                 deleteUserAccount();
             },
@@ -172,7 +174,7 @@ function SettingsPageDesktop() {
                                 marginBottom: "15px",
                             }}
                         >
-                            Confirm Password
+                            {t("confirmpassword")}
                         </h2>
                         <p
                             style={{
@@ -181,8 +183,7 @@ function SettingsPageDesktop() {
                                 marginBottom: "30px",
                             }}
                         >
-                            Enter your current password to unlock sensitive
-                            settings.
+                            {t("entercurrentpassword")}
                         </p>
                         <input
                             className="d-settings-input"
@@ -200,7 +201,7 @@ function SettingsPageDesktop() {
                             style={{ marginTop: isPhone ? "40px" : "20px" }}
                             disabled={loading}
                         >
-                            {loading ? "Verifying..." : "Unlock Settings"}
+                            {loading ? t(verifying) : t(unlocksettings)}
                         </button>
                     </div>
                 </div>
@@ -222,13 +223,13 @@ function SettingsPageDesktop() {
                         color: "#fff",
                     }}
                 >
-                    Account & Group
+                    {t("accountandgroup")}
                 </h2>
 
                 {/* Email Section */}
                 <div className="d-settings-section">
                     <label className="d-settings-label">
-                        <MdOutlineEmail /> Update Email
+                        <MdOutlineEmail /> {t("updatemail")}
                     </label>
                     <input
                         className="d-settings-input"
@@ -240,14 +241,14 @@ function SettingsPageDesktop() {
                         className="d-settings-btn-primary"
                         onClick={handleUpdateEmail}
                     >
-                        Update Email
+                        {t("updateemail")}
                     </button>
                 </div>
 
                 {/* Password Section */}
                 <div className="d-settings-section">
                     <label className="d-settings-label">
-                        <MdLockOutline /> Update Password
+                        <MdLockOutline /> {t("updatepassword")}
                     </label>
                     <input
                         className="d-settings-input"
@@ -259,7 +260,7 @@ function SettingsPageDesktop() {
                         className="d-settings-btn-primary"
                         onClick={handleUpdatePassword}
                     >
-                        Update Password
+                        {t("updatepassword")}
                     </button>
                 </div>
 
@@ -269,7 +270,7 @@ function SettingsPageDesktop() {
                         className="d-settings-label"
                         style={{ color: "#ff4d4d" }}
                     >
-                        Danger Zone
+                        {t("dangerzone")}
                     </label>
                     <div
                         style={{
@@ -283,7 +284,7 @@ function SettingsPageDesktop() {
                             className="d-settings-btn-danger"
                             onClick={() => handleGroupAction("leave")}
                         >
-                            <MdExitToApp /> Leave Group
+                            <MdExitToApp /> {t("leavegroup")}
                         </button>
 
                         <hr style={{ color: "red", width: "100%" }}></hr>
@@ -296,7 +297,7 @@ function SettingsPageDesktop() {
                                 }}
                                 onClick={() => handleGroupAction("delete")}
                             >
-                                <MdDeleteForever /> Delete Group
+                                <MdDeleteForever /> {t("deletegroup")}
                             </button>
                         )}
 
@@ -308,7 +309,7 @@ function SettingsPageDesktop() {
                             }}
                             onClick={handleDeleteAccountRequest}
                         >
-                            <MdDeleteForever /> Delete My Account
+                            <MdDeleteForever /> {t("deletemyaccount")}
                         </button>
                     </div>
                 </div>
@@ -388,7 +389,7 @@ function Popup({ isPhone, popup, setPopup }) {
                                 backgroundColor: "#ff4444", // Danger color for confirm
                             }}
                         >
-                            Confirm
+                            {t("confirm")}
                         </button>
                         <button
                             className="signupbutton"
@@ -401,7 +402,7 @@ function Popup({ isPhone, popup, setPopup }) {
                                 backgroundColor: "#444",
                             }}
                         >
-                            Cancel
+                            {t("cancel")}
                         </button>
                     </>
                 ) : (
@@ -414,7 +415,7 @@ function Popup({ isPhone, popup, setPopup }) {
                             fontSize: isPhone ? "3.5rem" : "1.2rem",
                         }}
                     >
-                        OK
+                        {t("ok")}
                     </button>
                 )}
             </div>

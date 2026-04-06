@@ -9,7 +9,11 @@ import GroupSelection from "./groupsection.jsx";
 import "../styles/signupstyles.css";
 import "../styles/sharedstyles.css";
 
+import { useTranslation } from "react-i18next";
+
 function SignUpPage() {
+    const { t } = useTranslation();
+
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,7 +22,6 @@ function SignUpPage() {
     const [isPhone, setIsPhone] = useState(window.innerWidth <= 1199);
 
     const [hasAgreed, setHasAgreed] = useState(false);
-
     const [view, setView] = useState("form");
 
     const goToSignIn = switchToPage("/signin");
@@ -36,48 +39,35 @@ function SignUpPage() {
         setErrorMessage("");
 
         if (!hasAgreed) {
-            setErrorMessage(
-                "You must agree to the Privacy Policy to continue.",
-            );
+            setErrorMessage(t("privacyagreement"));
             return;
         }
 
         if (!email || !password) {
-            setErrorMessage("Please fill in both fields.");
+            setErrorMessage(t("fillallfields"));
             return;
         }
 
         setIsLoading(true);
-
-        if (!email || !password) {
-            setErrorMessage("Please fill in both fields.");
-            setIsLoading(false);
-            return;
-        }
 
         try {
             const { data, error } = await signUpUser(email, password);
 
             if (error) {
                 if (error.message.includes("Password should contain")) {
-                    setErrorMessage(
-                        "Password is too weak. It must be at least 6 characters, include an uppercase, and lowercase letter, a number, and a symbol.",
-                    );
+                    setErrorMessage(t("weakpassword"));
                 } else {
                     setErrorMessage(error.message);
                 }
             } else {
-                // Check if user is auto-confirmed or needs email check
                 if (data?.user && data?.session) {
-                    // If auto-confirmed, go straight to group selection
                     setView("group-menu");
                 } else {
-                    // Otherwise show the email verification screen
                     setView("success");
                 }
             }
         } catch (err) {
-            setErrorMessage("A network error occurred. Please try again.");
+            setErrorMessage(t("networkerror"));
         } finally {
             setIsLoading(false);
         }
@@ -96,7 +86,7 @@ function SignUpPage() {
                         <p className="signupheader">Botbay</p>
                     </div>
 
-                    {/* VIEW: SUCCESS / EMAIL VERIFICATION */}
+                    {/* SUCCESS / EMAIL VERIFICATION */}
                     {view === "success" && (
                         <div
                             className="success-container"
@@ -113,7 +103,7 @@ function SignUpPage() {
                                     color: "white",
                                 }}
                             >
-                                Check your email!
+                                {t("checkyouremail")}
                             </h2>
                             <p
                                 style={{
@@ -123,7 +113,7 @@ function SignUpPage() {
                                     lineHeight: "1.4",
                                 }}
                             >
-                                We've sent a confirmation link to <br />
+                                {t("emailsentto")} <br />
                                 <strong style={{ color: "white" }}>
                                     {email}
                                 </strong>
@@ -136,12 +126,12 @@ function SignUpPage() {
                                     fontSize: isPhone ? "4rem" : "",
                                 }}
                             >
-                                Back to Sign In
+                                {t("backtosignin")}
                             </button>
                         </div>
                     )}
 
-                    {/* VIEW: SIGN UP FORM */}
+                    {/* SIGN UP FORM */}
                     {view === "form" && (
                         <>
                             {errorMessage && (
@@ -163,7 +153,7 @@ function SignUpPage() {
                                     className="inputheader"
                                     style={{ fontSize: isPhone ? "4rem" : "" }}
                                 >
-                                    Email:
+                                    {t("email")}
                                 </p>
                                 <input
                                     className="signupinput"
@@ -184,7 +174,7 @@ function SignUpPage() {
                                     className="inputheader"
                                     style={{ fontSize: isPhone ? "4rem" : "" }}
                                 >
-                                    Password:
+                                    {t("password")}
                                 </p>
                                 <div className="password-wrapper">
                                     <input
@@ -264,7 +254,7 @@ function SignUpPage() {
                                             cursor: "pointer",
                                         }}
                                     >
-                                        I agree to the{" "}
+                                        {t("iagree")}{" "}
                                         <Link
                                             to="/privacy"
                                             style={{
@@ -272,7 +262,7 @@ function SignUpPage() {
                                                 textDecoration: "underline",
                                             }}
                                         >
-                                            Privacy Policy
+                                            {t("privacypolicy")}
                                         </Link>
                                     </label>
                                 </div>
@@ -284,12 +274,12 @@ function SignUpPage() {
                                             fontSize: isPhone ? "4rem" : "",
                                         }}
                                     >
-                                        Already have an account?{" "}
+                                        {t("alreadyhaveaccount")}{" "}
                                         <span
                                             className="forgotpasswordspan"
                                             onClick={goToSignIn}
                                         >
-                                            Click here
+                                            {t("clickhere")}
                                         </span>
                                     </p>
                                 </div>
@@ -314,10 +304,10 @@ function SignUpPage() {
                                                     className="animate-spin"
                                                     size={20}
                                                 />
-                                                Processing...
+                                                {t("processing")}
                                             </>
                                         ) : (
-                                            "Sign Up"
+                                            t("signup")
                                         )}
                                     </button>
                                 </div>
@@ -325,7 +315,7 @@ function SignUpPage() {
                         </>
                     )}
 
-                    {/* VIEW: GROUP SELECTION */}
+                    {/* GROUP SELECTION */}
                     {view === "group-menu" && (
                         <GroupSelection isPhone={isPhone} />
                     )}

@@ -6,7 +6,11 @@ import {
     IoCheckmarkCircle,
 } from "react-icons/io5";
 
+import { useTranslation } from "react-i18next";
+
 function BatteryList({ table, onUpdate, onDelete }) {
+    const { t } = useTranslation();
+
     const [pendingBattery, setPendingBattery] = useState(null);
     const [exactValue, setExactValue] = useState(50);
     const [, setTick] = useState(0);
@@ -143,8 +147,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                 className="phone-d-battery-notice-text"
                 style={{ color: "#94a3b8", marginBottom: "20px" }}
             >
-                This battery charge tracker is to only be used as a reference,
-                it is NOT 100% accurate
+                {t("batteryinaccuracynotice")}
             </p>
 
             {/* DESKTOP TABLE - UNCHANGED */}
@@ -152,11 +155,11 @@ function BatteryList({ table, onUpdate, onDelete }) {
                 <thead>
                     <tr>
                         <th className="status-col-cell"></th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Current Session</th>
-                        <th>Status</th>
-                        <th>Manage</th>
+                        <th>{t("name")}</th>
+                        <th>{t("type")}</th>
+                        <th>{t("currentsession")}</th>
+                        <th>{t("status")}</th>
+                        <th>{t("manage")}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -200,8 +203,8 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                     </td>
                                     <td>
                                         {item.type === "dh"
-                                            ? "Driver Hub"
-                                            : "Battery"}
+                                            ? t("driverhub")
+                                            : t("battery")}
                                     </td>
                                     <td>
                                         {item.mcStatus
@@ -212,12 +215,13 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                         <div className="d-status-container">
                                             {item.mcStatus ? (
                                                 <div className="d-battery-charging-text">
-                                                    <IoFlash /> Charging{" "}
+                                                    <IoFlash /> {t("charging")}{" "}
                                                     {currentLevel}%
                                                 </div>
                                             ) : (
                                                 <div className="d-battery-idle-text">
-                                                    <IoBatteryDead /> Idle
+                                                    <IoBatteryDead />{" "}
+                                                    {t("idle")}
                                                 </div>
                                             )}
                                         </div>
@@ -374,7 +378,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                             )
                                                         }
                                                     >
-                                                        ✕
+                                                        X
                                                     </button>
                                                 </div>
                                             ) : (
@@ -389,7 +393,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                             setExactValue(0);
                                                         }}
                                                     >
-                                                        Put on Charger
+                                                        {t("putoncharger")}
                                                     </button>
                                                     <button
                                                         className="d-battery-tocbutton"
@@ -404,7 +408,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                             )
                                                         }
                                                     >
-                                                        Take off
+                                                        {t("takeoff")}
                                                     </button>
                                                 </div>
                                             )}
@@ -486,7 +490,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                         </div>
                                     ) : (
                                         <div className="d-battery-idle-text">
-                                            Idle
+                                            {t("idle")}
                                         </div>
                                     )}
                                 </div>
@@ -655,7 +659,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                     border: "none",
                                                 }}
                                             >
-                                                Cancel
+                                                {t("cancel")}
                                             </button>
                                         </div>
                                     ) : (
@@ -678,7 +682,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                     setExactValue(0);
                                                 }}
                                             >
-                                                Charge
+                                                {t("charge")}
                                             </button>
                                             <button
                                                 className="d-battery-tocbutton"
@@ -692,7 +696,7 @@ function BatteryList({ table, onUpdate, onDelete }) {
                                                     )
                                                 }
                                             >
-                                                Remove
+                                                {t("remove")}
                                             </button>
                                         </div>
                                     )}

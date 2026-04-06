@@ -1,55 +1,57 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 function ElectricalList({ part }) {
+    const { t } = useTranslation();
     const { stats } = part || {};
     if (!stats) return null;
 
     const rows = [
         {
-            label: "Connectors",
+            label: t("connectortypes"),
             value: stats.connector_types?.join(", ") ?? null,
         },
         {
-            label: "Voltage",
+            label: t("voltage"),
             value: stats.voltage != null ? `${stats.voltage} V` : null,
         },
         {
-            label: "Capacity",
+            label: t("batterycapacity"),
             value: stats.capacity != null ? `${stats.capacity} Ah` : null,
         },
         {
-            label: "Wire Gauge",
+            label: t("wiregauge"),
             value: stats.wire_gauge != null ? `${stats.wire_gauge} AWG` : null,
         },
         {
-            label: "Wire Length",
+            label: t("wirelength"),
             value: stats.wire_length != null ? `${stats.wire_length} mm` : null,
         },
         {
-            label: "Max Discharge",
+            label: t("maxdischarge"),
             value:
                 stats.max_discharge != null ? `${stats.max_discharge} A` : null,
         },
         {
-            label: "Charge Rate",
+            label: t("chargerates"),
             value:
                 stats.charge_rates != null ? `${stats.charge_rates} C` : null,
         },
         {
-            label: "Weight",
+            label: t("weightg"),
             value: stats.weight != null ? `${stats.weight} g` : null,
         },
         {
-            label: "Replaceable Fuse",
+            label: t("replaceablefuse"),
             value:
                 stats.replaceable_fuse != null
                     ? stats.replaceable_fuse
-                        ? "Yes"
-                        : "No"
+                        ? t("yes")
+                        : t("no")
                     : null,
         },
         {
-            label: "Size",
+            label: t("sizelwhmm"),
             value:
                 stats.size &&
                 stats.size.length === 3 &&

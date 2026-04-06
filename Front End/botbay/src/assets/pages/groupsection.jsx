@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Users, PlusCircle, Loader2, Copy, Check } from "lucide-react";
 import { joinGroup, createGroup, getCurrentUser } from "../scripts/auth.js";
 
+import { useTranslation } from "react-i18next";
+
 function GroupSelection({ isPhone }) {
+    const { t } = useTranslation();
+
     const [groupId, setGroupId] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [localError, setLocalError] = useState("");
@@ -58,7 +62,7 @@ function GroupSelection({ isPhone }) {
                     margin: "0 0 10px 0",
                 }}
             >
-                Welcome!
+                {t("welcome")}
             </h2>
 
             {localError && (
@@ -96,7 +100,7 @@ function GroupSelection({ isPhone }) {
                         marginBottom: isPhone ? "20px" : "10px",
                     }}
                 >
-                    Join a Group:
+                    {t("joinagroup")}
                 </p>
 
                 <input
@@ -138,7 +142,7 @@ function GroupSelection({ isPhone }) {
                             margin: 0,
                         }}
                     >
-                        YOUR INVITE ID (TAP TO COPY)
+                        {t("yourinviteid")}
                     </p>
                     <div
                         style={{
@@ -180,7 +184,7 @@ function GroupSelection({ isPhone }) {
                         size={isPhone ? 40 : 20}
                         style={{ marginRight: "15px" }}
                     />
-                    Join
+                    {t("join")}
                 </button>
             </div>
 
@@ -192,7 +196,7 @@ function GroupSelection({ isPhone }) {
                     margin: "15px 0",
                 }}
             >
-                — OR —
+                {t("or")}
             </p>
 
             {/* CREATE GROUP SECTION */}
@@ -223,7 +227,7 @@ function GroupSelection({ isPhone }) {
                             size={isPhone ? 40 : 20}
                             style={{ marginRight: "15px" }}
                         />
-                        Create New Group
+                        {t("createnewgroup")}
                     </>
                 )}
             </button>

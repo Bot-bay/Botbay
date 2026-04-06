@@ -22,7 +22,12 @@ import landingImage1 from "../images/landingimagerest1.png";
 import landingImage2 from "../images/landingimagerest2.png";
 import landingImage3 from "../images/landingimagerest3.png";
 
+import { useTranslation } from "react-i18next";
+// import i18n from "i18next"; // USE FOR LANGUAGE SWITCH BUTTON
+
 function LandingPage() {
+    const { t } = useTranslation();
+
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
     const goToSignUp = switchToPage("/signup");
     const goToSignIn = switchToPage("/signin");
@@ -37,6 +42,9 @@ function LandingPage() {
     const scrollToAbout = () => {
         aboutRef.current.scrollIntoView({ behavior: "smooth" });
     };
+
+    // TODO NOTE: ADD LANGUAGE SWITCHING
+    // i18n.changeLanguage("fr")}
 
     return (
         <>
@@ -61,19 +69,19 @@ function LandingPage() {
                                             className="navunderlinebutton"
                                             onClick={goToWiki}
                                         >
-                                            Wiki
+                                            {t("wiki")}
                                         </p>
                                         <p
                                             className="navunderlinebutton"
                                             onClick={scrollToAbout}
                                         >
-                                            About
+                                            {t("about")}
                                         </p>
                                         <button
                                             className="navbutton"
                                             onClick={goToSignIn}
                                         >
-                                            Sign In
+                                            {t("signin")}
                                         </button>
                                     </div>
                                 </div>
@@ -83,21 +91,17 @@ function LandingPage() {
                             <div className="halfcontainer">
                                 <div className="vertical33container">
                                     <p className="herotitle">
-                                        Keep Track of Your Team’s Parts With
-                                        Ease
+                                        {t("heroTitle")}
                                     </p>
                                 </div>
                                 <div className="vertical34container">
                                     <div className="halfcontainer">
                                         <div className="leftcontainer">
                                             <ul>
-                                                <li>Multi-device syncing</li>
-                                                <li>Thorough interface</li>
-                                                <li>Keeps you organized</li>
-                                                <li>
-                                                    Useful utilities for all
-                                                    teams
-                                                </li>
+                                                <li>{t("point1")}</li>
+                                                <li>{t("point2")}</li>
+                                                <li>{t("point3")}</li>
+                                                <li>{t("point4")}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -127,13 +131,13 @@ function LandingPage() {
                                             className="herobutton"
                                             onClick={goToSignUp}
                                         >
-                                            Sign Up
+                                            {t("signup")}
                                         </button>
                                         <button
                                             className="herobutton"
                                             onClick={goToDashboard}
                                         >
-                                            Try it Out
+                                            {t("tryitout")}
                                         </button>
                                     </div>
                                 </div>
@@ -160,32 +164,35 @@ function LandingPage() {
                             </div>
                             <div className="halfcontainer">
                                 <div className="navtexthelper">
-                                    <p className="navunderlinebutton">Wiki</p>
+                                    <p
+                                        className="navunderlinebutton"
+                                        onClick={goToWiki}
+                                    >
+                                        {t("wiki")}
+                                    </p>
                                     <p
                                         className="navunderlinebutton"
                                         onClick={scrollToAbout}
                                     >
-                                        About
+                                        {t("about")}
                                     </p>
                                     <button
                                         className="navbutton"
                                         onClick={goToSignIn}
                                     >
-                                        Sign In
+                                        {t("signin")}
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div className="herocontainer">
                             <center>
-                                <p className="herotitle">
-                                    Keep Track of Your Team’s Parts With Ease
-                                </p>
+                                <p className="herotitle">{t("heroTitle")}</p>
                                 <ul className="herolist">
-                                    <li>Multi-device syncing</li>
-                                    <li>Thorough interface</li>
-                                    <li>Keeps you organized</li>
-                                    <li>Useful utilities for all teams</li>
+                                    <li>{t("point1")}</li>
+                                    <li>{t("point2")}</li>
+                                    <li>{t("point3")}</li>
+                                    <li>{t("point4")}</li>
                                 </ul>
                             </center>
                             <div className="rowcontainer">
@@ -210,13 +217,13 @@ function LandingPage() {
                                     className="herobutton"
                                     onClick={goToSignUp}
                                 >
-                                    Sign Up
+                                    {t("signup")}
                                 </button>
                                 <button
                                     className="herobutton"
                                     onClick={goToDashboard}
                                 >
-                                    Try it Out
+                                    {t("tryitout")}
                                 </button>
                             </div>
                             <div
@@ -239,21 +246,10 @@ function LandingPage() {
                 )}
             </div>
             <div className="aboutcontainer" ref={aboutRef}>
-                <p className="herotitle">What is Botbay?</p>
-                <p className="abouttext">
-                    Botbay is a revolutionary new system for robotics teams to
-                    keep track of their inventory. It is filled to the brim with
-                    countless features to make your life easier and keep your
-                    team organized.
-                </p>
-                <p className="abouttext">
-                    Compete stronger with the peace of mind of knowing you have
-                    everything you need to be ready at all your competitions.
-                </p>
-                <p className="abouttext">
-                    Botbay is a collaborative effort built and designed by FTC
-                    Teams #16423 and #27966.
-                </p>
+                <p className="herotitle">{t("whatisbotbay")}</p>
+                <p className="abouttext">{t("abouttext1")}</p>
+                <p className="abouttext">{t("abouttext2")}</p>
+                <p className="abouttext">{t("abouttext3")}</p>
                 <div className="teamlogocontainer">
                     <a
                         href="https://storm16423.ca/index.html"
@@ -295,10 +291,10 @@ function LandingPage() {
                                 className="herotitle"
                                 style={{ textAlign: "center" }}
                             >
-                                Part Tracking
+                                {t("parttracking")}
                             </p>
                             <p className="abouttext" style={{ width: "75%" }}>
-                                Know every detail about every part in an instant
+                                {t("parttrackingsub")}
                             </p>
                         </div>
                         <div className="halfcontainer">
@@ -329,11 +325,10 @@ function LandingPage() {
                                 className="herotitle"
                                 style={{ textAlign: "center" }}
                             >
-                                Battery Tracking
+                                {t("batterytracking")}
                             </p>
                             <p className="abouttext" style={{ width: "75%" }}>
-                                Forget about struggling to remember which
-                                battery you put on the charger last
+                                {t("batterytrackingsub")}
                             </p>
                         </div>
                     </div>
@@ -352,7 +347,7 @@ function LandingPage() {
                             className="herotitle"
                             style={{ textAlign: "center" }}
                         >
-                            Every Device. Every Member. One Tool.
+                            {t("everymemberslogan")}
                         </p>
                         <img
                             alt="dashboard image"
@@ -369,7 +364,7 @@ function LandingPage() {
                             }}
                         >
                             <button className="herobutton" onClick={goToSignUp}>
-                                Elevate your team now.
+                                {t("elevateteamnow")}
                             </button>
                         </div>
                     </div>
@@ -390,10 +385,10 @@ function LandingPage() {
                             boxSizing: "border-box",
                         }}
                     >
-                        <p className="herotitle">Part Tracking</p>
+                        <p className="herotitle">{t("parttracking")}</p>
 
                         <p className="abouttext" style={{ maxWidth: "500px" }}>
-                            Know every detail about every part in an instant
+                            {t("parttrackingsub")}
                         </p>
 
                         <img
@@ -418,11 +413,10 @@ function LandingPage() {
                             boxSizing: "border-box",
                         }}
                     >
-                        <p className="herotitle">Battery Tracking</p>
+                        <p className="herotitle">{t("batterytracking")}</p>
 
                         <p className="abouttext" style={{ maxWidth: "500px" }}>
-                            Forget about struggling to remember which battery
-                            you put on the charger last
+                            {t("batterytrackingsub")}
                         </p>
 
                         <img
@@ -446,9 +440,7 @@ function LandingPage() {
                             boxSizing: "border-box",
                         }}
                     >
-                        <p className="herotitle">
-                            Every Device. Every Member. One Tool.
-                        </p>
+                        <p className="herotitle">{t("everymemberslogan")}</p>
 
                         <img
                             alt="dashboard image"
@@ -458,7 +450,7 @@ function LandingPage() {
 
                         <div style={{ width: "100%", padding: "10px" }}>
                             <button className="herobutton" onClick={goToSignUp}>
-                                Elevate your team now.
+                                {t("elevateteamnow")}
                             </button>
                         </div>
                     </div>
@@ -468,7 +460,7 @@ function LandingPage() {
             <footer className="footer-container">
                 <div className="footer-content">
                     <div className="footer-left">
-                        <p className="footer-header">Socials</p>
+                        <p className="footer-header">{t("socials")}</p>
                         <div className="footer-social-row">
                             <a
                                 href="https://www.instagram.com/sdhs_stormbot16423/"
@@ -515,7 +507,7 @@ function LandingPage() {
                     </div>
 
                     <div className="footer-right">
-                        <p className="footer-header">Resources</p>
+                        <p className="footer-header">{t("resources")}</p>
                         <div>
                             <Link to="/privacy" className="footer-link">
                                 <MdShield
@@ -525,7 +517,7 @@ function LandingPage() {
                                         verticalAlign: "middle",
                                     }}
                                 />
-                                Privacy Policy
+                                {t("privacypolicy")}
                             </Link>
                             <a
                                 href="mailto:botbay-dev@outlook.com"
@@ -537,7 +529,7 @@ function LandingPage() {
                                         verticalAlign: "middle",
                                     }}
                                 />{" "}
-                                Email
+                                {t("email")}
                             </a>
                             <a
                                 href="https://discord.gg/73AJ2WuAJK"

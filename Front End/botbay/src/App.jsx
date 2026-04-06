@@ -9,6 +9,8 @@ import Dashboard from "./assets/pages/dashboard.jsx";
 import UpdatePasswordPage from "./assets/pages/updatepassword.jsx";
 import PrivacyPolicy from "./assets/pages/privacypolicy.jsx";
 
+import "./assets/scripts/localization.js";
+
 function App() {
     (function () {
         // 1. Identification

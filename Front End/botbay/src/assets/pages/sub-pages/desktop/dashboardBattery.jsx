@@ -9,7 +9,11 @@ import {
     updateBatteryStatusCloud,
 } from "../../../scripts/database";
 
+import { useTranslation } from "react-i18next";
+
 function BatteryPageDesktop() {
+    const { t } = useTranslation();
+
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [newName, setNewName] = useState("");
     const [newType, setNewType] = useState("b");
@@ -168,12 +172,12 @@ function BatteryPageDesktop() {
         <div className="d-homepagecontainer">
             <div className="d-battery-centercontainer">
                 <div className="d-battery-titlecontainer">
-                    <p>Batteries</p>
+                    <p>{t("batteries")}</p>
                     <button
                         className="d-battery-add-trigger"
                         onClick={handlePopUpOpen}
                     >
-                        + Add New Battery
+                        {t("addnewbattery")}
                     </button>
                 </div>
                 {hasBatteries ? (
@@ -191,7 +195,7 @@ function BatteryPageDesktop() {
                                 paddingLeft: isPhone ? "20px" : "inherit",
                             }}
                         >
-                            You are not tracking any batteries...
+                            {t("nottrackingbatteries")}
                         </p>
                     </div>
                 )}
@@ -199,7 +203,7 @@ function BatteryPageDesktop() {
                 {isPopupOpen && (
                     <div className="d-battery-popup-overlay">
                         <div className="d-battery-popup">
-                            <h3>Track New Battery</h3>
+                            <h3>{t("tracknewbattery")}</h3>
                             <form onSubmit={addBattery}>
                                 <label
                                     style={{
@@ -207,13 +211,15 @@ function BatteryPageDesktop() {
                                         fontSize: "0.8rem",
                                     }}
                                 >
-                                    Name
+                                    {t("name")}
                                 </label>
                                 <div style={{ position: "relative" }}>
                                     <input
                                         maxlength="30"
                                         type="text"
-                                        placeholder="Battery Name (e.g. Unit 1)"
+                                        placeholder={t(
+                                            "batteryplaceholdername",
+                                        )}
                                         value={newName}
                                         onChange={(e) =>
                                             handleNameChange({
@@ -264,7 +270,7 @@ function BatteryPageDesktop() {
                                             marginBottom: "10px",
                                         }}
                                     >
-                                        This name is already in use.
+                                        {t("namealreadyinuse")}
                                     </p>
                                 )}
 
@@ -274,14 +280,16 @@ function BatteryPageDesktop() {
                                         fontSize: "0.8rem",
                                     }}
                                 >
-                                    Device Type
+                                    {t("batterydevicetype")}
                                 </label>
                                 <select
                                     value={newType}
                                     onChange={(e) => setNewType(e.target.value)}
                                 >
-                                    <option value="b">Standard Battery</option>
-                                    <option value="dh">Driver Hub</option>
+                                    <option value="b">
+                                        {t("standardbattery")}
+                                    </option>
+                                    <option value="dh">{t("driverhub")}</option>
                                 </select>
 
                                 <div style={{ display: "flex", gap: "10px" }}>
@@ -292,7 +300,7 @@ function BatteryPageDesktop() {
                                                 fontSize: "0.8rem",
                                             }}
                                         >
-                                            Capacity (mAh)
+                                            {t("batterycapacity")}
                                         </label>
                                         <input
                                             type="number"
@@ -312,7 +320,7 @@ function BatteryPageDesktop() {
                                                 fontSize: "0.8rem",
                                             }}
                                         >
-                                            Charger (A)
+                                            {t("charger")}
                                         </label>
                                         <input
                                             type="number"
@@ -337,7 +345,7 @@ function BatteryPageDesktop() {
                                             opacity: isDuplicate ? 0.5 : 1,
                                         }}
                                     >
-                                        Add
+                                        {t("add")}
                                     </button>
                                     <button
                                         type="button"
@@ -347,7 +355,7 @@ function BatteryPageDesktop() {
                                             color: "white",
                                         }}
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                 </div>
                             </form>
