@@ -14,7 +14,7 @@
 
     "whatisbotbay": "What is Botbay?",
     "abouttext1": "Botbay is a revolutionary new system for robotics teams to keep track of their inventory. It is filled to the brim with countless features to make your life easier and keep your team organized.",
-    "abouttext2": "Compete stronger with the peace of mind of knowing you have verything you need to be ready at all your competitions.",
+    "abouttext2": "Compete stronger with the peace of mind of knowing you have everything you need to be ready at all your competitions.",
     "abouttext3": "Botbay is a collaborative effort built and designed by FTC Teams #16423 and #27966.",
 
     "parttracking": "Part Tracking",
@@ -181,7 +181,7 @@
     "pulsesperrevolution": "Pulses per Revolution:",
     "stalltorque": "Stall Torque (Nm):",
     "shafttype": "Shaft Type:",
-    "sizelwhmm": "Size (L, W, H mm):",
+    "sizelwhmm": "Size (L, W, H, mm):",
     "l": "L",
     "w": "W",
     "h": "H",
@@ -225,8 +225,8 @@
     "thicknessmm": "Thickness (mm):",
     "description": "Description / Notes:",
     "fov": "FOV (°):",
-    "proximityrange": "Proximity Range (Min, Max mm)",
-    "distancerange": "Distance Range (Min, Max mm)",
+    "proximityrange": "Proximity Range (Min, Max, mm)",
+    "distancerange": "Distance Range (Min, Max, mm)",
     "structuralstatex1": "e.g. 450",
     "structuralstatex2": "e.g. 45",
     "structuralstatex3": "e.g. 15",

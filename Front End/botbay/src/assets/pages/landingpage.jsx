@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import "../styles/landingpage.css";
@@ -23,9 +24,15 @@ import landingImage2 from "../images/landingimagerest2.png";
 import landingImage3 from "../images/landingimagerest3.png";
 
 import { useTranslation } from "react-i18next";
-// import i18n from "i18next"; // USE FOR LANGUAGE SWITCH BUTTON
+import i18n from "i18next";
+
+import { languages } from "../scripts/localization.js";
 
 function LandingPage() {
+    const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+    const currentLanguage =
+        languages.find((lang) => lang.code === i18n.language) || languages[0];
+
     const { t } = useTranslation();
 
     const isDesktop = useMediaQuery({ query: "(min-width: 1100px)" });
@@ -43,8 +50,21 @@ function LandingPage() {
         aboutRef.current.scrollIntoView({ behavior: "smooth" });
     };
 
-    // TODO NOTE: ADD LANGUAGE SWITCHING
-    // i18n.changeLanguage("fr")}
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setLanguageMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <>
@@ -64,7 +84,114 @@ function LandingPage() {
                             </div>
                             <div className="halfcontainer">
                                 <div className="rightcontainer">
-                                    <div className="navtexthelper">
+                                    <div
+                                        className="navtexthelper"
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "0.5rem",
+                                        }}
+                                    >
+                                        <div
+                                            className="nav-language-dropdown"
+                                            ref={dropdownRef}
+                                            style={{ position: "relative" }}
+                                        >
+                                            <button
+                                                onClick={() =>
+                                                    setLanguageMenuOpen(
+                                                        (prev) => !prev,
+                                                    )
+                                                }
+                                                style={{
+                                                    background: "transparent",
+                                                    border: "none",
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                    fontSize: "1rem",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "0.3rem",
+                                                }}
+                                            >
+                                                {`${currentLanguage.flag} ${currentLanguage.label}`}{" "}
+                                                ▼
+                                            </button>
+
+                                            {languageMenuOpen && (
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "100%",
+                                                        left: "50%",
+                                                        transform:
+                                                            "translateX(-50%)",
+                                                        zIndex: 10,
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            background:
+                                                                "rgba(255, 255, 255, 0.05)",
+                                                            borderRadius: "4px",
+                                                            boxShadow:
+                                                                "0 2px 8px rgba(0,0,0,0.5)",
+                                                            backdropFilter:
+                                                                "blur(6px)",
+                                                            minWidth: "5rem",
+                                                            maxHeight: "10rem",
+                                                            overflowY: "auto",
+                                                        }}
+                                                    >
+                                                        {languages.map(
+                                                            (lang) => (
+                                                                <div
+                                                                    key={
+                                                                        lang.code
+                                                                    }
+                                                                    onClick={() => {
+                                                                        i18n.changeLanguage(
+                                                                            lang.code,
+                                                                        );
+                                                                        setLanguageMenuOpen(
+                                                                            false,
+                                                                        );
+                                                                    }}
+                                                                    style={{
+                                                                        padding:
+                                                                            "0.5rem 1rem",
+                                                                        cursor: "pointer",
+                                                                        color: "white",
+                                                                        whiteSpace:
+                                                                            "nowrap",
+                                                                        transition:
+                                                                            "background 0.2s",
+                                                                        textAlign:
+                                                                            "center",
+                                                                    }}
+                                                                    onMouseEnter={(
+                                                                        e,
+                                                                    ) =>
+                                                                        (e.currentTarget.style.background =
+                                                                            "rgba(255,255,255,0.1)")
+                                                                    }
+                                                                    onMouseLeave={(
+                                                                        e,
+                                                                    ) =>
+                                                                        (e.currentTarget.style.background =
+                                                                            "transparent")
+                                                                    }
+                                                                >
+                                                                    {lang.flag}{" "}
+                                                                    {lang.label}
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
                                         <p
                                             className="navunderlinebutton"
                                             onClick={goToWiki}
@@ -153,8 +280,22 @@ function LandingPage() {
                     </>
                 ) : (
                     <>
-                        <div className="navbar">
-                            <div className="halfcontainersmallnav">
+                        <div
+                            className="navbar"
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <div
+                                className="halfcontainersmallnav"
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "1rem",
+                                }}
+                            >
                                 <img
                                     draggable="false"
                                     className="navlogo"
@@ -162,6 +303,97 @@ function LandingPage() {
                                 ></img>
                                 <p className="navtitle">Botbay</p>
                             </div>
+
+                            <div
+                                className="nav-language-dropdown"
+                                ref={dropdownRef}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    position: "relative",
+                                }}
+                            >
+                                <button
+                                    onClick={() =>
+                                        setLanguageMenuOpen((prev) => !prev)
+                                    }
+                                    style={{
+                                        background: "transparent",
+                                        border: "none",
+                                        color: "white",
+                                        cursor: "pointer",
+                                        fontSize: "3.5rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.5rem",
+                                        padding: "0.5rem 1rem",
+                                    }}
+                                >
+                                    {`${currentLanguage.flag} ${currentLanguage.label}`}{" "}
+                                    ▼
+                                </button>
+
+                                {languageMenuOpen && (
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            top: "100%",
+                                            left: "50%",
+                                            transform: "translateX(-50%)",
+                                            zIndex: 10,
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                background:
+                                                    "rgba(255, 255, 255, 0.05)",
+                                                borderRadius: "6px",
+                                                boxShadow:
+                                                    "0 3px 10px rgba(0,0,0,0.5)",
+                                                backdropFilter: "blur(6px)",
+                                                minWidth: "8rem",
+                                                maxHeight: "15rem",
+                                                overflowY: "auto",
+                                            }}
+                                        >
+                                            {languages.map((lang) => (
+                                                <div
+                                                    key={lang.code}
+                                                    onClick={() => {
+                                                        i18n.changeLanguage(
+                                                            lang.code,
+                                                        );
+                                                        setLanguageMenuOpen(
+                                                            false,
+                                                        );
+                                                    }}
+                                                    style={{
+                                                        padding: "1rem 2rem",
+                                                        cursor: "pointer",
+                                                        color: "white",
+                                                        whiteSpace: "nowrap",
+                                                        transition:
+                                                            "background 0.2s",
+                                                        textAlign: "center",
+                                                        fontSize: "3rem",
+                                                    }}
+                                                    onMouseEnter={(e) =>
+                                                        (e.currentTarget.style.background =
+                                                            "rgba(255,255,255,0.1)")
+                                                    }
+                                                    onMouseLeave={(e) =>
+                                                        (e.currentTarget.style.background =
+                                                            "transparent")
+                                                    }
+                                                >
+                                                    {lang.flag} {lang.label}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="halfcontainer">
                                 <div className="navtexthelper">
                                     <p

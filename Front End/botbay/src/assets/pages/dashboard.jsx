@@ -1,5 +1,5 @@
 import "../styles/phone-dashboard.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/sharedstyles.css";
 import "../styles/dashboard.css";
 import { useMediaQuery } from "react-responsive";
@@ -28,8 +28,10 @@ import { setSocketId } from "../scripts/database.js";
 
 import { useTranslation } from "react-i18next";
 
+import { languages } from "../scripts/localization.js";
+
 function Dashboard() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [partToRun, setPartToRun] = React.useState(null);
     const [usePartToRun, setUsePartToRun] = React.useState(false);
@@ -41,6 +43,167 @@ function Dashboard() {
     const [isHydrating, setIsHydrating] = React.useState(true);
 
     const [teamId, setTeamId] = useState(null);
+
+    const LanguageDropdown = () => {
+        const currentLang =
+            languages.find((l) => l.code === i18n.language) || languages[0];
+
+        return (
+            <div
+                ref={dropdownRef}
+                className="nav-language-dropdown"
+                style={{
+                    position: "relative",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "20px",
+                }}
+            >
+                <div
+                    onClick={() => setLanguageMenuOpen(!languageMenuOpen)}
+                    style={{
+                        cursor: "pointer",
+                        width: isDesktop ? "85%" : "90%",
+                        padding: isDesktop ? "12px 15px" : "15px",
+                        color: languageMenuOpen ? "white" : "#94a3b8",
+                        background: languageMenuOpen
+                            ? "rgba(255, 255, 255, 0.05)"
+                            : "transparent",
+                        borderRadius: "8px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "15px",
+                        transition: "all 200ms ease",
+                        boxSizing: "border-box",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                            "rgba(255, 255, 255, 0.05)";
+                        e.currentTarget.style.color = "white";
+                    }}
+                    onMouseLeave={(e) => {
+                        if (!languageMenuOpen) {
+                            e.currentTarget.style.backgroundColor =
+                                "transparent";
+                            e.currentTarget.style.color = "#94a3b8";
+                        }
+                    }}
+                >
+                    <span style={{ fontSize: isDesktop ? "1.2rem" : "4rem" }}>
+                        {currentLang.flag}
+                    </span>
+                    <span
+                        style={{
+                            fontFamily: "Inter",
+                            fontSize: isDesktop ? "1.1rem" : "4rem",
+                            fontWeight: languageMenuOpen ? "700" : "500",
+                            margin: 0,
+                        }}
+                    >
+                        {currentLang.label}
+                    </span>
+                </div>
+
+                {languageMenuOpen && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            bottom: "calc(100% + 10px)",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: isDesktop ? "85%" : "90%",
+                            backgroundColor: "#1d1e2c",
+                            borderRadius: "8px",
+                            boxShadow: "0 10px 5px rgba(0,0,0,0.6)",
+                            border: "1px solid rgba(255, 255, 255, 0.1)",
+                            zIndex: 1000,
+                            maxHeight: isDesktop ? "220px" : "50vh",
+                            overflowY: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            padding: "6px 0",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        {languages.map((lang) => (
+                            <div
+                                key={lang.code}
+                                onClick={() => {
+                                    i18n.changeLanguage(lang.code);
+                                    setLanguageMenuOpen(false);
+                                }}
+                                style={{
+                                    padding: isDesktop ? "12px 15px" : "5px",
+                                    cursor: "pointer",
+                                    color:
+                                        i18n.language === lang.code
+                                            ? "white"
+                                            : "#94a3b8",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    gap: "20px",
+                                    fontSize: isDesktop ? "1.1rem" : "3.5rem",
+                                    background:
+                                        i18n.language === lang.code
+                                            ? "#281a68"
+                                            : "transparent",
+                                    transition: "all 200ms ease",
+                                    fontFamily: "Inter",
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor =
+                                        i18n.language === lang.code
+                                            ? "#281a68"
+                                            : "rgba(255,255,255,0.05)";
+                                    e.currentTarget.style.color = "white";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor =
+                                        i18n.language === lang.code
+                                            ? "#281a68"
+                                            : "transparent";
+                                    if (i18n.language !== lang.code)
+                                        e.currentTarget.style.color = "#94a3b8";
+                                }}
+                            >
+                                <span>{lang.flag}</span>
+                                <span
+                                    style={{
+                                        fontWeight:
+                                            i18n.language === lang.code
+                                                ? "700"
+                                                : "500",
+                                    }}
+                                >
+                                    {lang.label}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setLanguageMenuOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     const handleRealtimeSync = (action, payload) => {
         // 1. Determine which key we are touching
@@ -458,6 +621,9 @@ function Dashboard() {
                             </div>
                         ))}
                     </div>
+                    <div style={{ marginTop: "auto" }}>
+                        <LanguageDropdown />
+                    </div>
                 </div>
             ) : (
                 <div
@@ -499,6 +665,11 @@ function Dashboard() {
                             </div>
                         ))}
                     </div>
+                    {isMobileExpanded && (
+                        <div style={{ marginTop: "auto" }}>
+                            <LanguageDropdown />
+                        </div>
+                    )}
                 </div>
             )}
             <div className="dashboardcontainer">{renderPageContent()}</div>
