@@ -19,13 +19,10 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
     if (!visible) return null;
 
     const deletePart = async () => {
-        // Call our unified utility
         await cloudDeletePart(part.id);
 
-        // Update UI state immediately
         setVisible(false);
 
-        // Call the parent callback if it exists
         if (onDelete) onDelete();
     };
 
@@ -55,32 +52,37 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
                                     src={part.icon}
                                     className="phone-card-icon"
                                     alt=""
+                                    style={{ width: "7rem", height: "7rem" }}
                                     onError={() => setImgLoaded(false)}
                                 />
                             )}
-                            <span className="phone-card-mfr-id">
+                            <span
+                                className="phone-card-mfr-id"
+                                style={{ fontSize: "3rem" }}
+                            >
                                 {part.manufacturerId}
                             </span>
                         </div>
                         <div
                             className="phone-card-actions"
                             onClick={(e) => e.stopPropagation()}
+                            style={{ gap: "8rem" }}
                         >
                             <div
                                 onClick={() => part.editable && onEdit(part)}
                                 className="phone-card-action-btn"
                             >
                                 {part.editable ? (
-                                    <PiPencilSimple size="4rem" />
+                                    <PiPencilSimple size="6rem" />
                                 ) : (
-                                    <PiPencilSimpleSlash size="4rem" />
+                                    <PiPencilSimpleSlash size="6rem" />
                                 )}
                             </div>
                             <div
                                 onClick={() => setWarningOn(true)}
                                 className="phone-card-action-btn phone-delete-btn"
                             >
-                                <IoTrashSharp size="4rem" />
+                                <IoTrashSharp size="6rem" />
                             </div>
                         </div>
                     </div>
@@ -94,13 +96,17 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
 
                     <div className="phone-card-stats-row">
                         <div className="phone-card-stat">
-                            <label>{t("quantitycaps")}</label>
+                            <label style={{ fontSize: "3rem" }}>
+                                {t("quantitycaps")}
+                            </label>
                             <span style={{ color: statusColor }}>
                                 {part.quantity}
                             </span>
                         </div>
                         <div className="phone-card-stat">
-                            <label>{t("neededcaps")}</label>
+                            <label style={{ fontSize: "3rem" }}>
+                                {t("neededcaps")}
+                            </label>
                             <span style={{ color: statusColor }}>
                                 {part.needed || 0}
                             </span>

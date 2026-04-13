@@ -485,7 +485,7 @@ li {
         border-radius: 0.625rem;
         border: 0.0625rem solid transparent;
         width: 45%;
-        font-size: 4rem;
+        font-size: 3rem;
         cursor: pointer;
     }
 
@@ -499,7 +499,7 @@ li {
         font-family: "Interbold";
         font-weight: bolder;
         color: white;
-        font-size: 4rem;
+        font-size: 3rem;
         text-decoration: underline transparent;
         transition: text-decoration-color 300ms ease;
     }

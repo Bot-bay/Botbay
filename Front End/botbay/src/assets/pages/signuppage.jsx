@@ -148,7 +148,10 @@ function SignUpPage() {
                                 </p>
                             )}
 
-                            <div className="inputcontainer">
+                            <form
+                                className="inputcontainer"
+                                onSubmit={handleSignUp}
+                            >
                                 <p
                                     className="inputheader"
                                     style={{ fontSize: isPhone ? "4rem" : "" }}
@@ -287,7 +290,7 @@ function SignUpPage() {
                                 <div className="bottomcontainer">
                                     <button
                                         className="signupbutton"
-                                        onClick={handleSignUp}
+                                        type="submit"
                                         disabled={isLoading}
                                         style={{
                                             fontSize: isPhone ? "4rem" : "",
@@ -311,7 +314,7 @@ function SignUpPage() {
                                         )}
                                     </button>
                                 </div>
-                            </div>
+                            </form>
                         </>
                     )}
 

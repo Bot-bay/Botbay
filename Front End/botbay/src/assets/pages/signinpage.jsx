@@ -106,11 +106,15 @@ function SignInPage() {
                                     {errorMessage}
                                 </p>
                             )}
-
-                            <div className="inputcontainer">
+                            <form
+                                className="inputcontainer"
+                                onSubmit={handleSignIn}
+                            >
                                 <p
                                     className="inputheader"
-                                    style={{ fontSize: isPhone ? "4rem" : "" }}
+                                    style={{
+                                        fontSize: isPhone ? "4rem" : "",
+                                    }}
                                 >
                                     {t("email")}
                                 </p>
@@ -128,7 +132,9 @@ function SignInPage() {
 
                                 <p
                                     className="inputheader"
-                                    style={{ fontSize: isPhone ? "4rem" : "" }}
+                                    style={{
+                                        fontSize: isPhone ? "4rem" : "",
+                                    }}
                                 >
                                     {t("password")}
                                 </p>
@@ -203,8 +209,8 @@ function SignInPage() {
 
                                 <div className="bottomcontainer">
                                     <button
+                                        type="submit"
                                         className="signupbutton"
-                                        onClick={handleSignIn}
                                         disabled={isLoading}
                                         style={{
                                             fontSize: isPhone ? "4rem" : "",
@@ -227,7 +233,7 @@ function SignInPage() {
                                         )}
                                     </button>
                                 </div>
-                            </div>
+                            </form>
                         </>
                     ) : (
                         <GroupSelection isPhone={isPhone} />

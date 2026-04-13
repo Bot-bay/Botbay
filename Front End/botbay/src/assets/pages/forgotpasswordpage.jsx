@@ -13,7 +13,6 @@ function ResetPasswordPage() {
     const [notice, setNotice] = useState({ message: "", color: "transparent" });
     const [loading, setLoading] = useState(false);
 
-    // --- PHONE CHECK LOGIC ---
     const [isPhone, setIsPhone] = useState(window.innerWidth <= 1199);
 
     useEffect(() => {
@@ -22,7 +21,8 @@ function ResetPasswordPage() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const handleResetAction = async () => {
+    const handleResetAction = async (e) => {
+        e.preventDefault();
         if (!email) {
             setNotice({ message: t("enteremail"), color: "red" });
             return;
@@ -54,7 +54,10 @@ function ResetPasswordPage() {
                         />
                         <p className="signupheader">Botbay</p>
                     </div>
-                    <div className="inputcontainer">
+                    <form
+                        className="inputcontainer"
+                        onSubmit={handleResetAction}
+                    >
                         <p className="inputheader">{t("resetpassword")}</p>
                         <input
                             className="signupinput"
@@ -86,13 +89,13 @@ function ResetPasswordPage() {
                         <div className="bottomcontainer">
                             <button
                                 className="signupbutton"
-                                onClick={handleResetAction}
+                                type="submit"
                                 disabled={loading}
                             >
                                 {loading ? t("sending") : t("resetpassword")}
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

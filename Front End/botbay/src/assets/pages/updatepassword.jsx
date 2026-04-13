@@ -29,9 +29,18 @@ function UpdatePasswordPage() {
         handleResetSession();
     }, []);
 
+    const [isPhone, setIsPhone] = useState(window.innerWidth <= 1199);
+
+    useEffect(() => {
+        const handleResize = () => setIsPhone(window.innerWidth <= 1199);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-    const handleUpdateAction = async () => {
+    const handleUpdateAction = async (e) => {
+        e.preventDefault();
         if (!sessionReady) {
             setNotice({
                 message: t("authseshmissing"),
@@ -77,7 +86,10 @@ function UpdatePasswordPage() {
                         />
                         <p className="signupheader">{t("newpassword")}</p>
                     </div>
-                    <div className="inputcontainer">
+                    <form
+                        className="inputcontainer"
+                        onSubmit={handleUpdateAction}
+                    >
                         <p className="inputheader">{t("enternewpassword")}</p>
                         <div style={{ position: "relative", width: "100%" }}>
                             <input
@@ -133,13 +145,13 @@ function UpdatePasswordPage() {
                         <div className="bottomcontainer">
                             <button
                                 className="signupbutton"
-                                onClick={handleUpdateAction}
+                                type="submit"
                                 disabled={loading}
                             >
                                 {loading ? t("updating") : t("updatepassword")}
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
