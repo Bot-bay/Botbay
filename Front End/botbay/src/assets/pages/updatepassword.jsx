@@ -99,6 +99,7 @@ function UpdatePasswordPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 style={{ width: "100%" }}
+                                autoFocus
                             />
                             <div
                                 className="eye-icon"

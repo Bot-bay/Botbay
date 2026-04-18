@@ -66,6 +66,7 @@ function ResetPasswordPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={loading}
+                            autoFocus
                         />
                         <div className="bottomcontainer">
                             <p className="bottomtext">{t("inputyouremail")}</p>
