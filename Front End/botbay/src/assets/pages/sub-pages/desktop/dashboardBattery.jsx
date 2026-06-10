@@ -177,7 +177,7 @@ function BatteryPageDesktop() {
                         className="d-battery-add-trigger"
                         onClick={handlePopUpOpen}
                     >
-                        {t("addnewbattery")}
+                        {t("addbattery")}
                     </button>
                 </div>
                 {hasBatteries ? (
