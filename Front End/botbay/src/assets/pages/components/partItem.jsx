@@ -116,7 +116,7 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
 
                 {warningOn && (
                     <WarningPopup
-                        message={t("deleteitemmessage", {
+                        message={t("deletetagmessage", {
                             itemName: part.name,
                         })}
                         complete={deletePart}
@@ -192,7 +192,7 @@ function PartItem({ part, onRowClick, onDelete, onEdit }) {
             </div>
             {warningOn && (
                 <WarningPopup
-                    message={t("deleteitemmessage", { itemName: part.name })}
+                    message={t("deletetagmessage", { itemName: part.name })}
                     complete={deletePart}
                     close={() => setWarningOn(false)}
                 />

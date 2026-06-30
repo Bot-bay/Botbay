@@ -1730,7 +1730,7 @@ function PartsPageDesktop({ partToRun, usePartToRun, onReturn, onReset }) {
                                             {deletingTagName === tag.name && (
                                                 <WarningPopup
                                                     message={t(
-                                                        "deleteitemmessage",
+                                                        "deletetagmessage",
                                                         { itemName: tag.name },
                                                     )}
                                                     complete={() => {
