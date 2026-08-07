@@ -68,6 +68,10 @@ function LandingPage() {
 
     return (
         <>
+            <meta
+                name="description"
+                content="The best inventory management tool for FTC and FRC teams. Easily sync data across all members' devices, simplify organization, and utilize powerful features built for robotics teams."
+            />
             <div className="screencontainer">
                 {isDesktop ? (
                     <>
