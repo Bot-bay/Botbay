@@ -1,12 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import "../styles/landingpage.css";
 import "../styles/sharedstyles.css";
 import { switchToPage, WikiUrl } from "../scripts/navigation.js";
-
-import { Link } from "react-router-dom";
 
 import { FaInstagram, FaDiscord, FaEnvelope } from "react-icons/fa6";
 import { MdShield } from "react-icons/md";
